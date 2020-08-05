@@ -41,6 +41,18 @@ namespace WebVella.Pulsar.Models
 			return File.Open(tmpFilePath, FileMode.Open);
 		}
 
+
+		public static void DeleteTempFile(this WvpFileInfo fileInfo)
+		{
+			string tmpFilePath = fileInfo.ServerTempPath;
+			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+				throw new Exception("ServerTempPath is null or empty");
+			if (!File.Exists(tmpFilePath))
+				throw new Exception($"{tmpFilePath} does not exist.");
+
+			File.Delete(tmpFilePath);
+		}
+
 		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
 			string tmpFilePath = Path.GetTempFileName();
