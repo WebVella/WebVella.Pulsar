@@ -1,0 +1,497 @@
+﻿@namespace WebVella.Pulsar.Components
+@typeparam ValueItemType
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+    @* Display *@
+    @*********************************************@
+    case WvpFieldMode.Display:
+    case WvpFieldMode.Print:
+        {
+            <div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "") @( _options == null || _options.Equals(_defaultValue) ? "form-control-plaintext--empty" : "")"
+                 id="@_domElementId">
+                @if (_options == null || _options.Equals(_defaultValue))
+                {
+                    @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                    {
+                        <span>&nbsp;</span>
+                    }
+                    else
+                    {
+                        <span>@ValueEmptyText</span>
+                    }
+                }
+                else
+                {
+                    if (GridMode == GridMode.BootstrapGrid)
+                    {
+                        @HeaderTemplate
+
+                        @if (ShowColumnHeader)
+                        {
+                            <div class="row header">
+                                @foreach (var column in GridColumns)
+                                {
+                                    if (column.HeaderTemplate != null)
+                                    {
+                                        @column.HeaderTemplate(column)
+                                    }
+                                    else
+                                    {
+                                        <div class="col @column.Class">@column.LabelText</div>
+                                    }
+                                }
+                            </div>
+                        }
+                       
+                        @foreach (var item in _options)
+                        {
+                            <div class="row">
+                                @ColumnsTemplate
+                                @foreach (var column in GridColumns)
+                                {
+                                    @if (!string.IsNullOrWhiteSpace(column.Name))
+                                    {
+                                        var propInfo = item.GetType().GetProperty(column.Name);
+                                        if (propInfo == null)
+                                        {
+                                            throw new Exception($"Property '{column.Name}' not found");
+                                        }
+
+                                        if (column.DisplayItemTemplate != null)
+                                        {
+                                            @column.DisplayItemTemplate(@propInfo.GetValue(item, null) ?? "")
+                                        }
+                                        else
+                                        {
+                                            <div class="col">
+                                                @(propInfo.GetValue(item, null) ?? "")
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Column name is required");
+                                    }
+                                }
+                           </div>
+                        }
+
+                        @if (ShowColumnFooter)
+                        {
+                            <div class="row footer">
+                                @foreach (var column in GridColumns)
+                                {
+                                    if (column.FooterTemplate != null)
+                                    {
+                                        @column.FooterTemplate
+                                    }
+                                }
+                            </div>
+                        }
+
+                        @FooterTemplate
+
+                        @if (Paging)
+                        {
+                            <WvpFieldPaginator Value="CurrentPage" PagingEnabled="true" PageSize="PageSize" TotalCount="TotalCount" PageChanged="PageChanged" PageSizeChanged="PageSizeChanged"></WvpFieldPaginator>
+                        }
+                    }
+                    else if( GridMode == GridMode.Table)
+                    {
+                        <table class="table @Class">
+                             @if (ShowColumnHeader)
+                             {
+                                <thead>
+                                    <tr>
+                                         @foreach (var column in GridColumns)
+                                         {
+                                             if (column.HeaderTemplate != null)
+                                             {
+                                                @column.HeaderTemplate(column)
+                                             }
+                                             else
+                                             {
+                                                <th class="@column.Class">@column.LabelText</th>
+                                             }
+                                         }
+                                    </tr>
+                                </thead>
+                             }
+
+                            <tbody>
+                                @foreach (var item in _options)
+                                {
+                                    <tr>
+                                        @foreach (var column in GridColumns)
+                                        {
+                                            if (!string.IsNullOrWhiteSpace(column.Name))
+                                            {
+
+                                                var propInfo = item.GetType().GetProperty(column.Name);
+                                                if (propInfo == null)
+                                                {
+                                                    throw new Exception($"Property '{column.Name}' not found");
+                                                }
+
+                                                if (column.DisplayItemTemplate != null)
+                                                {
+                                                    @column.DisplayItemTemplate(@propInfo.GetValue(item, null) ?? "")
+                                                }
+                                                else
+                                                {
+                                                    <td> @(propInfo.GetValue(item, null) ?? "") </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Column name is required");
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                            
+                            @if (ShowColumnFooter)
+                             { 
+                                <tfoot>
+                                    @foreach (var column in GridColumns)
+                                    {
+                                        if (column.FooterTemplate != null)
+                                        {
+                                            @column.FooterTemplate
+                                        }
+                                    }
+                                </tfoot>
+                             }
+                        </table>
+                        @if (Paging)
+                        {
+                            <WvpFieldPaginator Value="CurrentPage" PagingEnabled="true" PageSize="PageSize" TotalCount="TotalCount" PageChanged="PageChanged" PageSizeChanged="PageSizeChanged"></WvpFieldPaginator>
+                        }
+                    
+                    }
+                }
+            </div>
+        }
+        break;
+
+    @* Form *@
+    @*********************************************@
+    case WvpFieldMode.Form:
+        {
+            <div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                 id="@_domElementId">
+
+               @if (GridMode == GridMode.BootstrapGrid)
+                {
+                    @HeaderTemplate
+                    @if (ShowColumnHeader)
+                    {                    
+                        <div class="row header">
+                            @foreach (var column in GridColumns)
+                            {
+                                if (column.HeaderTemplate != null)
+                                {
+                                    @column.HeaderTemplate(column)
+                                }
+                                else
+                                {
+                                    <div class="col @column.Class">@column.LabelText</div>
+                                }
+                            }
+                        </div>
+                    }
+               
+                    @for (int i = 0; i < _options.Count(); i++)
+                    {
+                        var item = _options[i];
+               
+                       @foreach (var column in GridColumns)
+                        {
+                            <div class="col" data-row="row_@i">
+                                @if (!string.IsNullOrWhiteSpace(column.Name))
+                                {
+                                    var propInfo = item.GetType().GetProperty(column.Name);
+                                    if (propInfo == null)
+                                    {
+                                        throw new Exception($"Property '{column.Name}' not found");
+                                    }
+
+                                    if (column.DisplayItemTemplate != null)
+                                    {
+                                        @column.DisplayItemTemplate(@propInfo.GetValue(item, null) ?? "")
+                                    }
+                                    else
+                                    {
+                                        @(propInfo.GetValue(item, null) ?? "")
+                                    }
+                                 }
+                                 else
+                                 {
+                                     throw new Exception("Column name is required");
+                                 }
+
+                             </div>
+                         }
+                        <div class="col actions btn-toolbar">
+                            @foreach (var action in Actions)
+                            {
+                                switch (action)
+                                {
+                                    case GridActions.Insert:
+                                         <button class="btn btn-secondary" type="button" id="row_insert_@i" @onclick="@((e)=> _onInsertHandler(item))">Insert</button>
+                                        break;
+                                    case GridActions.Update:
+                                         <button class="btn btn-secondary" type="button" id="row_update_@i" @onclick="@((e)=> _onUpdateHandler(item))">Update</button>
+                                        break;
+                                    case GridActions.Delete:
+                                         <button class="btn btn-secondary" type="button" id="row_delete_@i" @onclick="@((e)=> _onDeleteHandler(item))">Delete</button>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }                
+                        </div>
+                    }
+               
+                    @if (Paging)
+                    {
+                        <WvpFieldPaginator Value="CurrentPage" PagingEnabled="true" PageSize="PageSize" TotalCount="TotalCount" PageChanged="PageChanged" PageSizeChanged="PageSizeChanged"></WvpFieldPaginator>
+                    }
+
+                    @if (ShowColumnFooter)
+                    {
+                        <div class="row footer">
+                            @foreach (var column in GridColumns)
+                            {
+                                if (column.FooterTemplate != null)
+                                {
+                                    @column.FooterTemplate
+                                }
+                            }
+                        </div>
+                    }
+                    @FooterTemplate
+               }
+               else if( GridMode == GridMode.Table)
+               {
+               
+               <table class="table @Class">
+                             @if (ShowColumnHeader)
+                             {
+                                <thead>
+                                    <tr>
+                                         @foreach (var column in GridColumns)
+                                         {
+                                             if (column.HeaderTemplate != null)
+                                             {
+                                                @column.HeaderTemplate(column)
+                                             }
+                                             else
+                                             {
+                                                <th class="@column.Class">@column.LabelText</th>
+                                             }
+                                         }
+                                    </tr>
+                                </thead>
+                             }
+
+                            <tbody>
+                                 @for (int i = 0; i < _options.Count(); i++)
+                                 {
+                                        var item = _options[i];
+
+                                    <tr>
+                                        @foreach (var column in GridColumns)
+                                        {
+                                            if (!string.IsNullOrWhiteSpace(column.Name))
+                                            {
+
+                                                var propInfo = item.GetType().GetProperty(column.Name);
+                                                if (propInfo == null)
+                                                {
+                                                    throw new Exception($"Property '{column.Name}' not found");
+                                                }
+
+                                                if (column.DisplayItemTemplate != null)
+                                                {
+                                                    @column.DisplayItemTemplate(@propInfo.GetValue(item, null) ?? "")
+                                                }
+                                                else
+                                                {
+                                                    <td> @(propInfo.GetValue(item, null) ?? "") </td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                throw new Exception("Column name is required");
+                                            }
+
+                                            <td class="actions btn-toolbar">
+                                            @foreach (var action in Actions)
+                                            {
+                                                switch (action)
+                                                {
+                                                    case GridActions.Insert:
+                                                         <button class="btn btn-secondary" type="button" id="row_insert_@i" @onclick="@((e)=> _onInsertHandler(item))">Insert</button>
+                                                        break;
+                                                    case GridActions.Update:
+                                                         <button class="btn btn-secondary" type="button" id="row_update_@i" @onclick="@((e)=> _onUpdateHandler(item))">Update</button>
+                                                        break;
+                                                    case GridActions.Delete:
+                                                         <button class="btn btn-secondary" type="button" id="row_delete_@i" @onclick="@((e)=> _onDeleteHandler(item))">Delete</button>
+                                                        break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }                
+                                        </td>
+                                        }
+                                        
+                                    </tr>
+                                }
+                            </tbody>
+                            
+                            @if (ShowColumnFooter)
+                             { 
+                                <tfoot>
+                                    @foreach (var column in GridColumns)
+                                    {
+                                        if (column.FooterTemplate != null)
+                                        {
+                                            @column.FooterTemplate
+                                        }
+                                    }
+                                </tfoot>
+                             }
+                        </table>
+                        @if (Paging)
+                        {
+                            <WvpFieldPaginator Value="CurrentPage" PagingEnabled="true" PageSize="PageSize" TotalCount="TotalCount" PageChanged="PageChanged" PageSizeChanged="PageSizeChanged"></WvpFieldPaginator>
+                        }
+               }
+
+            </div>
+        }
+        break;
+
+    @* Design *@
+    @*********************************************@
+    case WvpFieldMode.InlineEdit:
+        {
+            //TODO
+            @*@if (!_editEnabled)
+                {
+                    <div class="input-group @Class" id="@_domElementId">
+                        <div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "") @(_options == null || _options.Equals(_defaultValue) ? "form-control-plaintext--empty" : "")"
+                             @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                            @if (_options == null || _options.Equals(_defaultValue))
+                            {
+                                @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span>@ValueEmptyText</span>
+                                }
+                            }
+                            else
+                            {
+                                @HeaderTemplate
+                                @if (ShowSelectedItemOnly)
+                                {
+                                    SelectedItemTemplate(_value);
+                                }
+                                else
+                                {
+                                    if (ShowSelectedItemOnTop)
+                                    {
+                                        @SelectedItemTemplate(_value)
+                                    }
+                                    @foreach (var item in _options)
+                                    {
+                                        if (item.Equals(_value))
+                                        {
+                                            if (!ShowSelectedItemOnTop)
+                                            {
+                                                @SelectedItemTemplate(item)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @ItemTemplate(item)
+                                        }
+                                    }
+                                }
+                                @FooterTemplate
+                            }
+                        </div>
+                        <div class="input-group-append">
+                            <div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                                <WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div id="@_domElementId" class=" @Class">
+                        @if (_value.Equals(_defaultValue))
+                        {
+                            <div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "")">
+                                @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                                else
+                                {
+                                    <span>@ValueEmptyText</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-control-plaintext p-0 @(Size == WvpSize.Small ? "form-control-sm" : "")">
+                                @HeaderTemplate
+                                @if (ShowSelectedItemOnly)
+                                {
+                                    SelectedItemTemplate(_value);
+                                }
+                                else
+                                {
+                                    if (ShowSelectedItemOnTop)
+                                    {
+                                        @SelectedItemTemplate(_value)
+                                    }
+                                    @foreach (var item in _options)
+                                    {
+                                        if (item.Equals(_value))
+                                        {
+                                            if (!ShowSelectedItemOnTop)
+                                            {
+                                                @SelectedItemTemplate(item)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @ItemTemplate(item)
+                                        }
+                                    }
+                                }
+                                @FooterTemplate
+                            </div>
+                        }
+
+                    </div>
+                }*@
+        }
+        break;
+}

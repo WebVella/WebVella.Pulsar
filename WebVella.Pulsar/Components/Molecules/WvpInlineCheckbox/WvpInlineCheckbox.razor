@@ -1,0 +1,34 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpInlineBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@if (!_editEnabled)
+{
+	<div class="input-group input-group--inline-edit input-group--embed-after @(String.Join(" ",_cssList))"
+		  id="@Id" @ondblclick="() => _toggleInlineEditClickHandler(true,false)">
+		<WvpDisplayCheckbox Value="@_value" ValueEmptyText="@ValueEmptyText" Title="@Title" Label="@Label" ShowIcon="@ShowIcon"
+								  LabelNotChecked="@LabelNotChecked" LabelUnknown="@LabelUnknown" Class="form-control" />
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary" @onclick="() => _toggleInlineEditClickHandler(true,false)">
+				<WvpIcon Type="WvpIconType.BsPencil" />
+			</button>
+		</div>
+	</div>
+}
+else
+{
+	<div class="input-group @(String.Join(" ",_cssList))" id="@Id">
+		<div class="form-control">
+			<WvpInputCheckbox Value="@_value" Title="@Title" Label="@Label" OnInput="_onInputHandler" Class="mb-0" Id="@_inputElementId" />
+		</div>
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary" @onclick="@(e => _toggleInlineEditClickHandler(false,true))">
+				<WvpIcon Type="WvpIconType.BsCheck2" Class="wvp-green" />
+			</button>
+			<button type="button" class="btn btn-outline-secondary" @onclick="@(e => _toggleInlineEditClickHandler(false,false))">
+				<WvpIcon Type="WvpIconType.BsX" Class="wvp-red" />
+			</button>
+		</div>
+	</div>
+}

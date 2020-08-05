@@ -1,0 +1,89 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+    @* Display *@
+    @*********************************************@
+    case WvpFieldMode.Display:
+    case WvpFieldMode.Print:
+        {
+            <div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value == null ? "form-control-plaintext--empty" : "")"
+                 id="@_domElementId">
+
+                @(_valueString)
+
+            </div>
+        }
+        break;
+
+    @* Form *@
+    @*********************************************@
+    case WvpFieldMode.Form:
+        {
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                       id="@_domElementId"
+                       name="@Name"
+                       min="@Min"
+                       max="@Max"
+                       step="@Step"
+                       value="@_value" @oninput="(e) => _onInputChangeKeypressHandler(e)" />
+            </div>
+        }
+        break;
+
+    @* Design *@
+    @*********************************************@
+    case WvpFieldMode.InlineEdit:
+        {
+            @if (!_editEnabled)
+            {
+                <div class="input-group @Class @(Size == WvpSize.Small ? "input-group-sm" : "")">
+                    <div class="form-control-plaintext @(_value == null ? "form-control-plaintext--empty" : "")"
+                         id="@_domElementId"
+                         @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                        @if (_value != null)
+                        {
+                            @_valueString
+                        }
+                        else
+                        {
+                            @((MarkupString)ValueEmptyText)
+                        }
+                    </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                            <WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                           id="@_domElementId"
+                           type="number"
+                           name="@Name"
+                           min="@Min"
+                           max="@Max"
+                           step="@Step"
+                           @bind-value="@_value" @bind-value:event="oninput"
+                           @onkeypress="@(e => _onKeypressHandler(e))"
+                           @onfocusout="@(e => _toggleInlineEditClickHandler(false,true))" />
+                </div>
+            }
+        }
+        break;
+}

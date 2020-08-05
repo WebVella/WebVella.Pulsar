@@ -1,0 +1,35 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpDisplayBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="@(String.Join(" ",_cssList))">
+	@if (ShowIcon)
+	{
+		if (_value == null)
+		{
+			<WvpIcon Type="WvpIconType.BsQuestion" />
+		}
+		else if (_value.Value)
+		{
+			<WvpIcon Type="WvpIconType.BsCheck2" />
+		}
+		else
+		{
+			<WvpIcon Type="WvpIconType.BsX" />
+
+		}
+	}
+	@if (_value == null)
+	{
+		@LabelUnknown
+	}
+	else if (_value.Value)
+	{
+		@Label
+	}
+	else
+	{
+		@LabelNotChecked
+	}
+</div>

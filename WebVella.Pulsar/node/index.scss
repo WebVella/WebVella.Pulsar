@@ -1,0 +1,22 @@
+﻿
+@import "variables";
+
+//Frameworks
+@import "bootstrap/index";
+@import "blazor/index";
+
+//UI
+@import "ui/colors";
+
+//Components
+@import "components/toastify";
+@import "components/flatpickr";
+@import "components/wvp-avatar";
+@import "components/wvp-badge";
+@import "components/wvp-blazor-loader";
+@import "components/wvp-dropdown"; 
+@import "components/wvp-doc-viewer"; 
+@import "components/wvp-field";
+@import "components/wvp-filerow";
+@import "components/wvp-schema-designer";
+@import "components/wvp-icon";

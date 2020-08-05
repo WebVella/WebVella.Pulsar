@@ -1,0 +1,43 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpDisplayBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="@(String.Join(" ",_cssList))"
+	  id="@Id"
+	  title="@Title">
+	@if (_value == null)
+	{
+		@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+		{
+			<span>&nbsp;</span>
+		}
+		else
+		{
+			<span>@ValueEmptyText</span>
+		}
+	}
+	else
+	{
+
+		<div class="wvp-filerow">
+			<div class="wvp-filerow__info">
+				<div class="wvp-filerow__info__icon">
+					<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+				</div>
+				<div class="wvp-filerow__info__name">
+					@if (String.IsNullOrWhiteSpace(_value.Url))
+					{
+						<span>@_value.Name</span>
+					}
+					else
+					{
+						<a href="@_value.Url">@_value.Name</a>
+					}
+					<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(_value.Size / 1024))})")</span>
+				</div>
+			</div>
+		</div>
+
+	}
+</div>

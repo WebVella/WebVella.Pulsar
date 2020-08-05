@@ -1,0 +1,905 @@
+﻿@page "/Inputs"
+@using Site.Components
+@using System.ComponentModel.DataAnnotations;
+@using Newtonsoft.Json;
+@using System.Globalization;
+
+<h2>Inputs</h2>
+
+<div class="row">
+	@*Text*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Text</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayText Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputText Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineText Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*CheckboxList*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">CheckboxList</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayCheckboxList TItem="MySelectOption" Value="@chkListValueChanged">
+						<WvpDisplayCheckboxListField>@context?.Text</WvpDisplayCheckboxListField>
+					</WvpDisplayCheckboxList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputCheckboxList TItem="MySelectOption" Options="selectData.Take(3)" Value="@chkListValueChanged"
+												 ValueChanged="_onChkListValueChanged" OnInput="_onChkListValueInput">
+						<WvpInputCheckboxListOption>@context?.Text</WvpInputCheckboxListOption>
+					</WvpInputCheckboxList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineCheckboxList TItem="MySelectOption" Options="selectData.Take(3)" Value="@chkListValueChanged"
+												  ValueChanged="_onChkListValueChanged" OnInput="_onChkListValueInput">
+						<WvpDisplayCheckboxListField>@context?.Text</WvpDisplayCheckboxListField>
+						<WvpInputCheckboxListOption>@context?.Text</WvpInputCheckboxListOption>
+					</WvpInlineCheckboxList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @JsonConvert.SerializeObject(chkListValueChanged)</div>
+					<div>OnInput: @JsonConvert.SerializeObject(chkListValueInput)</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*RadioList*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">RadioList</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayRadioList TItem="MySelectOption" Value="@radioListValueChanged">
+						<WvpDisplayRadioListField>@context?.Text</WvpDisplayRadioListField>
+					</WvpDisplayRadioList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputRadioList TItem="MySelectOption" Options="selectData.Take(3)" Value="@radioListValueChanged"
+											 ValueChanged="_onRadioListValueChanged" OnInput="_onRadioListValueInput">
+						<WvpInputRadioListOption>@context?.Text</WvpInputRadioListOption>
+					</WvpInputRadioList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineRadioList TItem="MySelectOption" Options="selectData.Take(3)" Value="@radioListValueChanged"
+											  ValueChanged="_onRadioListValueChanged" OnInput="_onRadioListValueInput">
+						<WvpDisplayRadioListField>@context?.Text</WvpDisplayRadioListField>
+						<WvpInputRadioListOption>@context?.Text</WvpInputRadioListOption>
+					</WvpInlineRadioList>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @JsonConvert.SerializeObject(radioListValueChanged)</div>
+					<div>OnInput: @JsonConvert.SerializeObject(radioListValueInput)</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*MultiSelect*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">MultiSelect</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayMultiSelect TItem="MySelectOption" Value="@multiSelectValueChanged">
+						<WvpDisplayMultiSelectField><span class="badge bg-secondary">@context?.Text</span> </WvpDisplayMultiSelectField>
+					</WvpDisplayMultiSelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputMultiSelect TItem="MySelectOption" Options="selectData" Value="@multiSelectValueChanged"
+												ValueChanged="_onMultiSelectValueChanged" OnInput="_onMultiSelectValueInput" IsFilterable="true">
+						<WvpInputMultiSelectField><span class="badge bg-secondary">@context?.Text</span> </WvpInputMultiSelectField>
+						<WvpInputMultiSelectOption>@context?.Text</WvpInputMultiSelectOption>
+					</WvpInputMultiSelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineMultiSelect TItem="MySelectOption" Options="selectData" Value="@multiSelectValueChanged"
+												 ValueChanged="_onMultiSelectValueChanged" OnInput="_onMultiSelectValueInput" IsFilterable="true">
+						<WvpDisplayMultiSelectField><span class="badge bg-secondary">@context?.Text</span> </WvpDisplayMultiSelectField>
+						<WvpInputMultiSelectField><span class="badge bg-secondary">@context?.Text</span> </WvpInputMultiSelectField>
+						<WvpInputMultiSelectOption>@context?.Text</WvpInputMultiSelectOption>
+					</WvpInlineMultiSelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @JsonConvert.SerializeObject(multiSelectValueChanged)</div>
+					<div>OnInput: @multiSelectValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Select*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Select</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplaySelect TItem="MySelectOption" Value="@selectValueChanged">
+						<WvpDisplaySelectField>@context?.Text</WvpDisplaySelectField>
+					</WvpDisplaySelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputSelect TItem="MySelectOption" Options="selectData" Value="@selectValueChanged"
+										 ValueChanged="_onSelectValueChanged" OnInput="_onSelectValueInput" IsFilterable="true">
+						<WvpInputSelectField>@context?.Text</WvpInputSelectField>
+						<WvpInputSelectOption>@context?.Text</WvpInputSelectOption>
+					</WvpInputSelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineSelect TItem="MySelectOption" Options="selectData" Value="@selectValueChanged"
+										  ValueChanged="_onSelectValueChanged" OnInput="_onSelectValueInput" IsFilterable="true">
+						<WvpDisplaySelectField>@context?.Text --display</WvpDisplaySelectField>
+						<WvpInputSelectField>@context?.Text -- inline</WvpInputSelectField>
+						<WvpInputSelectOption>@context?.Text -- option</WvpInputSelectOption>
+					</WvpInlineSelect>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @JsonConvert.SerializeObject(selectValueChanged)</div>
+					<div>OnInput: @selectValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Html*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Html</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayHtml Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputHtml Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineHtml Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Textarea*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Textarea</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayTextarea Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputTextarea Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineTextarea Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Image*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Image</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayImage Value="@imageValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputImage Value="@imageValueChanged" ValueChanged="_onImageValueChanged" OnInput="_onImageValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineImage Value="@imageValueChanged" ValueChanged="_onImageValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged:</div>
+					@if (imageValueChanged != null)
+					{
+						<div class="form-text">
+
+							<div class="wvp-filerow">
+								<div class="wvp-filerow__info">
+									<div class="wvp-filerow__info__icon">
+										<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+									</div>
+									<div class="wvp-filerow__info__name">
+										@imageValueChanged.Name
+										<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(imageValueChanged.Size / 1024))})")</span>
+									</div>
+								</div>
+								<div class="wvp-filerow__aside">
+									<div class="wvp-filerow__aside__status">@imageValueChanged.ServerTempPath</div>
+								</div>
+							</div>
+						</div>
+					}
+					<div>OnInput:</div>
+					@if (imageValueInput != null)
+					{
+						<div class="form-text">
+
+							<div class="wvp-filerow">
+								<div class="wvp-filerow__info">
+									<div class="wvp-filerow__info__icon">
+										<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+									</div>
+									<div class="wvp-filerow__info__name">
+										@imageValueInput.Name
+										<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(imageValueInput.Size / 1024))})")</span>
+									</div>
+								</div>
+								<div class="wvp-filerow__aside">
+									<div class="wvp-filerow__aside__status">@imageValueInput.ServerTempPath</div>
+								</div>
+							</div>
+						</div>
+					}
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*File*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">File</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayFile Value="@fileValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputFile Value="@fileValueChanged" ValueChanged="_onFileValueChanged" OnInput="_onFileValueInput" Multiple="true" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineFile Value="@fileValueChanged" ValueChanged="_onFileValueChanged" Multiple="true" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged:</div>
+					@if (fileValueChanged.Count > 0)
+					{
+						<div class="form-text">
+							@foreach (var file in fileValueChanged)
+							{
+								<div class="wvp-filerow">
+									<div class="wvp-filerow__info">
+										<div class="wvp-filerow__info__icon">
+											<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+										</div>
+										<div class="wvp-filerow__info__name">
+											@file.Name
+											<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
+										</div>
+									</div>
+									<div class="wvp-filerow__aside">
+										<div class="wvp-filerow__aside__status">@file.ServerTempPath</div>
+									</div>
+								</div>
+							}
+						</div>
+					}
+					<div>OnInput:</div>
+					@if (fileValueInput.Count > 0)
+					{
+						<div class="form-text">
+							@foreach (var file in fileValueInput)
+							{
+								<div class="wvp-filerow">
+									<div class="wvp-filerow__info">
+										<div class="wvp-filerow__info__icon">
+											<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+										</div>
+										<div class="wvp-filerow__info__name">
+											@file.Name
+											<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
+										</div>
+									</div>
+									<div class="wvp-filerow__aside">
+										<div class="wvp-filerow__aside__status">@file.ServerTempPath</div>
+									</div>
+								</div>
+							}
+						</div>
+					}
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Url*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Url</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayUrl Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputUrl Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineUrl Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Phone*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Phone</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayPhone Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputPhone Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlinePhone Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Password*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Password</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayPassword Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputPassword Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlinePassword Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Guid*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Guid</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayGuid Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputGuid Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineGuid Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Email*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Email</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayEmail Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputEmail Value="@textValueChanged" ValueChanged="_onTextValueChanged" OnInput="_onTextValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineEmail Value="@textValueChanged" ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Currency*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Currency</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayCurrency Value="@decimalValueChanged" DecimalPlaces="1" Culture="bgCulture" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<div class="input-group">
+						<span class="input-group-prepend">
+							<span class="input-group-text">@bgCulture.NumberFormat.CurrencySymbol</span>
+						</span>
+						<WvpInputCurrency Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" OnInput="_onDecimalValueInput" Step="0.01" />
+					</div>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineCurrency Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" Step="0.01" Culture="bgCulture" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @decimalValueChanged</div>
+					<div>OnInput: @decimalValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Percent*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Percent</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayPercent Value="@decimalValueChanged" DecimalPlaces="1" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<div class="input-group">
+						<span class="input-group-prepend">
+							<span class="input-group-text">%</span>
+						</span>
+						<WvpInputPercent Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" OnInput="_onDecimalValueInput" Step="0.01" />
+					</div>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlinePercent Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" Step="0.01" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @decimalValueChanged</div>
+					<div>OnInput: @decimalValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Number*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Number</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayNumber Value="@decimalValueChanged" DecimalPlaces="1" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputNumber Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" OnInput="_onDecimalValueInput" Step="0.01" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineNumber Value="@decimalValueChanged" ValueChanged="_onDecimalValueChanged" Step="0.01" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @decimalValueChanged</div>
+					<div>OnInput: @decimalValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Checkbox*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Checkbox</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayCheckbox Value="@boolValueChanged" ShowIcon="true" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" OnInput="_onBoolValueInput" Label="Checkbox label" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" ShowIcon="true" Label="Checkbox label" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @boolValueChanged</div>
+					<div>OnInput: @boolValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Autocomplete*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Autocomplete</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayAutocomplete TItem="MySelectOption"
+													GetTextFunc="@((item) => item.Text)"
+													GetValueFunc="@((item) => item.Value)"
+													Options="selectData"
+													Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputAutocomplete GetTextFunc="@((item) => item.Text)"
+												 GetValueFunc="@((item) => item.Value)"
+												 Options="selectData"
+												 FilterFunc="FilterResults"
+												 OnInput="_onAutocompleteInput"
+												 TItem="MySelectOption"
+												 Value="@textValueChanged"
+												 ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineAutocomplete TItem="MySelectOption"
+												  GetTextFunc="@((item) => item.Text)"
+												  GetValueFunc="@((item) => item.Value)"
+												  FilterFunc="FilterResults"
+												  OnInput="_onAutocompleteInput"
+												  Data="selectData"
+												  Value="@textValueChanged"
+												  ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*DateTime*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">DateTime</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayDateTime Value="@dateTimeValueChanged" TimezoneName="@timeZone" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputDateTime Value="@dateTimeValueChanged" ValueChanged="_onDateTimeValueChanged" OnInput="_onDateTimeValueInput" TimezoneName="@timeZone" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineDateTime Value="@dateTimeValueChanged" ValueChanged="_onDateTimeValueChanged" TimezoneName="@timeZone" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @dateTimeValueChanged?.ToString("o")</div>
+					<div>OnInput: @dateTimeValueInput?.ToString("o")</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+	@*Date*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Date</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayDate Value="@dateTimeValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputDate Value="@dateTimeValueChanged" ValueChanged="_onDateTimeValueChanged" OnInput="_onDateTimeValueInput" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineDate Value="@dateTimeValueChanged" ValueChanged="_onDateTimeValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @dateTimeValueChanged?.ToString("o")</div>
+					<div>OnInput: @dateTimeValueInput?.ToString("o")</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@code{
+	private CultureInfo bgCulture = new CultureInfo("bg-BG");
+	private string textValueChanged = "";
+	private string textValueInput = "";
+
+	private bool? boolValueChanged = null;
+	private bool? boolValueInput = true;
+
+	//private string timeZone = "";
+	private string timeZone = "UTC";
+	//private DateTime? dateTimeValueChanged = DateTime.UtcNow;
+	private DateTime? dateTimeValueChanged = DateTime.Now;
+	//private DateTime? dateTimeValueChanged = DateTime.SpecifyKind(DateTime.UtcNow.Date,DateTimeKind.Unspecified);
+	private DateTime? dateTimeValueInput = null;
+
+	private decimal? decimalValueChanged = (decimal)0.2523;
+	private decimal? decimalValueInput = null;
+
+
+	private List<WvpFileInfo> fileValueChanged = new List<WvpFileInfo>();
+	private List<WvpFileInfo> fileValueInput = new List<WvpFileInfo>();
+
+	private WvpFileInfo imageValueChanged = null;
+	private WvpFileInfo imageValueInput = null;
+
+	private List<MySelectOption> acFullList = new List<MySelectOption>();
+
+	private List<MySelectOption> selectData = new List<MySelectOption>();
+
+	private MySelectOption selectValueChanged = null;
+	private string selectValueInput = null;
+
+	private List<MySelectOption> multiSelectValueChanged = new List<MySelectOption>();
+	private string multiSelectValueInput = "";
+
+	private EmployeeModel employee = new EmployeeModel();
+
+	public class MySelectOption
+	{
+		public string Value { get; set; }
+		public string Text { get; set; }
+	}
+
+	public class EmployeeModel
+	{
+		public int Id { get; set; }
+		[Required]
+		[StringLength(50)]
+		public string Name { get; set; }
+		[Required]
+		[EmailAddress]
+		public string EmailAddress { get; set; }
+		[Required]
+		[Phone]
+		public string PhoneNumer { get; set; }
+		[Required]
+		[CreditCard]
+		public string CreditCardNumer { get; set; }
+
+	}
+
+	internal IEnumerable<MySelectOption> FilterResults(IEnumerable<MySelectOption> data, string search)
+	{
+		if (String.IsNullOrWhiteSpace(search))
+		{
+			return data?.ToList();
+		}
+		else
+		{
+			return data?.ToList().FindAll(x => x.Value.Contains(search));
+		}
+	}
+
+	private async Task _onAutocompleteInput(ChangeEventArgs args)
+	{
+		selectData = FilterResults(acFullList, args.Value?.ToString()).Take(8).ToList();
+		//textValueInput = args.Value.ToString();
+		//await InvokeAsync(StateHasChanged);
+	}
+
+	protected override void OnInitialized()
+	{
+		var iconDict = WebVella.Pulsar.Services.IconTypeService.GetIconTypeDescriptionEnumDict();
+		foreach (var key in iconDict.Keys)
+		{
+			if (!String.IsNullOrWhiteSpace(key))
+				acFullList.Add(new MySelectOption { Value = key, Text = key });
+		}
+		selectData = acFullList.Take(10).ToList();
+		base.OnInitialized();
+	}
+
+
+
+	private void _onTextValueChanged(ChangeEventArgs e)
+	{
+		textValueChanged = e.Value?.ToString();
+	}
+
+	private void _onTextValueInput(ChangeEventArgs e)
+	{
+		textValueInput = e.Value?.ToString();
+	}
+
+	private void _onDateTimeValueChanged(ChangeEventArgs e)
+	{
+		dateTimeValueChanged = (DateTime?)e.Value;
+	}
+
+	private void _onDateTimeValueInput(ChangeEventArgs e)
+	{
+		dateTimeValueInput = (DateTime?)e.Value;
+	}
+
+	private void _onBoolValueChanged(ChangeEventArgs e)
+	{
+		boolValueChanged = (bool)e.Value;
+	}
+
+	private void _onBoolValueInput(ChangeEventArgs e)
+	{
+		boolValueInput = (bool)e.Value;
+	}
+
+	private void _onDecimalValueChanged(ChangeEventArgs e)
+	{
+		decimalValueChanged = (decimal?)e.Value;
+	}
+
+	private void _onDecimalValueInput(ChangeEventArgs e)
+	{
+		decimalValueInput = (decimal?)e.Value;
+	}
+
+	private void _onFileValueChanged(ChangeEventArgs e)
+	{
+		fileValueChanged = (List<WvpFileInfo>)e.Value;
+		foreach (var file in fileValueChanged)
+		{
+			file.Url = "/fs/file.pdf";
+		}
+	}
+
+	private void _onFileValueInput(ChangeEventArgs e)
+	{
+		fileValueInput = (List<WvpFileInfo>)e.Value;
+		foreach (var file in fileValueChanged)
+		{
+			file.Url = "/fs/file.pdf";
+		}
+	}
+
+	private void _onImageValueChanged(ChangeEventArgs e)
+	{
+		imageValueChanged = (WvpFileInfo)e.Value;
+	}
+
+	private void _onImageValueInput(ChangeEventArgs e)
+	{
+		imageValueInput = (WvpFileInfo)e.Value;
+	}
+
+	private void _onSelectValueChanged(ChangeEventArgs e)
+	{
+		selectValueChanged = (MySelectOption)e.Value;
+	}
+
+	private void _onSelectValueInput(ChangeEventArgs e)
+	{
+		var filter = (string)e.Value;
+		selectData = acFullList.FindAll(x => x.Text.Contains(filter)).Take(10).ToList();
+	}
+
+
+	private void _onMultiSelectValueChanged(ChangeEventArgs e)
+	{
+		multiSelectValueChanged = (List<MySelectOption>)e.Value;
+	}
+
+	private void _onMultiSelectValueInput(ChangeEventArgs e)
+	{
+		var filter = (string)e.Value;
+		selectData = acFullList.FindAll(x => x.Text.Contains(filter)).Take(10).ToList();
+	}
+
+
+	private MySelectOption radioListValueChanged = null;
+	private MySelectOption radioListValueInput = null;
+
+	private void _onRadioListValueChanged(ChangeEventArgs e)
+	{
+		radioListValueChanged = (MySelectOption)e.Value;
+	}
+
+	private void _onRadioListValueInput(ChangeEventArgs e)
+	{
+		radioListValueInput = (MySelectOption)e.Value;
+	}
+
+
+	private List<MySelectOption> chkListValueChanged = new List<MySelectOption>();
+	private List<MySelectOption> chkListValueInput = new List<MySelectOption>();
+
+
+	private void _onChkListValueChanged(ChangeEventArgs e)
+	{
+		chkListValueChanged = (List<MySelectOption>)e.Value;
+	}
+
+	private void _onChkListValueInput(ChangeEventArgs e)
+	{
+		chkListValueInput = (List<MySelectOption>)e.Value;
+	}
+
+}

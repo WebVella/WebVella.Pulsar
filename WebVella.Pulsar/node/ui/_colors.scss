@@ -1,0 +1,579 @@
+﻿@import "../variables";
+
+@mixin setColor($color) {
+  color: $color !important;
+}
+
+@mixin setBkgColor($color) {
+  background-color: $color !important;
+  background: $color !important;
+}
+
+//Red
+.wvp-red {
+	@include setColor($red);
+	&-50{ @include setColor($red-50);}
+	&-100{ @include setColor($red-100);}
+	&-200{ @include setColor($red-200);}
+	&-300{ @include setColor($red-300);}
+	&-400{ @include setColor($red-400);}
+	&-500{ @include setColor($red-500);}
+	&-600{ @include setColor($red-600);}
+	&-700{ @include setColor($red-700);}
+	&-800{ @include setColor($red-800);}
+	&-900{ @include setColor($red-900);}
+}
+
+.wvp-bkg-red {
+	@include setBkgColor($red);
+	&-50{ @include setBkgColor($red-50);}
+	&-100{ @include setBkgColor($red-100);}
+	&-200{ @include setBkgColor($red-200);}
+	&-300{ @include setBkgColor($red-300);}
+	&-400{ @include setBkgColor($red-400);}
+	&-500{ @include setBkgColor($red-500);}
+	&-600{ @include setBkgColor($red-600);}
+	&-700{ @include setBkgColor($red-700);}
+	&-800{ @include setBkgColor($red-800);}
+	&-900{ @include setBkgColor($red-900);}
+}
+
+//Pink
+.wvp-pink {
+	@include setColor($pink);
+	&-50{ @include setColor($pink-50);}
+	&-100{ @include setColor($pink-100);}
+	&-200{ @include setColor($pink-200);}
+	&-300{ @include setColor($pink-300);}
+	&-400{ @include setColor($pink-400);}
+	&-500{ @include setColor($pink-500);}
+	&-600{ @include setColor($pink-600);}
+	&-700{ @include setColor($pink-700);}
+	&-800{ @include setColor($pink-800);}
+	&-900{ @include setColor($pink-900);}
+}
+
+.wvp-bkg-pink {
+	@include setBkgColor($pink);
+	&-50{ @include setBkgColor($pink-50);}
+	&-100{ @include setBkgColor($pink-100);}
+	&-200{ @include setBkgColor($pink-200);}
+	&-300{ @include setBkgColor($pink-300);}
+	&-400{ @include setBkgColor($pink-400);}
+	&-500{ @include setBkgColor($pink-500);}
+	&-600{ @include setBkgColor($pink-600);}
+	&-700{ @include setBkgColor($pink-700);}
+	&-800{ @include setBkgColor($pink-800);}
+	&-900{ @include setBkgColor($pink-900);}
+}
+
+//Purple
+.wvp-purple {
+	@include setColor($purple);
+	&-50{ @include setColor($purple-50);}
+	&-100{ @include setColor($purple-100);}
+	&-200{ @include setColor($purple-200);}
+	&-300{ @include setColor($purple-300);}
+	&-400{ @include setColor($purple-400);}
+	&-500{ @include setColor($purple-500);}
+	&-600{ @include setColor($purple-600);}
+	&-700{ @include setColor($purple-700);}
+	&-800{ @include setColor($purple-800);}
+	&-900{ @include setColor($purple-900);}
+}
+
+.wvp-bkg-purple {
+	@include setBkgColor($purple);
+	&-50{ @include setBkgColor($purple-50);}
+	&-100{ @include setBkgColor($purple-100);}
+	&-200{ @include setBkgColor($purple-200);}
+	&-300{ @include setBkgColor($purple-300);}
+	&-400{ @include setBkgColor($purple-400);}
+	&-500{ @include setBkgColor($purple-500);}
+	&-600{ @include setBkgColor($purple-600);}
+	&-700{ @include setBkgColor($purple-700);}
+	&-800{ @include setBkgColor($purple-800);}
+	&-900{ @include setBkgColor($purple-900);}
+}
+
+//Deep-purple
+.wvp-deep-purple {
+	@include setColor($deep-purple);
+	&-50{ @include setColor($deep-purple-50);}
+	&-100{ @include setColor($deep-purple-100);}
+	&-200{ @include setColor($deep-purple-200);}
+	&-300{ @include setColor($deep-purple-300);}
+	&-400{ @include setColor($deep-purple-400);}
+	&-500{ @include setColor($deep-purple-500);}
+	&-600{ @include setColor($deep-purple-600);}
+	&-700{ @include setColor($deep-purple-700);}
+	&-800{ @include setColor($deep-purple-800);}
+	&-900{ @include setColor($deep-purple-900);}
+}
+
+.wvp-bkg-deep-purple {
+	@include setBkgColor($deep-purple);
+	&-50{ @include setBkgColor($deep-purple-50);}
+	&-100{ @include setBkgColor($deep-purple-100);}
+	&-200{ @include setBkgColor($deep-purple-200);}
+	&-300{ @include setBkgColor($deep-purple-300);}
+	&-400{ @include setBkgColor($deep-purple-400);}
+	&-500{ @include setBkgColor($deep-purple-500);}
+	&-600{ @include setBkgColor($deep-purple-600);}
+	&-700{ @include setBkgColor($deep-purple-700);}
+	&-800{ @include setBkgColor($deep-purple-800);}
+	&-900{ @include setBkgColor($deep-purple-900);}
+}
+
+//Indigo
+.wvp-indigo {
+	@include setColor($indigo);
+	&-50{ @include setColor($indigo-50);}
+	&-100{ @include setColor($indigo-100);}
+	&-200{ @include setColor($indigo-200);}
+	&-300{ @include setColor($indigo-300);}
+	&-400{ @include setColor($indigo-400);}
+	&-500{ @include setColor($indigo-500);}
+	&-600{ @include setColor($indigo-600);}
+	&-700{ @include setColor($indigo-700);}
+	&-800{ @include setColor($indigo-800);}
+	&-900{ @include setColor($indigo-900);}
+}
+
+.wvp-bkg-indigo {
+	@include setBkgColor($indigo);
+	&-50{ @include setBkgColor($indigo-50);}
+	&-100{ @include setBkgColor($indigo-100);}
+	&-200{ @include setBkgColor($indigo-200);}
+	&-300{ @include setBkgColor($indigo-300);}
+	&-400{ @include setBkgColor($indigo-400);}
+	&-500{ @include setBkgColor($indigo-500);}
+	&-600{ @include setBkgColor($indigo-600);}
+	&-700{ @include setBkgColor($indigo-700);}
+	&-800{ @include setBkgColor($indigo-800);}
+	&-900{ @include setBkgColor($indigo-900);}
+}
+
+//Blue
+.wvp-blue {
+	@include setColor($blue);
+	&-50{ @include setColor($blue-50);}
+	&-100{ @include setColor($blue-100);}
+	&-200{ @include setColor($blue-200);}
+	&-300{ @include setColor($blue-300);}
+	&-400{ @include setColor($blue-400);}
+	&-500{ @include setColor($blue-500);}
+	&-600{ @include setColor($blue-600);}
+	&-700{ @include setColor($blue-700);}
+	&-800{ @include setColor($blue-800);}
+	&-900{ @include setColor($blue-900);}
+}
+
+.wvp-bkg-blue {
+	@include setBkgColor($blue);
+	&-50{ @include setBkgColor($blue-50);}
+	&-100{ @include setBkgColor($blue-100);}
+	&-200{ @include setBkgColor($blue-200);}
+	&-300{ @include setBkgColor($blue-300);}
+	&-400{ @include setBkgColor($blue-400);}
+	&-500{ @include setBkgColor($blue-500);}
+	&-600{ @include setBkgColor($blue-600);}
+	&-700{ @include setBkgColor($blue-700);}
+	&-800{ @include setBkgColor($blue-800);}
+	&-900{ @include setBkgColor($blue-900);}
+}
+
+//Light blue
+.wvp-light-blue {
+	@include setColor($light-blue);
+	&-50{ @include setColor($light-blue-50);}
+	&-100{ @include setColor($light-blue-100);}
+	&-200{ @include setColor($light-blue-200);}
+	&-300{ @include setColor($light-blue-300);}
+	&-400{ @include setColor($light-blue-400);}
+	&-500{ @include setColor($light-blue-500);}
+	&-600{ @include setColor($light-blue-600);}
+	&-700{ @include setColor($light-blue-700);}
+	&-800{ @include setColor($light-blue-800);}
+	&-900{ @include setColor($light-blue-900);}
+}
+
+.wvp-bkg-light-blue {
+	@include setBkgColor($light-blue);
+	&-50{ @include setBkgColor($light-blue-50);}
+	&-100{ @include setBkgColor($light-blue-100);}
+	&-200{ @include setBkgColor($light-blue-200);}
+	&-300{ @include setBkgColor($light-blue-300);}
+	&-400{ @include setBkgColor($light-blue-400);}
+	&-500{ @include setBkgColor($light-blue-500);}
+	&-600{ @include setBkgColor($light-blue-600);}
+	&-700{ @include setBkgColor($light-blue-700);}
+	&-800{ @include setBkgColor($light-blue-800);}
+	&-900{ @include setBkgColor($light-blue-900);}
+}
+
+//cyan
+.wvp-cyan {
+	@include setColor($cyan);
+	&-50{ @include setColor($cyan-50);}
+	&-100{ @include setColor($cyan-100);}
+	&-200{ @include setColor($cyan-200);}
+	&-300{ @include setColor($cyan-300);}
+	&-400{ @include setColor($cyan-400);}
+	&-500{ @include setColor($cyan-500);}
+	&-600{ @include setColor($cyan-600);}
+	&-700{ @include setColor($cyan-700);}
+	&-800{ @include setColor($cyan-800);}
+	&-900{ @include setColor($cyan-900);}
+}
+
+.wvp-bkg-cyan {
+	@include setBkgColor($cyan);
+	&-50{ @include setBkgColor($cyan-50);}
+	&-100{ @include setBkgColor($cyan-100);}
+	&-200{ @include setBkgColor($cyan-200);}
+	&-300{ @include setBkgColor($cyan-300);}
+	&-400{ @include setBkgColor($cyan-400);}
+	&-500{ @include setBkgColor($cyan-500);}
+	&-600{ @include setBkgColor($cyan-600);}
+	&-700{ @include setBkgColor($cyan-700);}
+	&-800{ @include setBkgColor($cyan-800);}
+	&-900{ @include setBkgColor($cyan-900);}
+}
+
+//teal
+.wvp-teal {
+	@include setColor($teal);
+	&-50{ @include setColor($teal-50);}
+	&-100{ @include setColor($teal-100);}
+	&-200{ @include setColor($teal-200);}
+	&-300{ @include setColor($teal-300);}
+	&-400{ @include setColor($teal-400);}
+	&-500{ @include setColor($teal-500);}
+	&-600{ @include setColor($teal-600);}
+	&-700{ @include setColor($teal-700);}
+	&-800{ @include setColor($teal-800);}
+	&-900{ @include setColor($teal-900);}
+}
+
+.wvp-bkg-teal {
+	@include setBkgColor($teal);
+	&-50{ @include setBkgColor($teal-50);}
+	&-100{ @include setBkgColor($teal-100);}
+	&-200{ @include setBkgColor($teal-200);}
+	&-300{ @include setBkgColor($teal-300);}
+	&-400{ @include setBkgColor($teal-400);}
+	&-500{ @include setBkgColor($teal-500);}
+	&-600{ @include setBkgColor($teal-600);}
+	&-700{ @include setBkgColor($teal-700);}
+	&-800{ @include setBkgColor($teal-800);}
+	&-900{ @include setBkgColor($teal-900);}
+}
+
+//green
+.wvp-green {
+	@include setColor($green);
+	&-50{ @include setColor($green-50);}
+	&-100{ @include setColor($green-100);}
+	&-200{ @include setColor($green-200);}
+	&-300{ @include setColor($green-300);}
+	&-400{ @include setColor($green-400);}
+	&-500{ @include setColor($green-500);}
+	&-600{ @include setColor($green-600);}
+	&-700{ @include setColor($green-700);}
+	&-800{ @include setColor($green-800);}
+	&-900{ @include setColor($green-900);}
+}
+
+.wvp-bkg-green {
+	@include setBkgColor($green);
+	&-50{ @include setBkgColor($green-50);}
+	&-100{ @include setBkgColor($green-100);}
+	&-200{ @include setBkgColor($green-200);}
+	&-300{ @include setBkgColor($green-300);}
+	&-400{ @include setBkgColor($green-400);}
+	&-500{ @include setBkgColor($green-500);}
+	&-600{ @include setBkgColor($green-600);}
+	&-700{ @include setBkgColor($green-700);}
+	&-800{ @include setBkgColor($green-800);}
+	&-900{ @include setBkgColor($green-900);}
+}
+
+//light green
+.wvp-light-green {
+	@include setColor($light-green);
+	&-50{ @include setColor($light-green-50);}
+	&-100{ @include setColor($light-green-100);}
+	&-200{ @include setColor($light-green-200);}
+	&-300{ @include setColor($light-green-300);}
+	&-400{ @include setColor($light-green-400);}
+	&-500{ @include setColor($light-green-500);}
+	&-600{ @include setColor($light-green-600);}
+	&-700{ @include setColor($light-green-700);}
+	&-800{ @include setColor($light-green-800);}
+	&-900{ @include setColor($light-green-900);}
+}
+
+.wvp-bkg-light-green {
+	@include setBkgColor($light-green);
+	&-50{ @include setBkgColor($light-green-50);}
+	&-100{ @include setBkgColor($light-green-100);}
+	&-200{ @include setBkgColor($light-green-200);}
+	&-300{ @include setBkgColor($light-green-300);}
+	&-400{ @include setBkgColor($light-green-400);}
+	&-500{ @include setBkgColor($light-green-500);}
+	&-600{ @include setBkgColor($light-green-600);}
+	&-700{ @include setBkgColor($light-green-700);}
+	&-800{ @include setBkgColor($light-green-800);}
+	&-900{ @include setBkgColor($light-green-900);}
+}
+
+//lime
+.wvp-lime {
+	@include setColor($lime);
+	&-50{ @include setColor($lime-50);}
+	&-100{ @include setColor($lime-100);}
+	&-200{ @include setColor($lime-200);}
+	&-300{ @include setColor($lime-300);}
+	&-400{ @include setColor($lime-400);}
+	&-500{ @include setColor($lime-500);}
+	&-600{ @include setColor($lime-600);}
+	&-700{ @include setColor($lime-700);}
+	&-800{ @include setColor($lime-800);}
+	&-900{ @include setColor($lime-900);}
+}
+
+.wvp-bkg-lime {
+	@include setBkgColor($lime);
+	&-50{ @include setBkgColor($lime-50);}
+	&-100{ @include setBkgColor($lime-100);}
+	&-200{ @include setBkgColor($lime-200);}
+	&-300{ @include setBkgColor($lime-300);}
+	&-400{ @include setBkgColor($lime-400);}
+	&-500{ @include setBkgColor($lime-500);}
+	&-600{ @include setBkgColor($lime-600);}
+	&-700{ @include setBkgColor($lime-700);}
+	&-800{ @include setBkgColor($lime-800);}
+	&-900{ @include setBkgColor($lime-900);}
+}
+
+//yellow
+.wvp-yellow {
+	@include setColor($yellow);
+	&-50{ @include setColor($yellow-50);}
+	&-100{ @include setColor($yellow-100);}
+	&-200{ @include setColor($yellow-200);}
+	&-300{ @include setColor($yellow-300);}
+	&-400{ @include setColor($yellow-400);}
+	&-500{ @include setColor($yellow-500);}
+	&-600{ @include setColor($yellow-600);}
+	&-700{ @include setColor($yellow-700);}
+	&-800{ @include setColor($yellow-800);}
+	&-900{ @include setColor($yellow-900);}
+}
+
+.wvp-bkg-yellow {
+	@include setBkgColor($yellow);
+	&-50{ @include setBkgColor($yellow-50);}
+	&-100{ @include setBkgColor($yellow-100);}
+	&-200{ @include setBkgColor($yellow-200);}
+	&-300{ @include setBkgColor($yellow-300);}
+	&-400{ @include setBkgColor($yellow-400);}
+	&-500{ @include setBkgColor($yellow-500);}
+	&-600{ @include setBkgColor($yellow-600);}
+	&-700{ @include setBkgColor($yellow-700);}
+	&-800{ @include setBkgColor($yellow-800);}
+	&-900{ @include setBkgColor($yellow-900);}
+}
+
+//amber
+.wvp-amber {
+	@include setColor($amber);
+	&-50{ @include setColor($amber-50);}
+	&-100{ @include setColor($amber-100);}
+	&-200{ @include setColor($amber-200);}
+	&-300{ @include setColor($amber-300);}
+	&-400{ @include setColor($amber-400);}
+	&-500{ @include setColor($amber-500);}
+	&-600{ @include setColor($amber-600);}
+	&-700{ @include setColor($amber-700);}
+	&-800{ @include setColor($amber-800);}
+	&-900{ @include setColor($amber-900);}
+}
+
+.wvp-bkg-amber {
+	@include setBkgColor($amber);
+	&-50{ @include setBkgColor($amber-50);}
+	&-100{ @include setBkgColor($amber-100);}
+	&-200{ @include setBkgColor($amber-200);}
+	&-300{ @include setBkgColor($amber-300);}
+	&-400{ @include setBkgColor($amber-400);}
+	&-500{ @include setBkgColor($amber-500);}
+	&-600{ @include setBkgColor($amber-600);}
+	&-700{ @include setBkgColor($amber-700);}
+	&-800{ @include setBkgColor($amber-800);}
+	&-900{ @include setBkgColor($amber-900);}
+}
+
+//Orange
+.wvp-orange {
+	@include setColor($orange);
+	&-50{ @include setColor($orange-50);}
+	&-100{ @include setColor($orange-100);}
+	&-200{ @include setColor($orange-200);}
+	&-300{ @include setColor($orange-300);}
+	&-400{ @include setColor($orange-400);}
+	&-500{ @include setColor($orange-500);}
+	&-600{ @include setColor($orange-600);}
+	&-700{ @include setColor($orange-700);}
+	&-800{ @include setColor($orange-800);}
+	&-900{ @include setColor($orange-900);}
+}
+
+.wvp-bkg-orange {
+	@include setBkgColor($orange);
+	&-50{ @include setBkgColor($orange-50);}
+	&-100{ @include setBkgColor($orange-100);}
+	&-200{ @include setBkgColor($orange-200);}
+	&-300{ @include setBkgColor($orange-300);}
+	&-400{ @include setBkgColor($orange-400);}
+	&-500{ @include setBkgColor($orange-500);}
+	&-600{ @include setBkgColor($orange-600);}
+	&-700{ @include setBkgColor($orange-700);}
+	&-800{ @include setBkgColor($orange-800);}
+	&-900{ @include setBkgColor($orange-900);}
+}
+
+//Deep Orange
+.wvp-deep-orange {
+	@include setColor($deep-orange);
+	&-50{ @include setColor($deep-orange-50);}
+	&-100{ @include setColor($deep-orange-100);}
+	&-200{ @include setColor($deep-orange-200);}
+	&-300{ @include setColor($deep-orange-300);}
+	&-400{ @include setColor($deep-orange-400);}
+	&-500{ @include setColor($deep-orange-500);}
+	&-600{ @include setColor($deep-orange-600);}
+	&-700{ @include setColor($deep-orange-700);}
+	&-800{ @include setColor($deep-orange-800);}
+	&-900{ @include setColor($deep-orange-900);}
+}
+
+.wvp-bkg-deep-orange {
+	@include setBkgColor($deep-orange);
+	&-50{ @include setBkgColor($deep-orange-50);}
+	&-100{ @include setBkgColor($deep-orange-100);}
+	&-200{ @include setBkgColor($deep-orange-200);}
+	&-300{ @include setBkgColor($deep-orange-300);}
+	&-400{ @include setBkgColor($deep-orange-400);}
+	&-500{ @include setBkgColor($deep-orange-500);}
+	&-600{ @include setBkgColor($deep-orange-600);}
+	&-700{ @include setBkgColor($deep-orange-700);}
+	&-800{ @include setBkgColor($deep-orange-800);}
+	&-900{ @include setBkgColor($deep-orange-900);}
+}
+
+//Brown
+.wvp-brown {
+	@include setColor($brown);
+	&-50{ @include setColor($brown-50);}
+	&-100{ @include setColor($brown-100);}
+	&-200{ @include setColor($brown-200);}
+	&-300{ @include setColor($brown-300);}
+	&-400{ @include setColor($brown-400);}
+	&-500{ @include setColor($brown-500);}
+	&-600{ @include setColor($brown-600);}
+	&-700{ @include setColor($brown-700);}
+	&-800{ @include setColor($brown-800);}
+	&-900{ @include setColor($brown-900);}
+}
+
+.wvp-bkg-brown {
+	@include setBkgColor($brown);
+	&-50{ @include setBkgColor($brown-50);}
+	&-100{ @include setBkgColor($brown-100);}
+	&-200{ @include setBkgColor($brown-200);}
+	&-300{ @include setBkgColor($brown-300);}
+	&-400{ @include setBkgColor($brown-400);}
+	&-500{ @include setBkgColor($brown-500);}
+	&-600{ @include setBkgColor($brown-600);}
+	&-700{ @include setBkgColor($brown-700);}
+	&-800{ @include setBkgColor($brown-800);}
+	&-900{ @include setBkgColor($brown-900);}
+}
+
+//Grey
+.wvp-grey {
+	@include setColor($grey);
+	&-50{ @include setColor($grey-50);}
+	&-100{ @include setColor($grey-100);}
+	&-200{ @include setColor($grey-200);}
+	&-300{ @include setColor($grey-300);}
+	&-400{ @include setColor($grey-400);}
+	&-500{ @include setColor($grey-500);}
+	&-600{ @include setColor($grey-600);}
+	&-700{ @include setColor($grey-700);}
+	&-800{ @include setColor($grey-800);}
+	&-900{ @include setColor($grey-900);}
+}
+
+.wvp-bkg-grey {
+	@include setBkgColor($grey);
+	&-50{ @include setBkgColor($grey-50);}
+	&-100{ @include setBkgColor($grey-100);}
+	&-200{ @include setBkgColor($grey-200);}
+	&-300{ @include setBkgColor($grey-300);}
+	&-400{ @include setBkgColor($grey-400);}
+	&-500{ @include setBkgColor($grey-500);}
+	&-600{ @include setBkgColor($grey-600);}
+	&-700{ @include setBkgColor($grey-700);}
+	&-800{ @include setBkgColor($grey-800);}
+	&-900{ @include setBkgColor($grey-900);}
+}
+
+//blue gray
+.wvp-blue-grey {
+	@include setColor($blue-grey);
+	&-50{ @include setColor($blue-grey-50);}
+	&-100{ @include setColor($blue-grey-100);}
+	&-200{ @include setColor($blue-grey-200);}
+	&-300{ @include setColor($blue-grey-300);}
+	&-400{ @include setColor($blue-grey-400);}
+	&-500{ @include setColor($blue-grey-500);}
+	&-600{ @include setColor($blue-grey-600);}
+	&-700{ @include setColor($blue-grey-700);}
+	&-800{ @include setColor($blue-grey-800);}
+	&-900{ @include setColor($blue-grey-900);}
+}
+
+.wvp-bkg-blue-grey {
+	@include setBkgColor($blue-grey);
+	&-50{ @include setBkgColor($blue-grey-50);}
+	&-100{ @include setBkgColor($blue-grey-100);}
+	&-200{ @include setBkgColor($blue-grey-200);}
+	&-300{ @include setBkgColor($blue-grey-300);}
+	&-400{ @include setBkgColor($blue-grey-400);}
+	&-500{ @include setBkgColor($blue-grey-500);}
+	&-600{ @include setBkgColor($blue-grey-600);}
+	&-700{ @include setBkgColor($blue-grey-700);}
+	&-800{ @include setBkgColor($blue-grey-800);}
+	&-900{ @include setBkgColor($blue-grey-900);}
+}
+
+//Black
+.wvp-black{
+	color:$black !important;
+}
+
+.wvp-bkg-black{
+	background:$black !important;
+}
+
+//White
+.wvp-white{
+	color:$white !important;
+}
+
+.wvp-bkg-white{
+	background:$white !important;
+}

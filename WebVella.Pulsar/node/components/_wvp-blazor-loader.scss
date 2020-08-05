@@ -1,0 +1,27 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+#wvp-blazor-loader {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba($white,0.75);
+	opacity: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $gray-500;
+
+	&.hide {
+		display:none;
+	}
+
+	svg {
+		width: 120px;
+		height: 120px;
+	}
+}

@@ -1,0 +1,32 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<CascadingValue Value="this">
+		<div class="card @Class" @attributes="@AdditionalAttributes">
+			<div class="card-header">
+				<div class="nav nav-tabs card-header-tabs">
+					@foreach (var tabPage in _pages)
+					{
+						<div class="nav-item">
+							<a class="nav-link @(_activePage == tabPage ? "active" : "")" href="javascript:void(0)"
+								@onclick="@(() => _tabClickHandler(tabPage))">
+								@if (WvpTabText != null)
+								{
+									@WvpTabText(tabPage)
+								}
+								else
+								{
+									@tabPage.Label
+								}
+							</a>
+						</div>
+					}
+				</div>
+			</div>
+			<div class="card-body">
+				@ChildContent
+			</div>
+		</div>
+</CascadingValue>

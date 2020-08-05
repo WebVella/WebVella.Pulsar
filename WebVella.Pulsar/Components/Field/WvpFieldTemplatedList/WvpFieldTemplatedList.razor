@@ -1,0 +1,227 @@
+﻿@namespace WebVella.Pulsar.Components
+@typeparam ValueItemType
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+    @* Display *@
+    @*********************************************@
+    case WvpFieldMode.Display:
+    case WvpFieldMode.Print:
+        {
+            <div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Equals(_defaultValue) ? "form-control-plaintext--empty" : "")"
+                 id="@_domElementId">
+                @if (_value.Equals(_defaultValue))
+                {
+                    @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                    {
+                        <span>&nbsp;</span>
+                    }
+                    else
+                    {
+                        <span>@ValueEmptyText</span>
+                    }
+                }
+                else
+                {
+                    @HeaderTemplate
+                    @if (ShowSelectedItemOnly)
+                    {
+                        SelectedItemTemplate(_value);
+                    }
+                    else
+                    {
+                        if (ShowSelectedItemOnTop)
+                        {
+                            @SelectedItemTemplate(_value)
+                        }
+                        @foreach (var item in _options)
+                        {
+                            if (item.Equals(_value))
+                            {
+                                if (!ShowSelectedItemOnTop)
+                                {
+                                    @SelectedItemTemplate(item)
+                                }
+                            }
+                            else
+                            {
+                                @ItemTemplate(item)
+                            }
+                        }
+                    }
+                    @FooterTemplate
+
+                }
+            </div>
+        }
+        break;
+
+    @* Form *@
+    @*********************************************@
+    case WvpFieldMode.Form:
+        {
+            <div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                 id="@_domElementId">
+                @if (_value.Equals(_defaultValue) )
+                {
+                    @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                    {
+                        <span>&nbsp;</span>
+                    }
+                    else
+                    {
+                        <span>@ValueEmptyText</span>
+                    }
+                }
+                else
+                {
+                    @HeaderTemplate
+                    @if (ShowSelectedItemOnly)
+                    {
+                        SelectedItemTemplate(_value);
+                    }
+                    else
+                    {
+                        if (ShowSelectedItemOnTop)
+                        {
+                            @SelectedItemTemplate(_value)
+                        }
+                        @foreach (var item in _options)
+                        {
+                            if (item.Equals(_value))
+                            {
+                                if (!ShowSelectedItemOnTop)
+                                {
+                                    @SelectedItemTemplate(item)
+                                }
+                            }
+                            else
+                            {
+                                @ItemTemplate(item)
+                            }
+                        }
+                    }
+                    @FooterTemplate
+                }
+            </div>
+        }
+        break;
+
+    @* Design *@
+    @*********************************************@
+    case WvpFieldMode.InlineEdit:
+        {
+            @if (!_editEnabled)
+            {
+                <div class="input-group @Class" id="@_domElementId">
+                    <div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Equals(_defaultValue) ? "form-control-plaintext--empty" : "")"
+                         @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                        @if (_value.Equals(_defaultValue))
+                        {
+                            @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                            {
+                                <span>&nbsp;</span>
+                            }
+                            else
+                            {
+                                <span>@ValueEmptyText</span>
+                            }
+                        }
+                        else
+                        {
+                            @HeaderTemplate
+                            @if (ShowSelectedItemOnly)
+                            {
+                                SelectedItemTemplate(_value);
+                            }
+                            else
+                            {
+                                if (ShowSelectedItemOnTop)
+                                {
+                                    @SelectedItemTemplate(_value)
+                                }
+                                @foreach (var item in _options)
+                                {
+                                    if (item.Equals(_value))
+                                    {
+                                        if (!ShowSelectedItemOnTop)
+                                        {
+                                            @SelectedItemTemplate(item)
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @ItemTemplate(item)
+                                    }
+                                }
+                            }
+                            @FooterTemplate
+                        }
+                    </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                            <WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div id="@_domElementId" class=" @Class">
+                    @if (_value.Equals(_defaultValue))
+                    {
+                        <div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "")">
+                            @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                            {
+                                <span>&nbsp;</span>
+                            }
+                            else
+                            {
+                                <span>@ValueEmptyText</span>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-control-plaintext p-0 @(Size == WvpSize.Small ? "form-control-sm" : "")">
+                            @HeaderTemplate
+                            @if (ShowSelectedItemOnly)
+                            {
+                                SelectedItemTemplate(_value);
+                            }
+                            else
+                            {
+                                if (ShowSelectedItemOnTop)
+                                {
+                                    @SelectedItemTemplate(_value)
+                                }
+                                @foreach (var item in _options)
+                                {
+                                    if (item.Equals(_value))
+                                    {
+                                        if (!ShowSelectedItemOnTop)
+                                        {
+                                            @SelectedItemTemplate(item)
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @ItemTemplate(item)
+                                    }
+                                }
+                            }
+                            @FooterTemplate
+                        </div>
+                    }
+
+                </div>
+            }
+        }
+        break;
+}

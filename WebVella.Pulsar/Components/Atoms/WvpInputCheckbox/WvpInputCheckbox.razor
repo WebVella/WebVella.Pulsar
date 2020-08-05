@@ -1,0 +1,24 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="form-check @(String.Join(" ",_cssList))">
+	<input type="checkbox"
+			 class="form-check-input"
+			 id="@Id"
+			 name="@Name"
+			 @attributes="@AdditionalAttributes"
+			 value=""
+			 checked="@_value"
+			 @oninput="(e) => _onChangeHandler(e)"
+			 title="@Title" />
+	<label class="form-check-label" for="@Id">
+		@if(String.IsNullOrWhiteSpace(Label)){
+			@:selected
+		}
+		else{
+			@Label
+		}
+	</label>
+</div>

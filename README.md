@@ -1,1 +1,2 @@
-# WebVella.Pulsar
+# WebVella-Pulsar
+Blazor UI Kit

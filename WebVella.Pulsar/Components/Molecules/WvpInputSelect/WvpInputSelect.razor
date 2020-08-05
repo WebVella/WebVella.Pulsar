@@ -1,0 +1,68 @@
+﻿@typeparam TItem
+@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible">
+	<WvpDropdownToggle>
+		<span class="input-group">
+			@if (_value == null)
+			{
+				if (!String.IsNullOrWhiteSpace(Placeholder))
+				{
+					<span class="form-control wvp-grey">@Placeholder</span>
+				}
+				else
+				{
+					<span class="form-control wvp-grey">&nbsp;</span>
+				}
+			}
+			else if (WvpInputSelectField != null)
+			{
+				<span class="form-control">@WvpInputSelectField(_value)</span>
+			}
+			else
+			{
+				<span class="form-control">@Newtonsoft.Json.JsonConvert.SerializeObject(_value)</span>
+			}
+			<span class="input-group-append">
+				<span class="input-group-text"><WvpIcon Type="WvpIconType.BsCaretDownFill" /></span>
+			</span>
+		</span>
+	</WvpDropdownToggle>
+	<WvpDropdownMenu Class="w-100 pt-0">
+		@if (IsFilterable)
+		{
+			<div class="p-1 wvp-bkg-grey-100">
+				<div class="input-group input-group-sm">
+					<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
+					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" />
+				</div>
+			</div>
+		}
+		<div class="wvp-dropdown-wrapper">
+			@foreach (var option in Options)
+			{
+				<WvpDropdownItem OnClick="() => _onSelectHandler(option)">
+					<div class="dropdown-item">
+						<div class="dropdown-item__content">
+							@if (WvpInputSelectOption != null)
+							{
+								@WvpInputSelectOption(option)
+							}
+							else
+							{
+								@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+							}
+						</div>
+					</div>
+				</WvpDropdownItem>
+			}
+			@if (Options == null || Options.ToList().Count == 0)
+			{
+				<div class="wvp-grey p-1">No options available</div>
+			}
+		</div>
+	</WvpDropdownMenu>
+</WvpDropdown>

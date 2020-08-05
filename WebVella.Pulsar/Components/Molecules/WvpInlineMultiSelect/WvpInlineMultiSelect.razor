@@ -1,0 +1,40 @@
+﻿@typeparam TItem
+@namespace WebVella.Pulsar.Components
+@inherits WvpInlineBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@if (!_editEnabled)
+{
+	<div class="input-group input-group--inline-edit input-group--embed-after @(String.Join(" ",_cssList))"
+		  id="@Id" @ondblclick="() => _toggleInlineEditClickHandler(true,false)">
+		<WvpDisplayMultiSelect Value="@_value" ValueEmptyText="@ValueEmptyText" Title="@Title" Class="form-control">
+			<WvpDisplayMultiSelectField Context="value">@WvpDisplayMultiSelectField(value)</WvpDisplayMultiSelectField>
+		</WvpDisplayMultiSelect>
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary" @onclick="() => _toggleInlineEditClickHandler(true,false)">
+				<WvpIcon Type="WvpIconType.BsPencil" />
+			</button>
+		</div>
+	</div>
+}
+else
+{
+	<div class="input-group @(String.Join(" ",_cssList))" id="@Id">
+		<WvpInputMultiSelect Id="@_inputElementId"
+									Value="@_value" Title="@Title" Placeholder="@Placeholder" OnInput="_onInputHandler" ValueChanged="_onValueChangeHandler"
+									TItem="TItem" Options="Options" IsFilterable="IsFilterable">
+			<WvpInputMultiSelectField Context="value">@WvpInputMultiSelectField(value)</WvpInputMultiSelectField>
+			<WvpInputMultiSelectOption Context="option">@WvpInputMultiSelectOption(option)</WvpInputMultiSelectOption>
+
+		</WvpInputMultiSelect>
+		<div class="input-group-append">
+			<button type="button" class="btn btn-outline-secondary" @onclick="@(e => _toggleInlineEditClickHandler(false,true))">
+				<WvpIcon Type="WvpIconType.BsCheck2" Class="wvp-green" />
+			</button>
+			<button type="button" class="btn btn-outline-secondary" @onclick="@(e => _toggleInlineEditClickHandler(false,false))">
+				<WvpIcon Type="WvpIconType.BsX" Class="wvp-red" />
+			</button>
+		</div>
+	</div>
+}

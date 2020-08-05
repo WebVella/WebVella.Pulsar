@@ -1,0 +1,12 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<CascadingValue Value="this">
+	<div class="@_class" 
+		id="@Id"
+		@attributes="@AdditionalAttributes">
+		@ChildContent
+	</div>
+</CascadingValue>

@@ -1,0 +1,30 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using WebVella.Pulsar.Utils
+
+<span class="wvp-avatar @(string.Join(" ",_classList))">
+	@ChildContent
+</span>
+
+@code {
+
+	[Parameter]
+	public WvpSize Size { get; set; } = WvpSize.Normal;
+
+	[Parameter]
+	public WvpColor Color { get; set; } = WvpColor.Default;
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	protected List<string> _classList = new List<string>();
+
+	protected override void OnInitialized()
+	{
+		_classList.Add(Class);
+		_classList.Add($"wvp-avatar--{Size.ToDescriptionString()}");
+		_classList.Add($"wvp-avatar--{Color.ToDescriptionString()}");
+		base.OnInitialized();
+	}
+}

@@ -1,0 +1,273 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+	@* Display *@
+	@*********************************************@
+	case WvpFieldMode.Display:
+	case WvpFieldMode.Print:
+		{
+			<div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Count == 0 ? "form-control-plaintext--empty" : "")"
+				  id="@_domElementId">
+				@if (_value.Count() == 0)
+				{
+					@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+					{
+						<span>&nbsp;</span>
+					}
+					else
+					{
+						<span>@ValueEmptyText</span>
+					}
+				}
+				else
+				{
+					<table class="table table-borderless table-sm">
+						<tbody>
+							@foreach (var selectedValue in _value)
+							{
+								WvpSelectOption selectedOption = Options.FirstOrDefault(x => x.Value == selectedValue);
+								<tr @key="@selectedValue">
+									<td data-option-value="@selectedOption?.Value">
+										@if (selectedOption == null)
+										{
+											<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+										}
+										else
+										{
+											@if (LinkDictionary.ContainsKey(selectedValue))
+											{
+												<a href="@(LinkDictionary[selectedValue])" target="_blank">@selectedOption.Label</a>
+											}
+											else
+											{
+												@selectedOption.Label
+											}
+										}
+
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+		}
+		break;
+
+	@* Form *@
+	@*********************************************@
+	case WvpFieldMode.Form:
+		{
+			<input type="hidden" id="@_domElementId" name="@Name" value="@_value" />
+			@if (_filteredOptions.Count > 0)
+			{
+				<div class="d-flex @Class">
+					<div class="flex-fill">
+
+						<WvpField Type="WvpFieldType.Select" LabelMode="WvpFieldLabelMode.Hidden" Required="true" Size="Size"
+									 Options="_filteredOptions" Value="_selectedValue" ValueChanged="@((e) => _selectedValue = e.Value.ToString())" />
+
+					</div>
+					<div>
+						<button type="button" style="white-space:nowrap" class="btn btn-outline-secondary ml-2  @(Size == WvpSize.Small ? "btn-sm" : "")"
+								  @onclick="_addValueClickHandler">
+							<WvpIcon Type="WvpIconType.BsPlus" Class="wvp-green" />
+							add
+						</button>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="alert alert-info">All options are added to the list</div>
+			}
+			<div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+				  id="@_domElementId">
+				@if (_value.Count() == 0)
+				{
+					@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+					{
+						<span>&nbsp;</span>
+					}
+					else
+					{
+						<span>@ValueEmptyText</span>
+					}
+				}
+				else
+				{
+					<table class="table table-borderless @Class table-sm">
+						<tbody>
+							@foreach (var selectedValue in _value)
+							{
+								WvpSelectOption selectedOption = Options.FirstOrDefault(x => x.Value == selectedValue);
+								<tr @key="@selectedValue">
+									<td data-option-value="@selectedOption?.Value">
+										@if (selectedOption == null)
+										{
+											<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+										}
+										else
+										{
+											@selectedOption.Label;
+										}
+
+									</td>
+									<td width="1%">
+										<button type="button" style="white-space:nowrap" class="btn btn-link btn-sm  @(Size == WvpSize.Small ? "btn-sm" : "")"
+												  @onclick="@((e) => _removeValueClickHandler(selectedValue))">
+											<WvpIcon Type="WvpIconType.BsX" Class="wvp-red" />
+											remove
+										</button>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+			</div>
+		}
+		break;
+
+	@* Design *@
+	@*********************************************@
+	case WvpFieldMode.InlineEdit:
+		{
+			@if (!_editEnabled)
+			{
+				<div class="input-group @Class" id="@_domElementId">
+					<div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Count == 0 ? "form-control-plaintext--empty" : "")"
+						  @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+						@if (_value.Count() == 0)
+						{
+							@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+							{
+								<span>&nbsp;</span>
+							}
+							else
+							{
+								<span>@ValueEmptyText</span>
+							}
+						}
+						else
+						{
+							<table class="table table-borderless table-sm">
+								<tbody>
+									@foreach (var selectedValue in _value)
+									{
+										WvpSelectOption selectedOption = Options.FirstOrDefault(x => x.Value == selectedValue);
+										<tr @key="@selectedValue">
+											<td data-option-value="@selectedOption?.Value">
+												@if (selectedOption == null)
+												{
+													<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+												}
+												else
+												{
+													@if (LinkDictionary.ContainsKey(selectedValue))
+													{
+														<a href="@(LinkDictionary[selectedValue])" target="_blank">@selectedOption.Label</a>
+													}
+													else
+													{
+														@selectedOption.Label
+													}
+												}
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+					</div>
+					<div class="input-group-append">
+						<div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+							<WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div id="@_domElementId" class=" @Class">
+					@if (_filteredOptions.Count > 0)
+					{
+						<div class="d-flex">
+							<div class="flex-fill">
+
+								<WvpField Type="WvpFieldType.Select" LabelMode="WvpFieldLabelMode.Hidden" Required="true" Size="Size"
+											 Options="_filteredOptions" Value="_selectedValue" ValueChanged="@((e) => _selectedValue = e.Value.ToString())" />
+
+							</div>
+							<div>
+								<a href="javascript:void(0)" style="white-space:nowrap"
+									class="btn btn-outline-secondary ml-2  @(Size == WvpSize.Small ? "btn-sm" : "")"
+									@onclick="_addValueClickHandler" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+									<WvpIcon Type="WvpIconType.BsPlus" Class="wvp-green" />
+									add
+								</a>
+							</div>
+						</div>
+					}
+					else
+					{
+						<div class="alert alert-info">All options are added to the list</div>
+					}
+
+					@if (_value.Count() == 0)
+					{
+						<div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "")">
+							@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+							{
+								<span>&nbsp;</span>
+							}
+							else
+							{
+								<span>@ValueEmptyText</span>
+							}
+						</div>
+					}
+					else
+					{
+						<div class="form-control-plaintext p-0 @(Size == WvpSize.Small ? "form-control-sm" : "")">
+							<table class="table table-borderless table-sm">
+								<tbody>
+									@foreach (var selectedValue in _value)
+									{
+										WvpSelectOption selectedOption = Options.FirstOrDefault(x => x.Value == selectedValue);
+										<tr>
+											<td data-option-value="@selectedOption?.Value">
+												@if (selectedOption == null)
+												{
+													<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+												}
+												else
+												{
+													@selectedOption.Label;
+												}
+
+											</td>
+											<td width="1%">
+												<button type="button" style="white-space:nowrap" class="btn btn-link btn-sm  @(Size == WvpSize.Small ? "btn-sm" : "")" @onclick="@((e) => _removeValueClickHandler(selectedValue))">
+													<WvpIcon Type="WvpIconType.BsX" Class="wvp-red" />
+													remove
+												</button>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+
+				</div>
+			}
+		}
+		break;
+}

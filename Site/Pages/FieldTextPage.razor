@@ -1,0 +1,14 @@
+﻿@page "/Field/FieldText"
+@using Site.Components
+
+<h1>FieldText</h1>
+<FieldTestBench Type="@Type" Value="@Value" Options="@Options"/>
+
+
+
+
+@code{
+	private WvpFieldType Type = WvpFieldType.Text;
+	private object Value = "Some Value";
+	private object Options = null;
+}

@@ -1,0 +1,34 @@
+﻿@namespace WebVella.Pulsar.Components
+@typeparam ValueItemType
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+    @* Display *@
+    @*********************************************@
+    case WvpFieldMode.Display:
+    case WvpFieldMode.Print:
+        {
+        }
+        break;
+
+    @* Form *@
+    @*********************************************@
+    case WvpFieldMode.Form:
+        {
+        }
+        break;
+
+    @* Design *@
+    @*********************************************@
+    case WvpFieldMode.InlineEdit:
+        {
+
+        }
+        break;
+}

@@ -1,0 +1,99 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+.wvp-field {
+	img {
+		max-width: 100%;
+	}
+
+	&__label {
+		font-weight: bold;
+		font-size: $font-size-sm;
+
+		& + .form-text{
+			color: $grey;
+			font-size: $font-size-sm;
+			margin-top: -1 * map-get($spacers,2);
+			margin-bottom: map-get($spacers,2);
+		}
+	}
+
+	.form-control {
+		&-plaintext {
+			background: $grey-100;
+			border: 1px solid $grey-200;
+			padding-left: $input-padding-x;
+			padding-right: $input-padding-x;
+
+			&--empty {
+				color: $grey;
+			}
+
+			&--print {
+				background: $white;
+				border: none;
+				padding: 0 0 0 0;
+			}
+		}
+
+		&:focus, &:active {
+			box-shadow: none;
+			border-color: $orange-300;
+		}
+	}
+
+	&--inline-edit {
+		.form-control-plaintext{
+			position: relative;
+			cursor: pointer;
+			background-color: $orange-50;
+			border: 1px solid $orange-100;
+			border-right: none;
+		}
+
+		.ck-toolbar {
+			border-left-color: $orange-300 !important;
+			border-right-color: $orange-300 !important;
+			border-top-color: $orange-300 !important;
+		}
+
+		.ck-content {
+			border-left-color: $orange-300 !important;
+			border-right-color: $orange-300 !important;
+			border-bottom-color: $orange-300 !important;
+		}
+
+		.input-group-text {
+			color: transparent;
+			border-color: transparent;
+			background-color: $orange-50;
+			border: 1px solid $orange-100;
+			cursor: pointer;
+			border-left: none;
+		}
+
+		.input-group-text {
+			color: $orange-300;
+		}
+
+		&:hover {
+			.input-group-text {
+				color: $orange-300;
+			}
+		}
+	}
+
+
+	.form-check {
+
+		.form-check-label {
+			cursor: pointer;
+		}
+	}
+
+	.form-control-check-list .form-check {
+		padding: $input-padding-y 20px $input-padding-y 0;
+	}
+}

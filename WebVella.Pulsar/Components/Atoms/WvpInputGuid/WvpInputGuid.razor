@@ -1,0 +1,13 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<input type="text" 
+	class="form-control @(String.Join(" ",_cssList))"
+	id="@Id"
+	@attributes="@AdditionalAttributes"
+	@bind-value="@_value" @bind-value:event="oninput"
+	@onblur="(e) => _onBlurHandler(e)"
+	@onkeydown="(e) => _onKeyDownHandler(e)"
+	/>

@@ -1,0 +1,21 @@
+﻿// Required
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+// Remove unused colors
+$colors: map-remove($colors,
+  "blue",
+  "indigo",
+  "purple",
+  "pink",
+  "red",
+  "orange",
+  "teal",
+  "yellow",
+  "green",
+  "teal",
+  "cyan"
+);
+
+$theme-colors: map-remove($theme-colors, "dark");

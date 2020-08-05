@@ -1,0 +1,159 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+
+.wvp-doc-viewer {
+
+	.pc-page-header {
+		margin-bottom: 0;
+
+		.meta-icon {
+			background: $deep-purple !important;
+			display:flex;
+			justify-content:center;
+			align-items:center;
+		}
+
+		.meta-area {
+			color: $deep-purple;
+		}
+	}
+
+	&__workarea {
+		margin-left: -15px;
+		margin-right: -15px;
+		height: calc(100vh - 96px);
+		display: flex;
+	}
+
+	&__column {
+		flex: 0 0 220px;
+		padding: 1rem 0.25rem;
+		overflow-y: hidden;
+
+		&:hover {
+			overflow-y: auto;
+		}
+
+		&::-webkit-scrollbar {
+			width: 2px;
+			height: 2px;
+		}
+
+		&::-webkit-scrollbar-button {
+			width: 0px;
+			height: 0px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: rgba(6, 70, 109, 0.2);
+			border: 0px none #ffffff;
+			border-radius: 50px;
+		}
+
+		&::-webkit-scrollbar-thumb:hover {
+			background: rgba(6, 70, 109, 0.3);
+		}
+
+		&::-webkit-scrollbar-thumb:active {
+			background: rgba(6, 70, 109, 0.3);
+		}
+
+		&::-webkit-scrollbar-track {
+			background: rgba(0, 0, 0, 0.05);
+			border: 0px none #ffffff;
+			border-radius: 50px;
+		}
+
+		&::-webkit-scrollbar-track:hover {
+			background: rgba(0, 0, 0, 0.05);
+		}
+
+		&::-webkit-scrollbar-track:active {
+			background: rgba(0, 0, 0, 0.05);
+		}
+
+		&::-webkit-scrollbar-corner {
+			background: transparent;
+		}
+
+		&--primary {
+			background: $deep-purple-50;
+			border-right: 1px solid rgba($deep-purple-900,0.1);
+			box-shadow: inset -5px 0 15px rgba($deep-purple-900,0.075);
+
+			.nav-link {
+
+				&.active-node,
+				&.active {
+					background: $deep-purple-100;
+				}
+
+				&:not(.active):hover {
+					color: $deep-purple-800;
+				}
+			}
+		}
+
+		&--secondary {
+			border-right: 1px solid rgba($grey-900,0.1);
+			box-shadow: inset -5px 0 15px rgba($grey-900,0.075);
+
+			.nav-link {
+				&.active {
+					background: $grey-300;
+				}
+
+				&:not(.active):hover {
+					color: $deep-purple-800;
+				}
+			}
+		}
+
+
+		.nav-link {
+			color: $grey-900;
+			border-radius: $border-radius-sm;
+			line-height: 1.25em;
+
+			&:hover {
+				text-decoration: none;
+				color: $grey-900;
+			}
+		}
+	}
+
+	&__form {
+		flex: 1 1 auto;
+		padding: 1rem;
+		padding-bottom:5rem;
+		overflow: auto;
+	}
+
+	&__alert{
+		background-color:$teal-50;
+		margin: -16px -16px 15px -16px;
+		border-radius: 0;
+		border:none;
+		border-bottom: 2px solid $teal-200;		
+		padding:$alert-padding-y $alert-padding-x;
+		color:$teal-900;
+		display:flex;
+		justify-content:space-between;
+
+		a{
+			color:$teal-900;
+			text-decoration:underline;
+		}
+
+		.wvp-icon{
+			color:$teal;
+		}
+	}
+
+	&__draft-label{
+		color:$teal;
+	}
+}

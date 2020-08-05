@@ -1,0 +1,40 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+.input-group {
+	.input-group-append {
+		.form-control {
+			border-left: none;
+			border-radius: 0 $input-border-radius $input-border-radius 0;
+		}
+	}
+
+	.form-control{
+		height:auto;
+	}
+
+	&--embed-after {
+		.form-control {
+			border-right: none;
+
+			& + .input-group-append > .btn:first-child {
+				border-color: $input-border-color;
+				border-left: none;
+			}
+		}
+	}
+
+	.flatpickr-input + .form-control {
+		border-top-left-radius: $input-border-radius;
+		border-bottom-left-radius: $input-border-radius;
+	}
+
+	.ck-editor, .dropdown {
+		position: relative !important;
+		flex: 1 1 auto;
+		width: 1% !important;
+		min-width: 0;
+	}
+}

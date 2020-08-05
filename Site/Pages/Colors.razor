@@ -1,0 +1,31 @@
+﻿@page "/Colors"
+@using Site.Components
+
+
+<h2>Colors</h2>
+
+<div class="row">
+	@foreach (var color in _colors)
+	{
+		<div class="col-2">
+			<div class="card mb-3">
+				<div class="card-body p-0">
+					<div class="p-1 @($"wvp-bkg-{color}")">@color</div>
+					@foreach (var shade in _shades)
+					{
+						var cssclass = $"wvp-bkg-{color}-{shade}";
+						var cssclassName = $"wvp-{color}-{shade}";
+						<div class="p-1 @cssclass">@cssclassName</div>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+
+
+@code{
+	private List<string> _colors = new List<string> { "red", "pink","purple","deep-purple","indigo", "blue", "light-blue", "cyan", "teal", "green", "light-green", "lime", "yellow", "amber", "orange", "deep-orange", "brown", "grey","blue-grey" };
+	private List<string> _shades = new List<string> { "50", "100", "200", "300", "400", "500", "600", "700", "800", "900" };
+}

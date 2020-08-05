@@ -1,0 +1,74 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+	@* Display *@
+	@*********************************************@
+case WvpFieldMode.Display:
+case WvpFieldMode.Print:
+	{
+			<div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+				  id="@_domElementId">
+				@if(_value){
+					<span>@LabelCheckedText</span>
+				}
+				else{
+					<span>@LabelUnCheckedText</span>
+				}
+			</div>
+		}
+		break;
+
+	@* Form *@
+	@*********************************************@
+case WvpFieldMode.Form:
+	{
+			<input type="hidden" id="@_domElementId" name="@Name" value="@_value"/>
+			<div class="form-check @Class">
+				<input type="checkbox" class="form-check-input" @attributes="@Attributes" id="@("wvp-field-checkbox-fake-" + FieldId)" checked="@_value" @onchange="((e) => _onInputEvent(e))">
+				<label class="form-check-label" for="@("wvp-field-checkbox-fake-" + FieldId)">@LabelCheckedText</label>
+			</div>
+		}
+		break;
+
+	@* Design *@
+	@*********************************************@
+case WvpFieldMode.InlineEdit:
+	{
+			@*@if (!_editEnabled)
+			{
+				<div class="input-group">
+					<div class="form-control-plaintext @(String.IsNullOrWhiteSpace(_value) ? "form-control-plaintext--empty" : "")"
+						  id="@_domElementId"
+						  @onclick="@(e => ToggleInlineEdit(true,false))">
+						@if (!String.IsNullOrWhiteSpace(_value))
+						{
+							@_value
+						}
+						else
+						{
+							@((MarkupString)ValueEmptyText)
+						}
+					</div>
+					<div class="input-group-append">
+						<div class="input-group-text" @onclick="@(e => ToggleInlineEdit(true,false))">
+							<WvpIcon Type="WvpIconType.BsPencil" Size="Size.Small" />
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+				<input class="form-control"
+							id="@_domElementId"
+							@bind-value="@_value"
+							@onfocusout="@(e => ToggleInlineEdit(false,true))" />
+			}*@
+		}
+		break;
+}

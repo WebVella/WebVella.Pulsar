@@ -1,0 +1,39 @@
+﻿@typeparam TItem
+@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+@using Newtonsoft.Json
+
+@if (Options == null || Options.ToList().Count == 0)
+{
+	<div class="form-control-plaintext wvp-grey p-1">No options available</div>
+}
+else
+{
+	<div class="form-control-check-list @(String.Join(", ",_cssList))">
+		@foreach (var option in Options.ToList())
+		{
+			var ckId = "wvp-" + Guid.NewGuid();
+			var ckAttr = new Dictionary<string, object>();
+			@if (_value.Any(x=> JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
+			{
+				ckAttr["checked"] = "checked";
+			}
+
+			<div class="form-check @(!IsVertical ? "form-check-inline" : "")">
+				<input class="form-check-input" type="checkbox" id="@ckId" @attributes="@ckAttr" @onclick="() => _onSelectHandler(option)">
+				<label class="form-check-label" for="@ckId">
+					@if (WvpInputCheckboxListOption != null)
+					{
+						@WvpInputCheckboxListOption(option)
+					}
+					else
+					{
+						@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+					}
+				</label>
+			</div>
+		}
+	</div>
+}

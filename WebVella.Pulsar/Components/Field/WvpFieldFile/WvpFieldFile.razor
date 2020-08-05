@@ -1,0 +1,326 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using WebVella.Pulsar.Utils;
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+	@* Display *@
+	@*********************************************@
+	case WvpFieldMode.Display:
+	case WvpFieldMode.Print:
+		{
+			@if (ShowFileList)
+			{
+				<div class="form-control-plaintext @Class  @(Size == WvpSize.Small ? "form-control-sm" : "") @((_value== null || _value.Count==0) ? "form-control-plaintext--empty" : "")"
+					  id="@_domElementId">
+					@if (_value == null || _value.Count == 0)
+					{
+						@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+						{
+							<span>&nbsp;</span>
+						}
+						else
+						{
+							<span>@ValueEmptyText</span>
+						}
+					}
+					else
+					{
+						<table class="table table-borderless table-sm">
+							<tbody>
+								@foreach (var fileInfo in _value)
+								{
+									<tr @key="@fileInfo.Id">
+									<td data-file-name="@fileInfo.Name">
+										@if (string.IsNullOrEmpty(fileInfo.Name))
+										{
+											<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+										}
+										else
+										{
+													var iconSource = Converters.FilePathToIconSource(fileInfo.Name);
+													var sizeString = Converters.GetSizeStringFromSize((int)(fileInfo.Size / 1024));
+													if (!string.IsNullOrWhiteSpace(fileInfo.Url))
+													{
+														<a href="@($"/fs{fileInfo.Url}")">
+															<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+															@fileInfo.Name
+														</a>
+													}
+													else
+													{
+														<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+														@fileInfo.Name
+													}
+													<span class="ml-2 wvp-grey">(@sizeString)</span>
+										}
+
+									</td>
+								</tr>
+								}
+							</tbody>
+						</table>
+					}
+				</div>
+			}
+		}
+		break;
+
+	@* Form *@
+	@*********************************************@
+	case WvpFieldMode.Form:
+		{
+
+			<div class="wvp-file-field">
+				@if (SingleFileOnly)
+				{
+					<div class="input-group">
+						<div class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")">
+							@if(_value != null && _value.Count > 0){
+								var iconSource = Converters.FilePathToIconSource(_value[0].Name);
+
+								<WvpIcon Size="WvpSize.Small" Source="@iconSource" Class="mr-1"/>
+								<span>@_value[0].Name</span>
+							}
+							else{
+								<span class="wvp-grey">@Placeholder</span>
+							}
+						</div>
+						<div class="input-group-append">
+							@if(!Required && _value != null && _value.Count > 0){
+								<button type="button" class="btn btn-outline-secondary" @onclick="()=>_removeValueClickHandlerAsync(_value[0])">
+									<WvpIcon Size="WvpSize.Small" Type="WvpIconType.BsX" Class="wvp-red"/>
+								</button>
+							}
+							<button type="button" class="btn btn-outline-secondary" @onclick="_browseBtnClickHandler">Browse</button>
+						</div>
+					</div>
+					<input class="d-none"
+							 type="file"
+							 id="@_domElementId"
+							 name="@Name"
+							 @attributes="@Attributes"
+							 accept="@AllowedExtensions"
+							 @ref="@_inputRef" />
+				}
+				else
+				{
+					<input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+							 type="file"
+							 id="@_domElementId"
+							 name="@Name"
+							 @attributes="@Attributes"
+							 accept="@AllowedExtensions"
+							 @ref="@_inputRef"
+							 multiple />
+				}
+				@*<div class="wvp-file-drop-target">
+					<div class="btn btn-primary btn-sm">Browse...</div>
+					<div class="status">
+						@_status
+						<progress value="@_progressValue" max="@_progressMax"></progress>
+					</div>
+				</div>*@
+			</div>
+
+			@if (!SingleFileOnly && _value != null)
+			{
+
+				<table class="table table-borderless @(Size == WvpSize.Small ? "table-sm" : "")">
+					<tbody>
+						@foreach (var fileInfo in _value)
+						{
+							<tr @key="@fileInfo.Name">
+								<td data-file-name="@fileInfo.Name">
+									@if (string.IsNullOrEmpty(fileInfo.Name))
+									{
+										<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+									}
+									else
+									{
+										@fileInfo.Name
+									}
+
+								</td>
+								<td data-file-type="@fileInfo.ContentType">
+									@fileInfo.ContentType
+								</td>
+								<td data-file-size="@fileInfo.Size">
+									@{
+										var sizeString = WvpHelpers.GetSizeStringFromSize((int)fileInfo.Size);
+									}
+									@sizeString
+								</td>
+								<td><span title="Delete file" @onclick="@((e) => _removeValueClickHandlerAsync(fileInfo))" @onclick:stopPropagation="true"><i class="fa fa-trash" aria-hidden="true"></i></span></td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			}
+		}
+		break;
+
+	@* InlineEdit *@
+	@*********************************************@
+	case WvpFieldMode.InlineEdit:
+		{
+			@if (!_editEnabled)
+			{
+				<div class="input-group @Class @(Size == WvpSize.Small ? "input-group-sm" : "")">
+					<div class="form-control-plaintext @((_value == null || _value.Count==0) ? "form-control-plaintext--empty" : "")"
+						  id="@_domElementId"
+						  @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+						@if (_value == null || _value.Count == 0)
+						{
+							@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+							{
+								<span>&nbsp;</span>
+							}
+							else
+							{
+								<span>@ValueEmptyText</span>
+							}
+						}
+						else
+						{
+							<table class="table table-borderless table-sm">
+								<tbody>
+									@foreach (var fileInfo in _value)
+									{
+										<tr @key="@fileInfo.Id">
+											<td data-file-name="@fileInfo.Name">
+												@if (string.IsNullOrEmpty(fileInfo.Name))
+												{
+													<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+												}
+												else
+												{
+													var iconSource = Converters.FilePathToIconSource(fileInfo.Name);
+													var sizeString = Converters.GetSizeStringFromSize((int)(fileInfo.Size / 1024));
+													if (!string.IsNullOrWhiteSpace(fileInfo.Url))
+													{
+														<a href="@($"/fs{@fileInfo.Url}")">
+															<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+															@fileInfo.Name
+														</a>
+													}
+													else
+													{
+														<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+														@fileInfo.Name
+													}
+													<span class="ml-2 wvp-grey">(@sizeString)</span>
+												}
+
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+					</div>
+					<div class="input-group-append">
+						<div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+							<WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+
+				@if (SingleFileOnly)
+				{
+					<input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+							 type="file"
+							 id="@_domElementId"
+							 name="@Name"
+							 @attributes="@Attributes"
+							 accept="@AllowedExtensions"
+							 @ref="@_inputRef" />
+				}
+				else
+				{
+					<input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+							 type="file"
+							 id="@_domElementId"
+							 name="@Name"
+							 @attributes="@Attributes"
+							 accept="@AllowedExtensions"
+							 @ref="@_inputRef"
+							 multiple />
+				}
+
+				@*<div class="wvp-file-drop-target">
+					<div class="btn btn-primary btn-sm">Browse...</div>
+					<div class="status">
+						@_status
+						<progress value="@_progressValue" max="@_progressMax"></progress>
+					</div>
+				</div>*@
+				@*<div class="wvp-field-file__progress">
+						@_progressValue <progress value="@_progressValue" max="@_progressMax"></progress>
+				</div>*@
+
+
+				@if (_value == null || _value.Count == 0)
+				{
+					@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+					{
+						<span>&nbsp;</span>
+					}
+					else
+					{
+						<span>@ValueEmptyText</span>
+					}
+				}
+				else
+				{
+					<table class="mt-3 table table-borderless table-sm">
+						<tbody>
+							@foreach (var fileInfo in _value)
+							{
+								<tr @key="@fileInfo.Id">
+									<td data-file-name="@fileInfo.Name">
+										@if (string.IsNullOrEmpty(fileInfo.Name))
+										{
+											<span><WvpIcon Type="WvpIconType.BsExclamationCircle" Class="wvp-red" /> @ValueEmptyText</span>
+										}
+										else
+										{
+													var iconSource = Converters.FilePathToIconSource(fileInfo.Name);
+													var sizeString = Converters.GetSizeStringFromSize((int)(fileInfo.Size / 1024));
+													if (!string.IsNullOrWhiteSpace(fileInfo.Url))
+													{
+														<a href="@($"/fs{fileInfo.Url}")">
+															<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+															@fileInfo.Name
+														</a>
+													}
+													else
+													{
+														<WvpIcon Source="@iconSource" Size="WvpSize.Small"/>
+														@fileInfo.Name
+													}
+													<span class="ml-2 wvp-grey">(@sizeString)</span>
+													<a href="javascript:void(0)" class="ml-2" title="Delete file" 
+														@onclick="@((e) => _removeValueClickHandlerAsync(fileInfo))" @onclick:stopPropagation="true">
+															<WvpIcon Type="WvpIconType.BsX" Class="wvp-red" Size="WvpSize.Small"/>
+													</a>
+										}
+
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				}
+
+			}
+		}
+		break;
+}

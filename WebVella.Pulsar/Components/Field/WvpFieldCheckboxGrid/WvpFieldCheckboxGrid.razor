@@ -1,0 +1,230 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+@using System.Collections.Generic
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+	@* Display *@
+	@*********************************************@
+	case WvpFieldMode.Display:
+	case WvpFieldMode.Print:
+		{
+			<div class="form-control-plaintext @Class @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Count == 0 ? "form-control-plaintext--empty" : "")"
+				  id="@_domElementId">
+				@if (_value.Count() == 0)
+				{
+					@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+					{
+						<span>&nbsp;</span>
+					}
+					else
+					{
+						<span>@ValueEmptyText</span>
+					}
+				}
+				else
+				{
+					<table class="table table-bordered">
+							  <thead>
+								<tr>
+								  <th></th>
+									@foreach (var _col in Columns)
+                                    {
+										 <th>@_col.Label</th>
+                                    }
+								</tr>
+							  </thead>
+							  <tbody>
+								  @foreach (var _row in Rows)
+                                  {
+									  var rowValuesIndex =_value.FindIndex(x => x.Key == _row.Value);
+									  var rowValues = new List<string>();
+										if (rowValuesIndex > -1)
+										{
+											rowValues = _value[rowValuesIndex].Values;
+										}
+									  <tr>
+											<th>@_row.Label</th>
+											@foreach (var col in Columns)
+                                            {
+												var isChecked = rowValues.Contains(col.Value);
+                                                Dictionary<string, object> _attributes = new Dictionary<string, object>();
+                                                _attributes.Add("data-row-key", $"{_row.Value}");
+                                                <td>
+                                                    <WvpFieldCheckbox Mode="Mode" LabelMode="WvpFieldLabelMode.Hidden" Attributes="@_attributes" Size="Size" Value="isChecked"/>
+                                                </td>
+
+                                            }
+											
+									  </tr>
+                                  }
+						</tbody>
+					</table>
+				}
+			</div>
+		}
+		break;
+
+	@* Form *@
+	@*********************************************@
+	case WvpFieldMode.Form:
+		{
+			<table class="table table-bordered">
+							  <thead>
+								<tr>
+								  <th></th>
+									@foreach (var _col in Columns)
+                                    {
+										 <th>@_col.Label</th>
+                                    }
+								</tr>
+							  </thead>
+							  <tbody>
+								  @foreach (var _row in Rows)
+                                  {
+									  var rowValuesIndex =_value.FindIndex(x => x.Key == _row.Value);
+									  var rowValues = new List<string>();
+										if (rowValuesIndex > -1)
+										{
+											rowValues = _value[rowValuesIndex].Values;
+										}
+									  <tr>
+											<th>@_row.Label</th>
+											@foreach (var _column in Columns)
+                                            {
+												var isChecked = rowValues.Contains(_column.Value);
+                                                Dictionary<string, object> _attributes = new Dictionary<string, object>();
+                                                _attributes.Add("data-row-key", $"{_row.Value}");
+                                                <td>
+                                                    <WvpFieldCheckbox Mode="Mode" LabelMode="WvpFieldLabelMode.Hidden" Attributes="@_attributes" Size="Size" Value="isChecked" ValueChanged="(e) => _onInputEvent(e, _row, _column)"/>
+                                                </td>
+
+                                            }
+											
+									  </tr>
+                                  }
+						</tbody>
+					</table>
+		}
+		break;
+
+	@* Design *@
+	@*********************************************@
+	case WvpFieldMode.InlineEdit:
+		{
+			@if (!_editEnabled)
+			{
+				<div class="input-group @Class" id="@_domElementId">
+					<div class="form-control-plaintext @(Size == WvpSize.Small ? "form-control-sm" : "") @(_value.Count == 0 ? "form-control-plaintext--empty" : "")"
+						  @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+						@if (_value.Count() == 0)
+						{
+							@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+							{
+								<span>&nbsp;</span>
+							}
+							else
+							{
+								<span>@ValueEmptyText</span>
+							}
+						}
+						else
+						{
+							<table class="table table-bordered">
+							  <thead>
+								<tr>
+								  <th></th>
+									@foreach (var _col in Columns)
+                                    {
+										 <th>@_col.Label</th>
+                                    }
+								</tr>
+							  </thead>
+							  <tbody>
+								  @foreach (var _row in Rows)
+                                  {
+									  var rowValuesIndex =_value.FindIndex(x => x.Key == _row.Value);
+									  var rowValues = new List<string>();
+										if (rowValuesIndex > -1)
+										{
+											rowValues = _value[rowValuesIndex].Values;
+										}
+									  <tr>
+											<th>@_row.Label</th>
+											@foreach (var col in Columns)
+                                            {
+												var isChecked = rowValues.Contains(col.Value);
+                                                Dictionary<string, object> _attributes = new Dictionary<string, object>();
+                                                _attributes.Add("data-row-key", $"{_row.Value}");
+                                                <td>
+                                                    <WvpFieldCheckbox Mode="WvpFieldMode.Display" LabelMode="WvpFieldLabelMode.Hidden" Attributes="@_attributes" Size="Size" Value="isChecked"/>
+                                                </td>
+
+                                            }
+											
+									  </tr>
+                                  }
+						</tbody>
+					</table>
+						}
+					</div>
+					<div class="input-group-append">
+						<div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+							<WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div id="@_domElementId" class=" @Class">
+					
+					<div class="form-control-plaintext p-0 @(Size == WvpSize.Small ? "form-control-sm" : "")">
+						<table class="table table-bordered">
+							  <thead>
+								<tr>
+								  <th></th>
+									@foreach (var _col in Columns)
+                                    {
+										 <th>@_col.Label</th>
+                                    }
+								</tr>
+							  </thead>
+							  <tbody>
+								  @foreach (var _row in Rows)
+                                  {
+									  var rowValuesIndex =_value.FindIndex(x => x.Key == _row.Value);
+									  var rowValues = new List<string>();
+										if (rowValuesIndex > -1)
+										{
+											rowValues = _value[rowValuesIndex].Values;
+										}
+									  <tr>
+											<th>@_row.Label</th>
+											@foreach (var _column in Columns)
+                                            {
+												var isChecked = rowValues.Contains(_column.Value);
+                                                Dictionary<string, object> _attributes = new Dictionary<string, object>();
+                                                _attributes.Add("data-row-key", $"{_row.Value}");
+                                                <td>
+                                                    <WvpFieldCheckbox Mode="WvpFieldMode.Form" LabelMode="WvpFieldLabelMode.Hidden" Attributes="@_attributes" Size="Size" Value="isChecked" ValueChanged="(e) => _onInputEvent(e, _row, _column)"/>
+                                                </td>
+
+                                            }
+											
+									  </tr>
+                                  }
+						</tbody>
+					</table>
+					</div>
+					
+
+				</div>
+			}
+		}
+		break;
+}

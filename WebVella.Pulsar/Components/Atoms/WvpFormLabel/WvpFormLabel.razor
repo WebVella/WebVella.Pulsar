@@ -1,0 +1,23 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using WebVella.Pulsar.Utils
+
+<label class="wvp-field__label @(string.Join(" ",_classList))">
+	@ChildContent
+</label>
+
+@code {
+
+
+	[Parameter]
+	public RenderFragment ChildContent { get; set; }
+
+	protected List<string> _classList = new List<string>();
+
+	protected override void OnInitialized()
+	{
+		_classList.Add(Class);
+		base.OnInitialized();
+	}
+}

@@ -1,0 +1,79 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using WebVella.Pulsar.Utils
+@using WebVella.Pulsar.Services;
+
+@if (!String.IsNullOrWhiteSpace(svgHtml))
+{
+	<span class="wvp-icon @InternalCssClass @Class" @attributes="@AdditionalAttributes">
+		@((MarkupString)svgHtml)
+	</span>
+}
+@code {
+
+	[Parameter]
+	public string Source { get; set; } = "";
+
+	[Parameter]
+	public WvpIconType Type { get; set; } = WvpIconType.NoIcon;
+
+	[Parameter]
+	public WvpSize Size { get; set; } = WvpSize.Normal;
+
+	[Parameter]
+	public bool IsSpinning { get; set; } = false;
+
+	protected string InternalCssClass = "";
+
+	protected string svgHtml = "";
+
+	protected override void OnInitialized()
+	{
+		if (Size != WvpSize.Normal)
+		{
+			InternalCssClass += $" wvp-icon--{Size.ToDescriptionString()} ";
+		}
+
+		if (IsSpinning)
+		{
+			InternalCssClass += $" wvp-icon--spin ";
+		}
+
+		//SVG content
+		if (!String.IsNullOrWhiteSpace(Source))
+		{
+			if (Source.StartsWith("<svg"))
+			{
+				svgHtml = Source;
+			}
+			else
+			{
+				var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
+				if (enumDescDict.ContainsKey(Source))
+				{
+					Type = enumDescDict[Source];
+				}
+			}
+		}
+		if (Type != WvpIconType.NoIcon)
+		{
+			svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'>";
+			var typeDescription = Type.ToDescriptionString();
+			if (typeDescription.StartsWith("bs"))
+			{
+				svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'>";
+				InternalCssClass += $" wvp-icon--bs ";
+			}
+			else if (typeDescription.StartsWith("mdf"))
+			{
+				svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'>";
+				InternalCssClass += $" wvp-icon--mdf ";
+			}
+
+			svgHtml += IconTypeService.GetSVGContentForIconType(Type);
+			svgHtml += "</svg>";
+		}
+		base.OnInitialized();
+	}
+}

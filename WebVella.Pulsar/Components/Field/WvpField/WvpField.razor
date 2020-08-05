@@ -1,0 +1,236 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase;
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+<div class="form-group wvp-field @(String.Join(" ", _cssList))" id="wvp-field-@FieldId">
+
+	@* Label *@
+	@***********************************************************************@
+	@if (LabelMode == WvpFieldLabelMode.Stacked)
+	{
+		<label class="wvp-field__label">
+			@if (String.IsNullOrWhiteSpace(LabelText))
+			{
+				<span>&nbsp;</span>
+			}
+			else
+			{
+				@((MarkupString)LabelText)
+			}
+		</label>
+		@* HelpText *@
+		@***********************************************************************@
+		@if (!String.IsNullOrWhiteSpace(LabelHelpText))
+		{
+			<div class="wvp-field__label__help wvp-field__label__help--prepend">@((MarkupString)LabelHelpText)</div>
+		}
+
+	}
+	else if (LabelMode == WvpFieldLabelMode.Horizontal)
+	{
+		<div class="col-sm-@(LabelHorizontalSpan)">
+			<label class="wvp-field__label wvp-field__label--horizontal">
+				@if (String.IsNullOrWhiteSpace(LabelText))
+				{
+					<span>&nbsp;</span>
+				}
+				else
+				{
+					@((MarkupString)LabelText)
+				}
+			</label>
+			@* HelpText *@
+			@***********************************************************************@
+			@if (!String.IsNullOrWhiteSpace(LabelHelpText))
+			{
+				<div class="wvp-field__label__help wvp-field__label__help--horizontal">@((MarkupString)LabelHelpText)</div>
+			}
+		</div>
+	}
+
+
+	@* Input by type *@
+	@***********************************************************************@
+	@switch (Type)
+	{
+		case WvpFieldType.AutoNumber:
+			{
+				<WvpFieldAutonumber Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+										Size="Size" Pattern="@Pattern" ValidationErrors="_validationErrors" Name="@Name" Class="@(String.Join(" ",_inputCssList))" Placeholder="@Placeholder"
+										LabelCheckedText="@LabelCheckedText" LabelUnCheckedText="@LabelUnCheckedText"/>
+			}
+			break;
+		case WvpFieldType.Checkbox:
+			{
+				<WvpFieldCheckbox Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+										Size="Size" ValidationErrors="_validationErrors" Name="@Name" Class="@(String.Join(" ",_inputCssList))" Placeholder="@Placeholder"
+										LabelCheckedText="@LabelCheckedText" LabelUnCheckedText="@LabelUnCheckedText"/>
+			}
+			break;
+		case WvpFieldType.Html:
+			{
+				<WvpFieldHtml Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.MultiSelectList:
+			{
+				<WvpFieldMultiSelectList Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+												 Size="Size" Options="@Options" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+												  Placeholder="@Placeholder" LinkDictionary="@LinkDictionary"/>
+			}
+			break;
+		case WvpFieldType.Number:
+			{
+				<WvpFieldNumber Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required"
+									 ValueEmptyText="@ValueEmptyText" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Select:
+			{
+				<WvpFieldSelect Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									 Size="Size" Options="@Options" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Text:
+			{
+				<WvpFieldText Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+								   Placeholder="@Placeholder" OnKeyPress="(e) => _onKeypressHandler(e)"/>
+			}
+			break;
+		case WvpFieldType.Textarea:
+			{
+				<WvpFieldTextarea Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+								   Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Url:
+			{
+				<WvpFieldUrl Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								 Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+								  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Date:
+			{
+				<WvpFieldDate Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" Pattern="@Pattern" Min="@Min" Max="@Max" Step="@Step" ValidationErrors="_validationErrors" Name="@Name"  
+								  Class="@(String.Join(" ",_inputCssList))"  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.DateTime:
+			{
+				<WvpFieldDateTime Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+										Size="Size" Pattern="@Pattern" Min="@Min" Max="@Max" Step="@Step" ValidationErrors="_validationErrors" Name="@Name"  
+										Class="@(String.Join(" ",_inputCssList))"  Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.File:
+			{
+				<WvpFieldFile Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" ValidationErrors="_validationErrors" Name="@Name" ShowFileList="@ShowFileList" SingleFileOnly="@SingleFileOnly" 
+								  Class="@(String.Join(" ",_inputCssList))"  Placeholder="@Placeholder"/>
+			}
+			break;
+
+		case WvpFieldType.Currency:
+			{
+				<WvpFieldCurrency Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+										Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+										 Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Email:
+			{
+				<WvpFieldEmail Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Guid:
+			{
+				<WvpFieldGuid Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+								  Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+								   Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Image:
+			{
+				<WvpFieldImage Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Password:
+			{
+				<WvpFieldPassword Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+										Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+										 Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Percent:
+			{
+				<WvpFieldPercent Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									  Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									   Placeholder="@Placeholder"/>
+			}
+			break;
+		case WvpFieldType.Phone:
+			{
+				<WvpFieldPhone Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name"  Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder"/>
+            }
+            break;
+        case WvpFieldType.CheckboxGrid:
+            { 
+				<WvpFieldCheckboxGrid Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name" Rows="@Rows" Columns="@Columns" Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder" Options="@Options"/>
+			}
+            break;
+		case WvpFieldType.CheckboxList:
+            { 
+				<WvpFieldCheckboxList Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name" Rows="@Rows" Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder" Options="@Options" AlignmentMode="@AlignmentMode"/>
+			}
+            break;
+		case WvpFieldType.RadioList:
+            { 
+				<WvpFieldRadioList Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name" Rows="@Rows" Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder" Options="@Options" AlignmentMode="@AlignmentMode"/>
+			}
+            break;
+		case WvpFieldType.Typeahead:
+            { 
+				<WvpFieldTypeahead Mode="@Mode" Value="@Value" ValueChanged="@ValueChanged" FieldId="@FieldId" Required="Required" ValueEmptyText="@ValueEmptyText"
+									Size="Size" ValidationErrors="_validationErrors" Name="@Name" Rows="@Rows" Class="@(String.Join(" ",_inputCssList))"
+									 Placeholder="@Placeholder" Options="@Options" StringOptions="@StringOptions" MinCharLimit="@MinCharLimit"/>
+			}
+            break;
+
+            default:
+
+
+            <div class="wvp-red">Field Type not supported</div>
+			break;
+    }
+
+	@* Validation error *@
+	@***********************************************************************@
+	@if (_validationErrors.Count > 0)
+	{
+		<div class="invalid-feedback d-inline">
+			@_validationErrors[0].Value
+		</div>
+	}
+
+</div>

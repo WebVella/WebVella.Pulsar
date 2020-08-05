@@ -1,0 +1,111 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+    @* Display *@
+    @*********************************************@
+    case WvpFieldMode.Display:
+    case WvpFieldMode.Print:
+        {
+            <div class="form-control-plaintext @Class  @(Size == WvpSize.Small ? "form-control-sm" : "") @(String.IsNullOrWhiteSpace(_value) ? "form-control-plaintext--empty" : "")"
+                 id="@_domElementId">
+                @if (String.IsNullOrWhiteSpace(_value))
+                {
+                    @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                    {
+                        <span>&nbsp;</span>
+                    }
+                    else
+                    {
+                        <span>@ValueEmptyText</span>
+                    }
+                }
+                else
+                {
+                    <a href="mailto: @_value">
+                        <span>
+                            <WvpIcon Type="WvpIconType.BsEnvelope" />
+                            @_value
+                        </span>
+                    </a>
+                }
+            </div>
+        }
+        break;
+
+    @* Form *@
+    @*********************************************@
+    case WvpFieldMode.Form:
+        {
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><WvpIcon Type="WvpIconType.BsEnvelope" /></span>
+                </div>
+                <input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                       id="@_domElementId"
+                       name="@Name"
+                       value="@_value" @oninput="(e) => _onInputChangeKeypressHandler(e)" />
+            </div>
+        }
+        break;
+
+    @* Design *@
+    @*********************************************@
+    case WvpFieldMode.InlineEdit:
+        {
+            @if (!_editEnabled)
+            {
+                <div class="input-group @Class @(Size == WvpSize.Small ? "input-group-sm" : "")">
+                    <div class="form-control-plaintext @(String.IsNullOrWhiteSpace(_value) ? "form-control-plaintext--empty" : "")"
+                         id="@_domElementId"
+                         @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                        @if (String.IsNullOrWhiteSpace(_value))
+                        {
+                            @if (String.IsNullOrWhiteSpace(ValueEmptyText))
+                            {
+                                <span>&nbsp;</span>
+                            }
+                            else
+                            {
+                                <span>@ValueEmptyText</span>
+                            }
+                        }
+                        else
+                        {
+
+                            <a href="mailto: @_value">
+                                <span>
+                                    <WvpIcon Type="WvpIconType.BsEnvelope" />
+                                    @_value
+                                </span>
+                            </a>
+                        }
+                    </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text" @onclick="@(e => _toggleInlineEditClickHandler(true,false))">
+                            <WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><WvpIcon Type="WvpIconType.BsEnvelope" /></span>
+                    </div>
+                    <input class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+                           id="@_domElementId"
+                           @bind-value="@_value" @bind-value:event="oninput"
+                           @onkeypress="@(e => _onKeypressHandler(e))"
+                           @onfocusout="@(e => _toggleInlineEditClickHandler(false,true))" />
+                </div>
+            }
+        }
+        break;
+}

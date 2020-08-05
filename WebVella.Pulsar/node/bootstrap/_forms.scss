@@ -1,0 +1,51 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+.invalid-feedback{
+	color:$red;
+}
+
+.was-validated .form-control:invalid, .form-control.is-invalid{
+	border-color:$red;
+}
+
+.form-label{
+	font-weight:$font-weight-lg;
+}
+
+$form-label-margin-bottom:0.5rem;
+
+.form-text{
+	.control-label + &{
+		margin-bottom: $form-label-margin-bottom;
+		margin-top: -1 * $form-label-margin-bottom;
+		color:$grey;
+	}
+}
+
+.form-check{
+    margin-bottom: 0;
+    padding-top: 7px;
+    padding-bottom: 7px;
+	.form-check-input,
+	.form-check-label{
+		cursor:pointer;
+	}
+
+	.form-control &{
+		padding-top:0;
+		padding-bottom:0;
+		margin-bottom:0;
+	}
+}
+
+.form-control{
+	&:active,&:focus{
+		box-shadow:none;
+	}
+
+	&-check-list:not(.form-control){
+		border:1px solid transparent;
+	}
+}

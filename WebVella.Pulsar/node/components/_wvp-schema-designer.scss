@@ -1,0 +1,217 @@
+﻿@import "../variables";
+
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+
+.wvp-schema-designer {
+	&__toolbar {
+		padding: $btn-padding-y 0.25rem;
+		background: $grey-800;
+		display: flex;
+		justify-content: space-between;
+
+		&__nav {
+			flex: 0 0 auto;
+			flex-wrap: nowrap;
+		}
+
+		&__nav-item {
+			margin-right: 0.5rem;
+			flex: 0 0 auto;
+
+			&--root-section {
+				flex: 0 0 200px;
+			}
+		}
+
+
+		&__nav-link {
+			padding: $btn-padding-y-sm $btn-padding-x-sm;
+			color: $grey-300;
+			text-align: left;
+
+			&:hover {
+				color: $grey-100;
+				background: $grey-700;
+			}
+		}
+
+		&__title {
+			padding-right: 0.5rem;
+			padding-left: 0.5rem;
+			flex: 0 0 auto;
+			color: $grey;
+			cursor:pointer;
+			display: flex;
+			align-items: center;
+			border-radius:0.25rem;
+
+			&:hover{
+				background:rgba(0,0,0,0.5);
+			}
+		}
+	}
+
+	&__workarea {
+		background: $grey-100;
+		min-height: 10rem;
+		display: flex;
+	}
+
+	&__column {
+		flex: 0 0 calc(200px + 0.5rem);
+		padding: 0.5rem 0.25rem;
+		border-right: 1px solid transparent;
+
+		&--page {
+			background: linear-gradient(-90deg,$grey-200,$grey-300);
+			border-color: $grey-300;
+		}
+
+		&--subpage {
+			background: linear-gradient(-90deg,$grey-200,$grey-300);
+			border-color: $grey-300;
+		}
+
+		.nav-link {
+			text-align: left;
+			width: 200px;
+			padding: map-get($spacers,1) 0;
+			margin: map-get($spacers,1) 0;
+			cursor: pointer;
+			border-radius: $border-radius;
+			border: 1px solid transparent;
+			padding: 0;
+			line-height: 1.25em;
+
+			.dropdown {
+				display: flex;
+				padding-right: 0.25rem;
+				padding-left: 0.5rem;
+			}
+
+			&.active {
+				background: $orange-100;
+				border-color: $orange-300;
+			}
+
+			&.active-node {
+				background: $grey-400;
+			}
+
+			&:not(.active):not(.active-node):hover {
+				background: rgba($black,0.05);
+			}
+
+			&__title {
+				padding: 0.25rem 0;
+				flex: 1 1 auto;
+				/*overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;*/
+				font-size: $font-size-sm;
+				color: $grey-800;
+
+				&:hover {
+					text-decoration: none;
+				}
+			}
+
+			&__icon {
+				flex: 0 0 24px;
+				text-align: right;
+				color: $grey;
+				padding:0.25rem 0;
+				&:hover {
+					color: $orange;
+				}
+			}
+
+			.dropdown-menu {
+				padding: 0.25rem 0;
+				font-size: $font-size-sm;
+
+				.dropdown-item {
+					padding: 0.25rem 0.5rem;
+
+					.wvp-icon {
+						margin-right: 0.25rem;
+					}
+				}
+
+				span.dropdown-item:hover {
+					color: $grey !important;
+					cursor: auto !important;
+				}
+			}
+		}
+	}
+
+	&__form {
+		flex: 1 1 auto;
+		padding: 0.75rem 0.5rem;
+	}
+
+	&__node {
+		margin-bottom: 0.5rem;
+		border: 1px solid $teal-200;
+		box-shadow: 0 0 3px $teal-200;
+
+		&-header {
+			padding: 0.5rem;
+			display: flex;
+			background: $teal-100;
+			color: $teal-500;
+			border-bottom: none;
+		}
+
+		&-title {
+			flex: 1 1 auto;
+		}
+
+		&-action {
+			flex: 0 0 auto;
+
+			.nav-link__icon {
+				color: $teal;
+			}
+		}
+
+		&-body {
+			font-size:$font-size-sm;
+			padding: 0.25rem 0.5rem;
+		}
+	}
+
+	&__container {
+		padding: 0;
+		background: $grey-100;
+		border: 1px dashed $grey-500;
+
+		&__toolbar {
+			height: 2rem;
+			line-height: 2rem;
+			padding: 0 0.5rem;
+			background: rgba($grey-900,0.1);
+			color: $grey-900;
+			display: block;
+			font-size: $font-size-sm;
+			&:hover {
+				color: $orange;
+				background: rgba($grey-900,0.15);
+				text-decoration: none;
+			}
+		}
+
+		&:hover {
+			border-color: $orange-400;
+		}
+
+		& > .wvp-schema-designer__node{
+			margin:0.5rem;
+		}
+	}
+}

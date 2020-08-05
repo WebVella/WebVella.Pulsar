@@ -1,0 +1,37 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+.wvp-modal{
+	.modal-content{
+		border:none;
+	}
+	.modal-header{
+		justify-content:center;
+		background:$grey-800;
+		color:$grey-200;
+		padding:map-get($spacers,2);
+	}
+	.modal-body{
+		padding:map-get($spacers,2);
+	}
+	.modal-footer{
+		justify-content:center;
+		background:$grey-200;
+		padding:map-get($spacers,2);
+	}
+
+	&--inner {
+		.modal-header{
+			background: $blue-grey-700;	
+		}
+		.modal-footer{
+			background: $grey-100;	
+		}
+		.modal-content {
+			box-shadow: 0 1rem 5rem rgba(0, 0, 0, 0.75) !important;
+			margin-top:5rem;
+		}
+	}
+}

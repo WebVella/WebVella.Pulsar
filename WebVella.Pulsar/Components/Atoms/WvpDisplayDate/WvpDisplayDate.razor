@@ -1,0 +1,24 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpDisplayBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="@(String.Join(" ",_cssList))"
+	  id="@Id"
+	  title="@Title">
+
+	@if (Value == null)
+	{
+		@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+		{
+			<span>&nbsp;</span>
+		}
+		else
+		{
+			<span>@ValueEmptyText</span>
+		}
+	}
+	else	{
+		@_value
+	}
+</div>

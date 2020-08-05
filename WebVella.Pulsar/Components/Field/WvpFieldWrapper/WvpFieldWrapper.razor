@@ -1,0 +1,65 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase;
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+
+<div class="form-group wvp-field @(String.Join(" ", _cssList))" id="wvp-field-@FieldId">
+
+	@* Label *@
+	@***********************************************************************@
+	@if (LabelMode == WvpFieldLabelMode.Stacked)
+	{
+		<label class="wvp-field__label">
+			@if (String.IsNullOrWhiteSpace(LabelText))
+			{
+				<span>&nbsp;</span>
+			}
+			else
+			{
+				@((MarkupString)LabelText)
+			}
+		</label>
+		@* HelpText *@
+		@***********************************************************************@
+		@if (!String.IsNullOrWhiteSpace(LabelHelpText))
+		{
+			<div class="wvp-field__label__help wvp-field__label__help--prepend">@((MarkupString)LabelHelpText)</div>
+		}
+
+	}
+	else if (LabelMode == WvpFieldLabelMode.Horizontal)
+	{
+		<div class="col-sm-@(LabelHorizontalSpan)">
+			<label class="wvp-field__label wvp-field__label--horizontal">
+				@if (String.IsNullOrWhiteSpace(LabelText))
+				{
+					<span>&nbsp;</span>
+				}
+				else
+				{
+					@((MarkupString)LabelText)
+				}
+			</label>
+			@* HelpText *@
+			@***********************************************************************@
+			@if (!String.IsNullOrWhiteSpace(LabelHelpText))
+			{
+				<div class="wvp-field__label__help wvp-field__label__help--horizontal">@((MarkupString)LabelHelpText)</div>
+			}
+		</div>
+	}
+
+
+	@Body
+
+	@* Validation error *@
+	@***********************************************************************@
+	@if (_validationErrors.Count > 0)
+	{
+		<div class="invalid-feedback d-inline">
+			@_validationErrors[0].Value
+		</div>
+	}
+
+</div>

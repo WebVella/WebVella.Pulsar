@@ -1,0 +1,11 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpBase
+@using WebVella.Pulsar.Models
+@using WebVella.Pulsar.Utils
+
+@if (Parent.StoreActivePage == this)
+{
+	<div>
+		@ChildContent
+	</div>
+}

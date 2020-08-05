@@ -1,0 +1,12 @@
+﻿[
+    {
+        "outputFile": "wwwroot/styles.css",
+        "inputFile": "node/index.scss",
+        "minify": { "enabled": false }
+    },
+    {
+        "outputFile": "wwwroot/bootstrap.css",
+        "inputFile": "node/node_modules/bootstrap/scss/bootstrap.scss",
+        "minify": { "enabled": false }
+    }
+]

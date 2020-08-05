@@ -1,0 +1,34 @@
+﻿@page "/Tabs"
+@using Site.Components
+
+<h2>Tabs</h2>
+
+<WvpTabNav class="mb-3">
+	<WvpTabText>
+		<WvpIcon Type="WvpIconType.BsArchive"/> @context.Label
+	</WvpTabText>
+	<ChildContent>
+		<WvpTabPage Label="Tab 1">
+			<h1>The first tab</h1>
+		</WvpTabPage>
+		<WvpTabPage Label="Tab 2">
+			<h1>The second tab</h1>
+		</WvpTabPage>
+		<WvpTabPage Label="Tab 3">
+			<h1>The third tab</h1>
+		</WvpTabPage>
+	</ChildContent>
+</WvpTabNav>
+
+
+<WvpTabNav>
+	<WvpTabPage Label="Tab 1">
+		<h1>The first tab</h1>
+	</WvpTabPage>
+	<WvpTabPage Label="Tab 2">
+		<h1>The second tab</h1>
+	</WvpTabPage>
+	<WvpTabPage Label="Tab 3">
+		<h1>The third tab</h1>
+	</WvpTabPage>
+</WvpTabNav>

@@ -1,0 +1,79 @@
+﻿@page "/Icon"
+@using Site.Components
+
+<h2>Icon</h2>
+
+
+<h4 class="mt-3">Sizes</h4>
+
+<div class="row">
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Extra Small</div>
+			<div class="card-body p-2">
+				<WvpIcon Source="@IconTypeString" Size="WvpSize.ExtraSmall"/>			
+			</div>
+		</div>
+	</div>
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Small</div>
+			<div class="card-body p-2">
+				<WvpIcon Type="@IconType" Size="WvpSize.Small"/>			
+			</div>
+		</div>
+	</div>
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Normal</div>
+			<div class="card-body p-2">
+				<WvpIcon Type="@IconType" Size="WvpSize.Normal"/>			
+			</div>
+		</div>
+	</div>
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Large</div>
+			<div class="card-body p-2">
+				<WvpIcon Type="@IconType" Size="WvpSize.Large"/>			
+			</div>
+		</div>
+	</div>
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Extra Large</div>
+			<div class="card-body p-2">
+				<WvpIcon Type="@IconType" Size="WvpSize.ExtraLarge"/>				
+			</div>
+		</div>
+	</div>
+</div>
+
+<h4 class="mt-3">Options</h4>
+
+<div class="row">
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">Color</div>
+			<div class="card-body p-2">
+				<WvpIcon Type="@IconType" CssClass="wvp-orange"/>			
+			</div>
+		</div>
+	</div>
+	<div class="col-2">
+		<div class="card mb-3">
+			<div class="card-header p-2">SVG Content</div>
+			<div class="card-body p-2">
+				<WvpIcon Source="@SVGContent"/>			
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+@code{
+	private string IconTypeString = "bs-gear";
+	private WvpIconType IconType = WvpIconType.BsGear;
+	private string SVGContent = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M22.528 16.887V1.137c0-.624-.5-1.125-1.125-1.125H6.028c-2.484 0-4.5 2.015-4.5 4.5v15c0 2.484 2.016 4.5 4.5 4.5h15.375c.624 0 1.125-.502 1.125-1.125v-.75c0-.352-.164-.67-.417-.877-.196-.722-.196-2.78 0-3.5.254-.203.418-.522.418-.873zm-15-10.594c0-.155.127-.28.28-.28h9.94c.154 0 .28.125.28.28v.937c0 .155-.126.282-.28.282h-9.94c-.153 0-.28-.127-.28-.282zm0 3c0-.155.127-.28.28-.28h9.94c.154 0 .28.125.28.28v.937c0 .155-.126.282-.28.282h-9.94c-.153 0-.28-.127-.28-.282zm11.878 11.72H6.028c-.83 0-1.5-.672-1.5-1.5 0-.826.675-1.5 1.5-1.5h13.378c-.09.8-.09 2.197 0 3z' fill='currentColor'/></svg>";
+}

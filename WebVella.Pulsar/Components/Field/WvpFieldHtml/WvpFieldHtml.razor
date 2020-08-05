@@ -1,0 +1,89 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpFieldBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+
+@* Field Content here*@
+
+@switch (Mode)
+{
+	@* Display *@
+	@*********************************************@
+	case WvpFieldMode.Display:
+	case WvpFieldMode.Print:
+		{
+			<div class="form-control-plaintext 
+					@Class 
+					@(Size == WvpSize.Small ? "form-control-sm" : "") 
+					@(String.IsNullOrWhiteSpace(_value) ? "form-control-plaintext--empty" : "")
+					@(Mode == WvpFieldMode.Print ? "form-control-plaintext--print" : "")">
+				@if (String.IsNullOrWhiteSpace(_value))
+				{
+					@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+					{
+						<span>&nbsp;</span>
+					}
+					else
+					{
+						<span>@ValueEmptyText</span>
+					}
+				}
+				else
+				{
+					@((MarkupString)_value)
+				}
+			</div>
+		}
+		break;
+
+	@* Form *@
+	@*********************************************@
+	case WvpFieldMode.Form:
+		{
+			<textarea class="form-control @Class @(Size == WvpSize.Small ? "form-control-sm" : "")"
+						 id="@Id"
+						 name="@Name"
+						 @onchange="(e) => _onChangeEvent(e)">@_value</textarea>
+		}
+		break;
+
+	@* Design *@
+	@*********************************************@
+	case WvpFieldMode.InlineEdit:
+		{
+			@if (!_editEnabled)
+			{
+				<div class="input-group @Class @(Size == WvpSize.Small ? "input-group-sm" : "")">
+					<div class="form-control-plaintext @(String.IsNullOrWhiteSpace(_value) ? "form-control-plaintext--empty" : "")"
+						  @onclick="@(e => _showInlineEditClickHandler())">
+						@if (String.IsNullOrWhiteSpace(_value))
+						{
+							@if (String.IsNullOrWhiteSpace(ValueEmptyText))
+							{
+								<span>&nbsp;</span>
+							}
+							else
+							{
+								<span>@ValueEmptyText</span>
+							}
+						}
+						else
+						{
+							@((MarkupString)_value)
+						}
+					</div>
+					<div class="input-group-append">
+						<div class="input-group-text" @onclick="@(e => _showInlineEditClickHandler())">
+							<WvpIcon Type="WvpIconType.BsPencil" Size="WvpSize.Small" />
+						</div>
+					</div>
+				</div>
+			}
+			else
+			{
+				<textarea class="form-control @Class" id="@Id"
+						 @onchange="(e) => _onChangeEvent(e)">@_value</textarea>
+			}
+		}
+		break;
+}

@@ -1,0 +1,82 @@
+﻿@typeparam TItem
+@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+@using Newtonsoft.Json
+
+<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible">
+	<WvpDropdownToggle>
+		<span class="input-group">
+			@if (_value == null || _value.Count == 0)
+			{
+				if (!String.IsNullOrWhiteSpace(Placeholder))
+				{
+					<span class="form-control wvp-grey">@Placeholder</span>
+				}
+				else
+				{
+					<span class="form-control wvp-grey">&nbsp;</span>
+				}
+			}
+			else if (WvpInputMultiSelectField != null)
+			{
+				<span class="form-control">
+					@foreach (var item in _value)
+					{
+						@WvpInputMultiSelectField(item)
+					}
+				</span>
+			}
+			else
+			{
+				<span class="form-control">JsonConvert.SerializeObject(_value)</span>
+			}
+			<span class="input-group-append">
+				<span class="input-group-text"><WvpIcon Type="WvpIconType.BsCaretDownFill" /></span>
+			</span>
+		</span>
+	</WvpDropdownToggle>
+	<WvpDropdownMenu Class="w-100 pt-0">
+		@if (IsFilterable)
+		{
+			<div class="p-1 wvp-bkg-grey-100">
+				<div class="input-group input-group-sm">
+					<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
+					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" />
+				</div>
+			</div>
+		}
+		<div class="wvp-dropdown-wrapper">
+			@foreach (var option in Options)
+			{
+				<WvpDropdownItem OnClick="() => _onSelectHandler(option)">
+					<div class="dropdown-item__icon">
+						@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
+						{
+							<WvpIcon Type="WvpIconType.MdfCheckBox" />
+						}
+						else
+						{
+							<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
+						}
+					</div>
+					<div class="dropdown-item__content">
+						@if (WvpInputMultiSelectOption != null)
+						{
+							@WvpInputMultiSelectOption(option)
+						}
+						else
+						{
+							@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+						}
+					</div>
+				</WvpDropdownItem>
+			}
+			@if (Options.ToList().Count == 0)
+			{
+				<div class="wvp-grey p-1">No options available</div>
+			}
+		</div>
+	</WvpDropdownMenu>
+</WvpDropdown>

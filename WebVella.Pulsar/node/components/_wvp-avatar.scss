@@ -1,0 +1,80 @@
+﻿@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+.wvp-avatar {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: $grey;
+	color: $white;
+	overflow:hidden;
+
+	img{
+		max-width:100%;
+		max-height:100%;
+	}
+
+	&--orange {
+		color:$white;
+		background: $orange;
+	}
+
+	&--purple {
+		color: $white;
+		background: $purple;
+	}
+
+	&--blue {
+		color: $white;
+		background: $blue;
+	}
+
+	&--light-blue {
+		color: $white;
+		background: $light-blue;
+	}
+
+	&--green {
+		color: $white;
+		background: $green;
+	}
+
+	&--red {
+		color: $white;
+		background: $red;
+	}
+
+	&--cyan {
+		color: $white;
+		background: $cyan;
+	}
+
+	&--xs {
+		width: 16px;
+		height: 16px;
+		font-size: $font-size-xs;
+	}
+
+	&--sm {
+		width: 24px;
+		height: 24px;
+		font-size: $font-size-sm;
+	}
+
+	&--lg {
+		width: 42px;
+		height: 42px;
+		font-size: $font-size-lg;
+	}
+
+	&--xl {
+		width: 56px;
+		height: 56px;
+		font-size: $font-size-xl;
+	}
+}

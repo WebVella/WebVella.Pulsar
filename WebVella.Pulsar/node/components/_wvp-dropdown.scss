@@ -1,0 +1,30 @@
+﻿@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../variables";
+
+.wvp-dropdown{
+	.dropdown-item{
+		padding:0.25rem;
+		font-size:$font-size-sm;
+		display:flex;
+		align-items:center;
+		&__icon{
+			flex:0 0 23px;
+			display:flex;
+			align-items:center;
+			justify-content:flex-start;
+		}
+		&__content{
+			flex:1 1 auto;
+		}
+
+	}
+	.dropdown-divider{
+		border-color:$grey-400;
+	}
+
+	&-wrapper{
+		max-height:10rem;
+		overflow-y:auto;
+	}
+}
