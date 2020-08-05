@@ -14,7 +14,7 @@ namespace WebVella.Pulsar.Models
 		public static async Task<byte[]> GetTempFileBytesAsync(this WvpFileInfo fileInfo)
 		{
 			string tmpFilePath = fileInfo.ServerTempPath;
-			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+			if (string.IsNullOrWhiteSpace(tmpFilePath))
 				throw new Exception("ServerTempPath is null or empty");
 			if (!File.Exists(tmpFilePath))
 				throw new Exception($"{tmpFilePath} does not exist.");
@@ -33,7 +33,7 @@ namespace WebVella.Pulsar.Models
 		public static Stream GetTempFileStream(this WvpFileInfo fileInfo)
 		{
 			string tmpFilePath = fileInfo.ServerTempPath;
-			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+			if (string.IsNullOrWhiteSpace(tmpFilePath))
 				throw new Exception("ServerTempPath is null or empty");
 			if (!File.Exists(tmpFilePath))
 				throw new Exception($"{tmpFilePath} does not exist.");
@@ -45,7 +45,7 @@ namespace WebVella.Pulsar.Models
 		public static void DeleteTempFile(this WvpFileInfo fileInfo)
 		{
 			string tmpFilePath = fileInfo.ServerTempPath;
-			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+			if (string.IsNullOrWhiteSpace(tmpFilePath))
 				throw new Exception("ServerTempPath is null or empty");
 			if (!File.Exists(tmpFilePath))
 				throw new Exception($"{tmpFilePath} does not exist.");
