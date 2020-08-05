@@ -1,26 +1,54 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Models
 {
 	public static class WvpFileInfoExtensions
 	{
+		public static async Task<byte[]> GetTempFileBytesAsync(this WvpFileInfo fileInfo)
+		{
+			string tmpFilePath = fileInfo.ServerTempPath;
+			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+				throw new Exception("ServerTempPath is null or empty");
+			if (!File.Exists(tmpFilePath))
+				throw new Exception($"{tmpFilePath} does not exist.");
 
-		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo,Task> UpdateProgressCallback)
+			byte[] result;
+			using (FileStream stream = File.Open(tmpFilePath, FileMode.Open))
+			{
+				result = new byte[stream.Length];
+				await stream.ReadAsync(result, 0, (int)stream.Length);
+			}
+
+			return result;
+		}
+
+
+		public static Stream GetTempFileStream(this WvpFileInfo fileInfo)
+		{
+			string tmpFilePath = fileInfo.ServerTempPath;
+			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+				throw new Exception("ServerTempPath is null or empty");
+			if (!File.Exists(tmpFilePath))
+				throw new Exception($"{tmpFilePath} does not exist.");
+
+			return File.Open(tmpFilePath, FileMode.Open);
+		}
+
+		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
 			string tmpFilePath = Path.GetTempFileName();
 			using (Stream fileStream = File.OpenWrite(tmpFilePath))
 			{
 				using (Stream stream = new MemoryStream())
 				{
-					await WriteToStreamAsync(fileInfo,stream, JSRuntime, elementRef,UpdateProgressCallback);
+					await WriteToStreamAsync(fileInfo, stream, JSRuntime, elementRef, UpdateProgressCallback);
 
 					stream.CopyTo(fileStream);
 				}
@@ -29,7 +57,7 @@ namespace WebVella.Pulsar.Models
 			fileInfo.ServerTempPath = tmpFilePath;
 		}
 
-		private static async Task UpdateProgressAsync(WvpFileInfo fileInfo, long progressValue, long progressMax, string status, Func<WvpFileInfo,Task> UpdateProgressCallback)
+		private static async Task UpdateProgressAsync(WvpFileInfo fileInfo, long progressValue, long progressMax, string status, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
 			fileInfo.ProgressMax = progressMax;
 			fileInfo.ProgressValue = progressValue;
@@ -37,11 +65,11 @@ namespace WebVella.Pulsar.Models
 			await UpdateProgressCallback.Invoke(fileInfo);
 		}
 
-		private static async Task WriteToStreamAsync(WvpFileInfo fileInfo, Stream stream, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo,Task> UpdateProgressCallback)
+		private static async Task WriteToStreamAsync(WvpFileInfo fileInfo, Stream stream, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
 			var MaxMessageLength = 3;
 			int MaxMessageSize = 20 * 1024;//<20KB
-			
+
 			CancellationToken cancellationToken = CancellationToken.None;
 
 			await Task.Run(async () =>
