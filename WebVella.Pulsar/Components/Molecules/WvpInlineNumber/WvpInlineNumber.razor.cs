@@ -9,6 +9,7 @@ using WebVella.Pulsar.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace WebVella.Pulsar.Components
 {
@@ -97,8 +98,8 @@ namespace WebVella.Pulsar.Components
 			}
 
 			_decimalPlaces = 0;
-			if(Step.ToString().IndexOf(".") > 0){
-				_decimalPlaces = Step.ToString().Substring(Step.ToString().IndexOf(".") + 1).Length;
+			if(Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") > 0){
+				_decimalPlaces = Step.ToString(CultureInfo.InvariantCulture).Substring(Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") + 1).Length;
 			}
 
 			await base.OnParametersSetAsync();

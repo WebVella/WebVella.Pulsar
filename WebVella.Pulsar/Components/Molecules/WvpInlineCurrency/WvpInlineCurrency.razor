@@ -21,7 +21,7 @@ else
 		<span class="input-group-prepend">
 			<span class="input-group-text">@Culture.NumberFormat.CurrencySymbol</span>
 		</span>
-		<WvpInputNumber Id="@_inputElementId" Value="@_value" Title="@Title" Placeholder="@Placeholder" OnKeyDown="_onKeyDownHandler" OnInput="_onInputHandler"
+		<WvpInputCurrency Id="@_inputElementId" Value="@_value" Title="@Title" Placeholder="@Placeholder" OnKeyDown="_onKeyDownHandler" OnInput="_onInputHandler"
 							 Step="@Step" Min="@Min" Max="@Max" />
 		<div class="input-group-append">
 			<button type="button" class="btn btn-outline-secondary" @onclick="@(e => _toggleInlineEditClickHandler(false,true))">

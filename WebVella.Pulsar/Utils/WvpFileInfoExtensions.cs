@@ -11,19 +11,19 @@ namespace WebVella.Pulsar.Models
 {
 	public static class WvpFileInfoExtensions
 	{
-		public static async Task<byte[]> GetTempFileBytesAsync(this WvpFileInfo fileInfo)
+		public static byte[] GetTempFileBytes(this WvpFileInfo fileInfo)
 		{
 			string tmpFilePath = fileInfo.ServerTempPath;
-			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+			if (string.IsNullOrWhiteSpace(tmpFilePath))
 				throw new Exception("ServerTempPath is null or empty");
 			if (!File.Exists(tmpFilePath))
 				throw new Exception($"{tmpFilePath} does not exist.");
 
 			byte[] result;
-			using (FileStream stream = File.Open(tmpFilePath, FileMode.Open))
+			using (FileStream stream = File.OpenRead(tmpFilePath))
 			{
 				result = new byte[stream.Length];
-				await stream.ReadAsync(result, 0, (int)stream.Length);
+				stream.Read(result, 0, (int)stream.Length);
 			}
 
 			return result;
@@ -33,12 +33,12 @@ namespace WebVella.Pulsar.Models
 		public static Stream GetTempFileStream(this WvpFileInfo fileInfo)
 		{
 			string tmpFilePath = fileInfo.ServerTempPath;
-			if (!string.IsNullOrWhiteSpace(tmpFilePath))
+			if (string.IsNullOrWhiteSpace(tmpFilePath))
 				throw new Exception("ServerTempPath is null or empty");
 			if (!File.Exists(tmpFilePath))
 				throw new Exception($"{tmpFilePath} does not exist.");
 
-			return File.Open(tmpFilePath, FileMode.Open);
+			return File.OpenRead(tmpFilePath);
 		}
 
 		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)

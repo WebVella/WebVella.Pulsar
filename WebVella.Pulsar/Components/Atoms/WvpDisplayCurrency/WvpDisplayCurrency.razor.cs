@@ -21,7 +21,7 @@ namespace WebVella.Pulsar.Components
 		/// </summary>
 		[Parameter] public decimal? Value { get; set; } = null;
 
-		[Parameter] public int DecimalPlaces { get; set; } = 0;
+		[Parameter] public int DecimalPlaces { get; set; } = 2;
 
 		#endregion
 

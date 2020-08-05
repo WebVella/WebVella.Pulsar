@@ -5,13 +5,13 @@
 
 <input type="file"
 		 @ref="_elementRef"
-		 class="form-control-file @(String.Join(" ",_cssList))"
+		 class="form-control form-control-file @(String.Join(" ",_cssList))"
 		 id="@Id"
 		 accept="@AllowedExtensions"
 		 multiple="@Multiple"
 		 @attributes="@AdditionalAttributes" />
 
-@if (_value.Count > 0 || _errorFiles.Count > 0)
+@if (_value != null && (_value.Count > 0 || _errorFiles.Count > 0))
 {
 	<div class="form-text">
 		@foreach (var file in _errorFiles)

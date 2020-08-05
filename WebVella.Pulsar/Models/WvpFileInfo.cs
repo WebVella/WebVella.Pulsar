@@ -30,6 +30,8 @@ namespace WebVella.Pulsar.Models
 
 		public string Url { get; set; }
 
+		public string Path { get; set; }
+
 		public string ServerTempPath { get; set; }
 
 		public string Status { get; set; } = "";

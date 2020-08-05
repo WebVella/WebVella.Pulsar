@@ -8,6 +8,7 @@ using System;
 using WebVella.Pulsar.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace WebVella.Pulsar.Components
 {
@@ -75,17 +76,18 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(Title))
 				AdditionalAttributes["title"] = Title;
 
+			//Needs to be culture invariant as sometimes pure ToString results in "0,01" which is not the expected "0.01"
 			if (Min != null)
-				AdditionalAttributes["min"] = Min;
+				AdditionalAttributes["min"] = Min?.ToString(CultureInfo.InvariantCulture);
 
 			if (Max != null)
-				AdditionalAttributes["max"] = Max;
+				AdditionalAttributes["max"] = Max?.ToString(CultureInfo.InvariantCulture);
 
-			AdditionalAttributes["step"] = Step;
+			AdditionalAttributes["step"] = Step.ToString(CultureInfo.InvariantCulture);
 
 			_decimalPlaces = 0;
-			if(Step.ToString().IndexOf(".") > 0){
-				_decimalPlaces = Step.ToString().Substring(Step.ToString().IndexOf(".") + 1).Length;
+			if(Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") > 0){
+				_decimalPlaces = Step.ToString(CultureInfo.InvariantCulture).Substring(Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") + 1).Length;
 			}
 
 			if(_value != null)

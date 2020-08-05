@@ -35,7 +35,10 @@ namespace WebVella.Pulsar.Components
 		#region << Callbacks >>
 		public async Task UpdateProgressAsync(WvpFileInfo fileInfo)
 		{
-			var fileIndex = _value.FindIndex(x=> x.Name == fileInfo.Name);
+			var fileIndex = -1;
+
+			if(_value != null)
+				_value.FindIndex(x=> x.Name == fileInfo.Name);
 			if(fileIndex > -1){
 				_value[fileIndex] = fileInfo;
 				await InvokeAsync(StateHasChanged);
@@ -137,7 +140,9 @@ namespace WebVella.Pulsar.Components
 		public async Task NotifyChange(List<WvpFileInfo> files)
 		{
 			var eligibleFiles = new List<WvpFileInfo>();
-			eligibleFiles.AddRange(_value);
+			if(_value != null)
+				eligibleFiles.AddRange(_value);
+
 			_errorFiles = new List<WvpFileInfo>();
 
 
