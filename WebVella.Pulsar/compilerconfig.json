@@ -6,7 +6,7 @@
     },
     {
         "outputFile": "wwwroot/bootstrap.css",
-        "inputFile": "node/node_modules/bootstrap/scss/bootstrap.scss",
+        "inputFile": "node/libs/bootstrap/scss/bootstrap.scss",
         "minify": { "enabled": false }
     }
 ]
