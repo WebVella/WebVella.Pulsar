@@ -18,13 +18,9 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public bool? Value { get; set; } = false;
 
-		[Parameter] public string Label { get; set; } = "checked";
-
-		[Parameter] public bool ShowIcon { get; set; } = false;
-
-		[Parameter] public string LabelUnknown { get; set; } = "unknown";
-
-		[Parameter] public string LabelNotChecked { get; set; } = "not checked";
+		[Parameter] public RenderFragment WvpDisplayCheckboxChecked { get; set; }
+		[Parameter] public RenderFragment WvpDisplayCheckboxNotChecked { get; set; }
+		[Parameter] public RenderFragment WvpDisplayCheckboxUnknown { get; set; }
 
 		#endregion
 
@@ -58,8 +54,9 @@ namespace WebVella.Pulsar.Components
 			}
 		}
 
-		protected override async Task OnInitializedAsync()
+		protected override async Task OnParametersSetAsync()
 		{
+			_cssList = new List<string>();
 			if (!String.IsNullOrWhiteSpace(Class))
 			{
 				_cssList.Add(Class);
@@ -81,12 +78,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-
-			await base.OnInitializedAsync();
-		}
-
-		protected override async Task OnParametersSetAsync()
-		{
 			_value = FieldValueService.InitAsNullBool(Value);
 			await base.OnParametersSetAsync();
 		}

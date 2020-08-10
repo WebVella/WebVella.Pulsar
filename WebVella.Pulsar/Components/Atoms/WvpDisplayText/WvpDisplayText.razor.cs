@@ -35,13 +35,10 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+		protected override async Task OnParametersSetAsync()
 		{
-			await base.OnAfterRenderAsync(firstRender);
-		}
+			_cssList = new List<string>();
 
-		protected override async Task OnInitializedAsync()
-		{
 			if (!String.IsNullOrWhiteSpace(Class))
 			{
 				_cssList.Add(Class);
@@ -63,12 +60,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-
-			await base.OnInitializedAsync();
-		}
-
-		protected override async Task OnParametersSetAsync()
-		{
 			_value = FieldValueService.InitAsString(Value);
 
 			await base.OnParametersSetAsync();

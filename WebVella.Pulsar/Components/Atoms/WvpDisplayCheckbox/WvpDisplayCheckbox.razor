@@ -4,32 +4,34 @@
 @using Microsoft.AspNetCore.Components.Web
 
 <div class="@(String.Join(" ",_cssList))">
-	@if (ShowIcon)
-	{
-		if (_value == null)
-		{
-			<WvpIcon Type="WvpIconType.BsQuestion" />
-		}
-		else if (_value.Value)
-		{
-			<WvpIcon Type="WvpIconType.BsCheck2" />
-		}
-		else
-		{
-			<WvpIcon Type="WvpIconType.BsX" />
-
-		}
-	}
 	@if (_value == null)
 	{
-		@LabelUnknown
+		if(WvpDisplayCheckboxUnknown != null)
+		{
+			@WvpDisplayCheckboxUnknown
+		}
+		else{
+			<span>unknown</span>
+		}
 	}
 	else if (_value.Value)
 	{
-		@Label
+		if(WvpDisplayCheckboxChecked != null)
+		{
+			@WvpDisplayCheckboxChecked
+		}
+		else{
+			<span>selected</span>
+		}
 	}
 	else
 	{
-		@LabelNotChecked
+		if(WvpDisplayCheckboxNotChecked != null)
+		{
+			@WvpDisplayCheckboxNotChecked
+		}
+		else{
+			<span>not selected</span>
+		}
 	}
 </div>

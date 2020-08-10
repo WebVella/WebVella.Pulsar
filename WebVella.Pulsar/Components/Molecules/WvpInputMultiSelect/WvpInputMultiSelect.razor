@@ -7,7 +7,7 @@
 
 <WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible">
 	<WvpDropdownToggle>
-		<span class="input-group">
+		<span class="input-group @(String.Join(" ",_cssList))">
 			@if (_value == null || _value.Count == 0)
 			{
 				if (!String.IsNullOrWhiteSpace(Placeholder))
@@ -40,10 +40,12 @@
 	<WvpDropdownMenu Class="w-100 pt-0">
 		@if (IsFilterable)
 		{
-			<div class="p-1 wvp-bkg-grey-100">
+			<div class="p-1">
 				<div class="input-group input-group-sm">
-					<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
-					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" />
+					<div class="input-group-append">
+						<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
+					</div>
+					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password"/>
 				</div>
 			</div>
 		}

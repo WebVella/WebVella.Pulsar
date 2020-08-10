@@ -26,7 +26,7 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public double? Min { get; set; } = null;
 
-		[Parameter] public double Step { get; set; } = 1;
+		[Parameter] public double Step { get; set; } = 0.01;
 
 		#endregion
 

@@ -8,6 +8,7 @@ using System;
 using WebVella.Pulsar.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace WebVella.Pulsar.Components
 {
@@ -58,21 +59,23 @@ namespace WebVella.Pulsar.Components
 
 		#region << Lifecycle methods >>
 
-		protected override async Task OnInitializedAsync()
+		protected override async Task OnParametersSetAsync()
 		{
+			_cssList = new List<string>();
+
 			if (!String.IsNullOrWhiteSpace(Class))
 				_cssList.Add(Class);
 
 			var sizeSuffix = Size.ToDescriptionString();
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
-				_cssList.Add($"form-control-{sizeSuffix}");
+				_cssList.Add($"input-group-{sizeSuffix}");
 
+			Debug.WriteLine("param111 " + JsonConvert.SerializeObject(Value));
 
-			await base.OnInitializedAsync();
-		}
+			Debug.WriteLine("param222 " + JsonConvert.SerializeObject(_originalValue));
 
-		protected override async Task OnParametersSetAsync()
-		{
+			Debug.WriteLine("param333 " + JsonConvert.SerializeObject(_value));
+
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;

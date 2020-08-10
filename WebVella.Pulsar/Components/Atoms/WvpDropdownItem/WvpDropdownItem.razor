@@ -3,4 +3,4 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<a class="@_class" href="javascript:void(0)" @onclick="_onClickHandler">@ChildContent</a>
+<a class="@_class" href="javascript:void(0)" @onclick="_onClickHandler" @onclick:stopPropagation="true" @onclick:preventDefault="true">@ChildContent</a>

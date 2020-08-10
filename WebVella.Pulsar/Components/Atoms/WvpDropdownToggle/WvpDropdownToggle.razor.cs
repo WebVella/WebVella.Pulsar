@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebVella.Pulsar.Models;
 using WebVella.Pulsar.Utils;
 using System;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace WebVella.Pulsar.Components
 {
@@ -41,7 +42,7 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Ui handlers >>
-		private void _onClickHandler(){
+		private void _onClickHandler(MouseEventArgs ev){
 			Parent.StoreToggleMenu();
 		}
 

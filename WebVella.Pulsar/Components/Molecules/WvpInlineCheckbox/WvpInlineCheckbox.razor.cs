@@ -24,11 +24,11 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public string Label { get; set; } = "checked";
 
-		[Parameter] public bool ShowIcon { get; set; } = false;
-
-		[Parameter] public string LabelUnknown { get; set; } = "unknown";
-
-		[Parameter] public string LabelNotChecked { get; set; } = "not checked";
+		[Parameter] public RenderFragment WvpInlineCheckboxChecked { get; set; }
+		
+		[Parameter] public RenderFragment WvpInlineCheckboxNotChecked { get; set; }
+		
+		[Parameter] public RenderFragment WvpInlineCheckboxUnknown { get; set; }
 
 		#endregion
 

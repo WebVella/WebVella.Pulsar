@@ -72,31 +72,18 @@ namespace WebVella.Pulsar.Components
 			}
 		}
 
-		protected override async Task OnInitializedAsync()
-		{
-			var sizeSuffix = Size.ToDescriptionString();
-			if (Required)
-			{
-				if (!String.IsNullOrWhiteSpace(Class))
-					_cssList.Add(Class);
-
-				if (!String.IsNullOrWhiteSpace(sizeSuffix))
-					_cssList.Add($"form-control-{sizeSuffix}");
-			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(Class))
-					_inputGroupList.Add(Class);
-
-				if (!String.IsNullOrWhiteSpace(sizeSuffix))
-					_inputGroupList.Add($"input-group-{sizeSuffix}");
-			}
-
-			await base.OnInitializedAsync();
-		}
-
 		protected override async Task OnParametersSetAsync()
 		{
+			_cssList = new List<string>();
+	
+			var sizeSuffix = Size.ToDescriptionString();
+			if (!String.IsNullOrWhiteSpace(Class))
+				_cssList.Add(Class);
+
+			if (!String.IsNullOrWhiteSpace(sizeSuffix))
+				_cssList.Add($"form-control-{sizeSuffix}");
+
+
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
@@ -135,7 +122,8 @@ namespace WebVella.Pulsar.Components
 				{
 					newValue = date.WvpBrowserLocalToDate(await JsService.GetBrowserUtcOffsetInMinutes(), TimezoneName);
 				}
-				else{
+				else
+				{
 					await JsService.ClearFlatPickrDateTime(Id);
 				}
 

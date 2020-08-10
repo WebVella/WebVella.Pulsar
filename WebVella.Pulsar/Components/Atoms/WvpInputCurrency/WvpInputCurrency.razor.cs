@@ -50,8 +50,10 @@ namespace WebVella.Pulsar.Components
 
 		#region << Lifecycle methods >>
 
-		protected override async Task OnInitializedAsync()
+		protected override async Task OnParametersSetAsync()
 		{
+			_cssList = new List<string>();
+
 			if (!String.IsNullOrWhiteSpace(Class))
 				_cssList.Add(Class);
 
@@ -59,11 +61,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-			await base.OnInitializedAsync();
-		}
-
-		protected override async Task OnParametersSetAsync()
-		{
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;

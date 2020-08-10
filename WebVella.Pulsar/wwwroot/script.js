@@ -645,10 +645,14 @@ document.addEventListener("mousedown", function (e) {
 	if (!e.target.closest('.modal')) {
 		WebVellaPulsar.executeEventCallbacks("mousedown-non-modal", e);
 	}
+
 	if (WebVellaPulsar.outsideClickListeners) {
+		var hasOutSideListeners = false;
 		for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
-			if (!e.target.closest(elementSelector) && !e.target.closest(".ck-editor")) {
-				WebVellaPulsar.executeOutsideClickEventCallbacks(elementSelector, e);
+			if (WebVellaPulsar.outsideClickListeners.hasOwnProperty(elementSelector)) {
+				if (!e.target.closest(elementSelector) && !e.target.closest(".ck-editor")) {
+					WebVellaPulsar.executeOutsideClickEventCallbacks(elementSelector, e);
+				}
 			}
 		}
 	}

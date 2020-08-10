@@ -37,13 +37,14 @@ namespace WebVella.Pulsar.Components
 		{
 			var fileIndex = -1;
 
-			if(_value != null)
-				_value.FindIndex(x=> x.Name == fileInfo.Name);
-			if(fileIndex > -1){
+			if (_value != null)
+				_value.FindIndex(x => x.Name == fileInfo.Name);
+			if (fileIndex > -1)
+			{
 				_value[fileIndex] = fileInfo;
 				await InvokeAsync(StateHasChanged);
 			}
-			
+
 		}
 
 		#endregion
@@ -83,7 +84,7 @@ namespace WebVella.Pulsar.Components
 			}
 		}
 
-		protected override async Task OnInitializedAsync()
+		protected override async Task OnParametersSetAsync()
 		{
 			if (!String.IsNullOrWhiteSpace(Class))
 				_cssList.Add(Class);
@@ -92,12 +93,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-
-			await base.OnInitializedAsync();
-		}
-
-		protected override async Task OnParametersSetAsync()
-		{
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
@@ -139,57 +134,101 @@ namespace WebVella.Pulsar.Components
 		[JSInvokable]
 		public async Task NotifyChange(List<WvpFileInfo> files)
 		{
-			var eligibleFiles = new List<WvpFileInfo>();
-			if(_value != null)
-				eligibleFiles.AddRange(_value);
-
 			_errorFiles = new List<WvpFileInfo>();
 
-
-			foreach (var file in files)
+			//Multi File upload
+			if (Multiple)
 			{
-				if (file == null)
-				{
-					file.Status = "File not found";
-					_errorFiles.Add(file);
-					await InvokeAsync(StateHasChanged);
-					return;
-				}
-				else if (file.Size > MaxFileSize)
-				{
-					file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
-					_errorFiles.Add(file);
-					await InvokeAsync(StateHasChanged);
-					return;
-				}
-				else if (eligibleFiles.Any(x => x.Name == file.Name))
-				{
-					// If file with the same name is uploaded again, exchange
-					file.Status = "Loading...";
-					eligibleFiles = eligibleFiles.FindAll(x=> x.Name != file.Name).ToList();
-				}
-				else
-				{
-					file.Status = "Loading...";
-				}
-				
-				await file.WriteTempFileAsync(JSRuntime,_elementRef,UpdateProgressAsync);
+				var eligibleFiles = new List<WvpFileInfo>();
+				if (_value != null)
+					eligibleFiles.AddRange(_value);
 
-				eligibleFiles.Add(new WvpFileInfo
+				foreach (var file in files)
 				{
-					ContentType = file.ContentType,
-					Id = file.Id,
-					LastModified = file.LastModified,
-					Name = file.Name,
-					Url = file.Url,
-					Size = file.Size,
-					ServerTempPath = file.ServerTempPath
-				});
+					if (file == null)
+					{
+						file.Status = "File not found";
+						_errorFiles.Add(file);
+						await InvokeAsync(StateHasChanged);
+						return;
+					}
+					else if (file.Size > MaxFileSize)
+					{
+						file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
+						_errorFiles.Add(file);
+						await InvokeAsync(StateHasChanged);
+						return;
+					}
+					else if (eligibleFiles.Any(x => x.Name == file.Name))
+					{
+						// If file with the same name is uploaded again, exchange
+						file.Status = "Loading...";
+						eligibleFiles = eligibleFiles.FindAll(x => x.Name != file.Name).ToList();
+					}
+					else
+					{
+						file.Status = "Loading...";
+					}
+
+					await file.WriteTempFileAsync(JSRuntime, _elementRef, UpdateProgressAsync);
+
+					eligibleFiles.Add(new WvpFileInfo
+					{
+						ContentType = file.ContentType,
+						Id = file.Id,
+						LastModified = file.LastModified,
+						Name = file.Name,
+						Url = file.Url,
+						Size = file.Size,
+						ServerTempPath = file.ServerTempPath
+					});
+				}
+				_value = eligibleFiles;
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 			}
-			_value = eligibleFiles;
-			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			//Single File upload
+			else
+			{
+				if (files.Count > 0)
+				{
+					var file = files[0];
 
+					if (file == null)
+					{
+						file.Status = "File not found";
+						_errorFiles.Add(file);
+						await InvokeAsync(StateHasChanged);
+						return;
+					}
+					else if (file.Size > MaxFileSize)
+					{
+						file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
+						_errorFiles.Add(file);
+						await InvokeAsync(StateHasChanged);
+						return;
+					}
+					else
+					{
+						file.Status = "Loading...";
+					}
+
+					await file.WriteTempFileAsync(JSRuntime, _elementRef, UpdateProgressAsync);
+					_value = new List<WvpFileInfo>();
+					_value.Add(new WvpFileInfo
+					{
+						ContentType = file.ContentType,
+						Id = file.Id,
+						LastModified = file.LastModified,
+						Name = file.Name,
+						Url = file.Url,
+						Size = file.Size,
+						ServerTempPath = file.ServerTempPath
+					});
+					await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+					await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+				}
+			}
 			await InvokeAsync(StateHasChanged);
 		}
 

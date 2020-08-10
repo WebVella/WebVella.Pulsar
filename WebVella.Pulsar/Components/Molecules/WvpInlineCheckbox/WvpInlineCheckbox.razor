@@ -7,8 +7,11 @@
 {
 	<div class="input-group input-group--inline-edit input-group--embed-after @(String.Join(" ",_cssList))"
 		  id="@Id" @ondblclick="() => _toggleInlineEditClickHandler(true,false)">
-		<WvpDisplayCheckbox Value="@_value" ValueEmptyText="@ValueEmptyText" Title="@Title" Label="@Label" ShowIcon="@ShowIcon"
-								  LabelNotChecked="@LabelNotChecked" LabelUnknown="@LabelUnknown" Class="form-control" />
+		<WvpDisplayCheckbox Value="@_value" ValueEmptyText="@ValueEmptyText" Title="@Title" Class="form-control">
+			<WvpDisplayCheckboxChecked>@WvpInlineCheckboxChecked</WvpDisplayCheckboxChecked>
+			<WvpDisplayCheckboxNotChecked>@WvpInlineCheckboxNotChecked</WvpDisplayCheckboxNotChecked>
+			<WvpDisplayCheckboxUnknown>@WvpInlineCheckboxUnknown</WvpDisplayCheckboxUnknown>
+		</WvpDisplayCheckbox>
 		<div class="input-group-append">
 			<button type="button" class="btn btn-outline-secondary" @onclick="() => _toggleInlineEditClickHandler(true,false)">
 				<WvpIcon Type="WvpIconType.BsPencil" />

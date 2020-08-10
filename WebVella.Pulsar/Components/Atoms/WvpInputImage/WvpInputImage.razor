@@ -3,33 +3,34 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<input type="file"
-		 @ref="_elementRef"
-		 class="form-control form-control-file @(String.Join(" ",_cssList))"
-		 id="@Id"
-		 accept="@AllowedExtensions"
-		 @attributes="@AdditionalAttributes" />
+<div class="form-control form-control-file @(String.Join(" ",_cssList))">
+	<input type="file"
+			 @ref="_elementRef"
+			 id="@Id"
+			 accept="@AllowedExtensions"
+			 @attributes="@AdditionalAttributes" />
 
-@if (_value != null)
-{
-	<div class="form-text">
-		<div class="wvp-filerow">
-			<div class="wvp-filerow__info">
-				<div class="wvp-filerow__info__icon">
-					<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+	@if (_value != null)
+	{
+		<div class="form-text">
+			<div class="wvp-filerow">
+				<div class="wvp-filerow__info">
+					<div class="wvp-filerow__info__icon">
+						<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+					</div>
+					<div class="wvp-filerow__info__name">
+						@_value.Name
+						<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(_value.Size / 1024))})")</span>
+					</div>
 				</div>
-				<div class="wvp-filerow__info__name">
-					@_value.Name
-					<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(_value.Size / 1024))})")</span>
+				<div class="wvp-filerow__aside">
+					@if (!String.IsNullOrWhiteSpace(_value.Status))
+					{
+						<div class="wvp-filerow__aside__status">@_value.Status</div>
+					}
+					<a class="wvp-filerow__aside__remove" href="javascript:void(0)" @onclick="()=> _removeFile()"><WvpIcon Type="WvpIconType.BsX" /></a>
 				</div>
-			</div>
-			<div class="wvp-filerow__aside">
-				@if (!String.IsNullOrWhiteSpace(_value.Status))
-				{
-					<div class="wvp-filerow__aside__status">@_value.Status</div>
-				}
-				<a class="wvp-filerow__aside__remove" href="javascript:void(0)" @onclick="()=> _removeFile()"><WvpIcon Type="WvpIconType.BsX" /></a>
 			</div>
 		</div>
-	</div>
-}
+	}
+</div>

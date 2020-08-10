@@ -3,60 +3,62 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<input type="file"
-		 @ref="_elementRef"
-		 class="form-control form-control-file @(String.Join(" ",_cssList))"
-		 id="@Id"
-		 accept="@AllowedExtensions"
-		 multiple="@Multiple"
-		 @attributes="@AdditionalAttributes" />
+<div class="form-control form-control-file @(String.Join(" ",_cssList))">
+	<input type="file"
+			 @ref="_elementRef"
+			 id="@Id"
+			 accept="@AllowedExtensions"
+			 multiple="@Multiple"
+			 @attributes="@AdditionalAttributes" />
 
-@if (_value != null && (_value.Count > 0 || _errorFiles.Count > 0))
-{
-	<div class="form-text">
-		@foreach (var file in _errorFiles)
-		{
-			<div class="wvp-filerow">
-				<div class="wvp-filerow__info">
-					<div class="wvp-filerow__info__icon">
-						<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+	@if (_value != null && (_value.Count > 0 || _errorFiles.Count > 0))
+	{
+		<div class="form-text">
+			@foreach (var file in _errorFiles)
+			{
+				<div class="wvp-filerow">
+					<div class="wvp-filerow__info">
+						<div class="wvp-filerow__info__icon">
+							<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+						</div>
+						<div class="wvp-filerow__info__name">
+							@file.Name
+							<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
+						</div>
 					</div>
-					<div class="wvp-filerow__info__name">
-						@file.Name
-						<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
-					</div>
-				</div>
-				<div class="wvp-filerow__aside">
-					@if (!String.IsNullOrWhiteSpace(file.Status))
-					{
-						<div class="wvp-filerow__aside__status wvp-filerow__aside__status--error">@file.Status</div>
-					}
-					else{
-						<div class="wvp-filerow__aside__status wvp-filerow__aside__status--error">upload error</div>
-					}
-				</div>
-			</div>
-		}
-		@foreach (var file in _value)
-		{
-			<div class="wvp-filerow">
-				<div class="wvp-filerow__info">
-					<div class="wvp-filerow__info__icon">
-						<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
-					</div>
-					<div class="wvp-filerow__info__name">
-						@file.Name
-						<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
+					<div class="wvp-filerow__aside">
+						@if (!String.IsNullOrWhiteSpace(file.Status))
+						{
+							<div class="wvp-filerow__aside__status wvp-filerow__aside__status--error">@file.Status</div>
+						}
+						else
+						{
+							<div class="wvp-filerow__aside__status wvp-filerow__aside__status--error">upload error</div>
+						}
 					</div>
 				</div>
-				<div class="wvp-filerow__aside">
-					@if (!String.IsNullOrWhiteSpace(file.Status))
-					{
-						<div class="wvp-filerow__aside__status">@file.Status</div>
-					}
-					<a class="wvp-filerow__aside__remove" href="javascript:void(0)" @onclick="()=> _removeFile(file)"><WvpIcon Type="WvpIconType.BsX" /></a>
+			}
+			@foreach (var file in _value)
+			{
+				<div class="wvp-filerow">
+					<div class="wvp-filerow__info">
+						<div class="wvp-filerow__info__icon">
+							<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
+						</div>
+						<div class="wvp-filerow__info__name">
+							@file.Name
+							<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(file.Size / 1024))})")</span>
+						</div>
+					</div>
+					<div class="wvp-filerow__aside">
+						@if (!String.IsNullOrWhiteSpace(file.Status))
+						{
+							<div class="wvp-filerow__aside__status">@file.Status</div>
+						}
+						<a class="wvp-filerow__aside__remove" href="javascript:void(0)" @onclick="()=> _removeFile(file)"><WvpIcon Type="WvpIconType.BsX" /></a>
+					</div>
 				</div>
-			</div>
-		}
-	</div>
-}
+			}
+		</div>
+	}
+</div>

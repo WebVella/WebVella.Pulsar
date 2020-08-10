@@ -21,7 +21,7 @@ namespace WebVella.Pulsar.Components
 		/// </summary>
 		[Parameter] public decimal? Value { get; set; } = null;
 
-		[Parameter] public int DecimalPlaces { get; set; } = 0;
+		[Parameter] public int DecimalPlaces { get; set; } = 2;
 
 		#endregion
 
@@ -37,13 +37,10 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			await base.OnAfterRenderAsync(firstRender);
-		}
 
-		protected override async Task OnInitializedAsync()
+		protected override async Task OnParametersSetAsync()
 		{
+			_cssList = new List<string>();
 			if (!String.IsNullOrWhiteSpace(Class))
 			{
 				_cssList.Add(Class);
@@ -57,20 +54,14 @@ namespace WebVella.Pulsar.Components
 			else
 			{
 				_cssList.Add("form-control-plaintext");
-					if (Value == null)
-						_cssList.Add("form-control-plaintext--empty");
+				if (Value == null)
+					_cssList.Add("form-control-plaintext--empty");
 			}
 
 			var sizeSuffix = Size.ToDescriptionString();
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-
-			await base.OnInitializedAsync();
-		}
-
-		protected override async Task OnParametersSetAsync()
-		{
 			_value = null;
 			if (Value != null)
 			{

@@ -19,8 +19,8 @@
 	}
 	else
 	{
-
-		<div class="wvp-filerow">
+		<img src="@_value.Url" class="img-fluid" alt="@_value.Name">
+		@*<div class="wvp-filerow">
 			<div class="wvp-filerow__info">
 				<div class="wvp-filerow__info__icon">
 					<WvpIcon Type="WvpIconType.BsFileEarmarkArrowUp" />
@@ -37,7 +37,7 @@
 					<span class="wvp-filerow__info__name__size">@($"({WebVella.Pulsar.Utils.Converters.GetSizeStringFromSize((int)(_value.Size / 1024))})")</span>
 				</div>
 			</div>
-		</div>
+		</div>*@
 
 	}
 </div>

@@ -2255,6 +2255,9 @@ span.flatpickr-weekday {
 .wvp-field .form-control-check-list .form-check {
   padding: 0.375rem 20px 0.375rem 0; }
 
+.wvp-field .form-control-file {
+  height: auto; }
+
 .wvp-filerow {
   display: flex;
   align-items: center;

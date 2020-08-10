@@ -3,6 +3,6 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<div class="@Class" data-toggle="dropdown" @onclick="_onClickHandler" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+<div class="@Class" @onclick="@((e) => _onClickHandler(e))" @onclick:stopPropagation="true" @onclick:preventDefault="true">
 	@ChildContent
 </div>
