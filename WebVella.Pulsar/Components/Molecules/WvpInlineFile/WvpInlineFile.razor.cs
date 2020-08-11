@@ -132,6 +132,7 @@ namespace WebVella.Pulsar.Components
 				scheduledEnableEditChange = false;
 				scheduledApplyChange = false;
 			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onInputHandler(ChangeEventArgs e)
@@ -146,6 +147,7 @@ namespace WebVella.Pulsar.Components
 				//Apply value only if a change is not scheduled
 				_value = (List<WvpFileInfo>)e.Value;
 			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _toggleInlineEditClickHandler(bool enableEdit, bool applyChange)

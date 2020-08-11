@@ -70,12 +70,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"input-group-{sizeSuffix}");
 
-			Debug.WriteLine("param111 " + JsonConvert.SerializeObject(Value));
-
-			Debug.WriteLine("param222 " + JsonConvert.SerializeObject(_originalValue));
-
-			Debug.WriteLine("param333 " + JsonConvert.SerializeObject(_value));
-
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
@@ -106,14 +100,16 @@ namespace WebVella.Pulsar.Components
 				_filter = "";
 				await JsService.FocusElementBySelector($"#{_filterElementId}");
 				await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
+				await InvokeAsync(StateHasChanged);
 			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onFilterInputHandler(ChangeEventArgs e)
 		{
 			_filter = e.Value?.ToString();
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
-
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onSelectHandler(TItem item)
@@ -123,8 +119,10 @@ namespace WebVella.Pulsar.Components
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 
 			_isDropdownVisible = false;
-			await Task.Delay(5);
+			await InvokeAsync(StateHasChanged);
+			await Task.Delay(1);
 			_isDropdownVisible = null;
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

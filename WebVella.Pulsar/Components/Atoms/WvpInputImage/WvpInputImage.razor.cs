@@ -120,6 +120,7 @@ namespace WebVella.Pulsar.Components
 			_value = null;
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 

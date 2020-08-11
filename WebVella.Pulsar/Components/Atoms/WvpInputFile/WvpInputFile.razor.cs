@@ -127,6 +127,7 @@ namespace WebVella.Pulsar.Components
 			_value.Remove(file);
 			ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 

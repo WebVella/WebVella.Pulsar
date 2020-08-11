@@ -28,7 +28,7 @@
 
 	protected string svgHtml = "";
 
-	protected override void OnInitialized()
+	protected override void OnParametersSet()
 	{
 		if (Size != WvpSize.Normal)
 		{
@@ -74,6 +74,6 @@
 			svgHtml += IconTypeService.GetSVGContentForIconType(Type);
 			svgHtml += "</svg>";
 		}
-		base.OnInitialized();
+		base.OnParametersSet();
 	}
 }

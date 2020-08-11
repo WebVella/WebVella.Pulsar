@@ -202,6 +202,7 @@ namespace WebVella.Pulsar.Components
 			{
 				UpdateActiveFilterIndex(++activeItemIndex);
 			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onInputHandler(ChangeEventArgs args)
@@ -218,6 +219,7 @@ namespace WebVella.Pulsar.Components
 			_preventNextOnInputDropdownVisibilityCheck = false;
 
 			await OnInput.InvokeAsync(args);
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onValueChangedHandler(ChangeEventArgs args)
@@ -225,6 +227,7 @@ namespace WebVella.Pulsar.Components
 			_isDropdownVisible = false;
 			await ValueChanged.InvokeAsync(args);
 			await OnInput.InvokeAsync(args);
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _itemSelected(string itemValue)
@@ -237,6 +240,7 @@ namespace WebVella.Pulsar.Components
 
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

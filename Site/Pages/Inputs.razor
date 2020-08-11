@@ -765,7 +765,7 @@
 	{
 		selectData = FilterResults(acFullList, args.Value?.ToString()).Take(8).ToList();
 		//textValueInput = args.Value.ToString();
-		//await InvokeAsync(StateHasChanged);
+		await InvokeAsync(StateHasChanged);
 	}
 
 	protected override void OnInitialized()

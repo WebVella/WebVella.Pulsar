@@ -167,6 +167,7 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onValueChanged(ChangeEventArgs args){
 			_value = FieldValueService.InitAsString(args.Value?.ToString());
+			await InvokeAsync(StateHasChanged);
 	
 		}
 

@@ -124,16 +124,18 @@ namespace WebVella.Pulsar.Components
 					await file.WriteToStreamAsync(stream);
 
 					stream.CopyTo(fileStream);
-				}				
+				}
 			}
 
 			file.ServerTempPath = tmpFilePath;
+			await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 
 		#region << UI Handlers >>
 
-		private void _browseBtnClickHandler(){
+		private void _browseBtnClickHandler()
+		{
 			new JsService(JSRuntime).SimulateClick(_inputRef);
 		}
 
@@ -142,7 +144,9 @@ namespace WebVella.Pulsar.Components
 			_value.Remove(value);
 			if (Mode == WvpFieldMode.Form)
 				ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			
+
+			await InvokeAsync(StateHasChanged);
+
 		}
 
 		private void _toggleInlineEditClickHandler(bool enableEdit, bool applyChange)
@@ -215,9 +219,9 @@ namespace WebVella.Pulsar.Components
 				WriteTempFileAsync(file);
 			}
 
-			if(SingleFileOnly)
+			if (SingleFileOnly)
 				_value = new List<WvpFileInfo>();
-			
+
 			_value.AddRange(files);
 
 			if (Mode == WvpFieldMode.Form)
@@ -236,7 +240,7 @@ namespace WebVella.Pulsar.Components
 			}
 		}
 
-		
+
 		[JSInvokable]
 		public async Task OnEscapeKey()
 		{
@@ -283,7 +287,7 @@ namespace WebVella.Pulsar.Components
 						}
 
 						File.Delete(fileInfo.ServerTempPath);
-						fileInfo.ServerTempPath = string.Empty;						
+						fileInfo.ServerTempPath = string.Empty;
 					}
 					else
 					{

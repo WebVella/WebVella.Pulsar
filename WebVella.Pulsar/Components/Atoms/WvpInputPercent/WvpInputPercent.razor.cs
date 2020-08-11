@@ -120,6 +120,7 @@ namespace WebVella.Pulsar.Components
 
 			await OnKeyDown.InvokeAsync(e);
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onMouseDownHandler(MouseEventArgs e)
@@ -131,6 +132,7 @@ namespace WebVella.Pulsar.Components
 				_value = _percent.Value / 100;
 
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onBlurHandler(FocusEventArgs e)
@@ -138,6 +140,7 @@ namespace WebVella.Pulsar.Components
 
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

@@ -114,6 +114,7 @@ namespace WebVella.Pulsar.Components
 
 			await OnKeyDown.InvokeAsync(e);
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onMouseDownHandler(MouseEventArgs e)
@@ -121,12 +122,14 @@ namespace WebVella.Pulsar.Components
 			//Needs to be keydown as keypress is produced only on printable chars (does not work on backspace
 			await Task.Delay(5);
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onBlurHandler(FocusEventArgs e)
 		{
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

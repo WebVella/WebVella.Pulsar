@@ -108,6 +108,7 @@ namespace WebVella.Pulsar.Components
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await JsService.ClearFlatPickrDateTime(Id);
+			await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 

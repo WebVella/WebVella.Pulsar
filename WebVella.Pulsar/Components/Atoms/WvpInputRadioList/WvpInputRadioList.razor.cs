@@ -83,6 +83,7 @@ namespace WebVella.Pulsar.Components
 		private async Task _onInputHandler(ChangeEventArgs e)
 		{
 			await OnInput.InvokeAsync(e);
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onSelectHandler(TItem item)
@@ -91,6 +92,7 @@ namespace WebVella.Pulsar.Components
 
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

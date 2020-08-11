@@ -118,11 +118,14 @@ namespace WebVella.Pulsar.Components
 		private async Task _onInputHandler(ChangeEventArgs e)
 		{
 			await OnInput.InvokeAsync(e);
+
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onValueChangeHandler(ChangeEventArgs e)
 		{
 			_value = (TItem)e.Value;
+			await InvokeAsync(StateHasChanged);
 		}
 
 

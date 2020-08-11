@@ -138,6 +138,7 @@ namespace WebVella.Pulsar.Components
 					ValueChanged.InvokeAsync(e);
 				}
 			}
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onLoadMoreAsync()
@@ -146,7 +147,8 @@ namespace WebVella.Pulsar.Components
 				await LoadMoreResults.InvokeAsync(new ChangeEventArgs() { Value= _value });
 
 			_onInputChangeKeypressHandlerAsync(new ChangeEventArgs() { Value = _value });
-			StateHasChanged();
+
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private void _onSelectOption(string selectedOption)
