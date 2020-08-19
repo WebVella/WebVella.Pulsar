@@ -4008,5 +4008,14 @@ namespace WebVella.Pulsar.Models
 		MdfZoomOutMap,
 
 		#endregion
+
+		#region << Other >>
+		
+		[Description("linkedin")]
+		LinkedIn,
+		[Description("twitter")]
+		Twitter,
+
+		#endregion
 	}
 }
