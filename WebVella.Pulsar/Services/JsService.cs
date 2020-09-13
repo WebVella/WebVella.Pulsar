@@ -148,6 +148,12 @@ namespace WebVella.Pulsar.Services
 			return await JSRuntime.InvokeAsync<List<string>>("WebVellaPulsar.getSelectedValues", elRef);
 		}
 
+		public async ValueTask<bool> ReloadPage()
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.reloadPage");
+		}
+
 		public async ValueTask<bool> RemoveBodyClass(string className)
 		{
 			return await JSRuntime.InvokeAsync<bool>(

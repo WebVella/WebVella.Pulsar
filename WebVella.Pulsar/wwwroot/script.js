@@ -438,6 +438,10 @@
 			return base64;
 		})
 	},
+	reloadPage: function(){
+		window.location.reload();	
+		return true;
+	},
 	removeBackdrop: function () {
 		const bdEl = document.querySelector(".modal-backdrop");
 		if (bdEl) {

@@ -2199,7 +2199,7 @@ span.flatpickr-weekday {
   .wvp-field__label + .form-text {
     color: #9e9e9e;
     font-size: 0.875rem;
-    margin-top: -0.5rem;
+    margin-top: -0.25rem;
     margin-bottom: 0.5rem; }
 
 .wvp-field .form-control-plaintext {
@@ -2444,7 +2444,7 @@ span.flatpickr-weekday {
   position: relative; }
   .wvp-icon svg {
     position: absolute;
-    top: 0;
+    top: -0.085rem;
     left: 0;
     width: 100%;
     height: 100%;
