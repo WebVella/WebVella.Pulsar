@@ -12,7 +12,7 @@
 		font-weight: bold;
 		font-size: $font-size-sm;
 
-		& + .form-text{
+		& + .form-text {
 			color: $grey;
 			font-size: $font-size-sm;
 			margin-top: -1 * map-get($spacers,1);
@@ -45,7 +45,7 @@
 	}
 
 	&--inline-edit {
-		.form-control-plaintext{
+		.form-control-plaintext {
 			position: relative;
 			cursor: pointer;
 			background-color: $orange-50;
@@ -97,9 +97,24 @@
 		padding: $input-padding-y 20px $input-padding-y 0;
 	}
 
-	.form-control-file{
-		height:auto;
+	.form-control-file {
+		height: auto;
 	}
 
+	.form-control-datacsv {
+		.card-header {
+			padding: map-get($spacers,1);
+			padding-bottom: 0;
 
+			.card-header-tabs {
+				margin-right: 0;
+				margin-left: 0;
+				margin-bottom: -1px;
+
+				.nav-link {
+					padding: map-get($spacers,1) map-get($spacers,2);
+				}
+			}
+		}
+	}
 }

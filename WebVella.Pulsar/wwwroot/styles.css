@@ -33,6 +33,9 @@
 .form-control-check-list:not(.form-control) {
   border: 1px solid transparent; }
 
+textarea.form-control {
+  height: 120px; }
+
 .input-group .input-group-append .form-control {
   border-left: none;
   border-radius: 0 0.25rem 0.25rem 0; }
@@ -2257,6 +2260,16 @@ span.flatpickr-weekday {
 
 .wvp-field .form-control-file {
   height: auto; }
+
+.wvp-field .form-control-datacsv .card-header {
+  padding: 0.25rem;
+  padding-bottom: 0; }
+  .wvp-field .form-control-datacsv .card-header .card-header-tabs {
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: -1px; }
+    .wvp-field .form-control-datacsv .card-header .card-header-tabs .nav-link {
+      padding: 0.25rem 0.5rem; }
 
 .wvp-filerow {
   display: flex;

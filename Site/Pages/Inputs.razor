@@ -7,6 +7,26 @@
 <h2>Inputs</h2>
 
 <div class="row">
+	@*DataCSV*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">DataCSV</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputDataCSV Value="@dataCSVValue" TItem="DataCsvRow" Rows="@dataCSVRows" Delimiter="@dataDelimiter" HasHeader="@dataHasHeader"
+						HasHeaderChanged="@_onDataHasHeaderChanged" ValueChanged="@_onDataCsvValueChanged" DelimiterChanged="_onDataDelimiterChanged" RowsChanged="_onDataRowsChanged"/>
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @dataCSVValueChanges</div>
+					<div>DelimiterChanged: @dataDelimiterChanges</div>
+					<div>HasHeaderChanged: @dataHasHeaderChanges</div>
+					<div>Rows count: @dataCSVRowsChanged.Count</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
 	@*Text*@
 	<div class="col-4">
 		<div class="card mb-3">
@@ -749,6 +769,73 @@
 
 	}
 
+	/*DataCsv*/
+	public class DataCsvRow
+	{
+		[CsvHelper.Configuration.Attributes.Index(0)]
+		public string FirstName { get; set; }
+		[CsvHelper.Configuration.Attributes.Index(1)]
+		public string LastName { get; set; }
+	}
+
+	public string dataCSVValue = "City,Name\ntest,Boz";
+	//public string dataCSVValue = "";
+	public string dataCSVValueChanges = "";
+
+	public WvpDelimiterType dataDelimiter = WvpDelimiterType.COMMA;
+	public WvpDelimiterType dataDelimiterChanges = WvpDelimiterType.COMMA;
+
+	public bool dataHasHeader = false;
+	public bool dataHasHeaderChanges = false;
+
+	//public List<DataCsvRow> dataCSVRows = new List<DataCsvRow>{
+	//	new DataCsvRow{
+	//		FirstName = "Boz",
+	//		LastName = "Zashev"
+	//	},
+	//	new DataCsvRow{
+	//		FirstName = "Rumen",
+	//		LastName = "Yankov"
+	//	}
+	//};
+	public List<DataCsvRow> dataCSVRows = new List<DataCsvRow>();
+	//public List<DataCsvRow> dataCSVRowsChanged = new List<DataCsvRow>{
+	//	new DataCsvRow{
+	//		FirstName = "Boz",
+	//		LastName = "Zashev"
+	//	},
+	//	new DataCsvRow{
+	//		FirstName = "Rumen",
+	//		LastName = "Yankov"
+	//	}
+	//};
+	public List<DataCsvRow> dataCSVRowsChanged = new List<DataCsvRow>();
+
+	private void _onDataCsvValueChanged(ChangeEventArgs e)
+	{
+		dataCSVValueChanges = e.Value?.ToString();
+		dataCSVValue = e.Value?.ToString();
+	}
+
+	private void _onDataDelimiterChanged(ChangeEventArgs e)
+	{
+		dataDelimiterChanges = (WvpDelimiterType)e.Value;
+		dataDelimiter = (WvpDelimiterType)e.Value;
+	}
+
+	private void _onDataHasHeaderChanged(ChangeEventArgs e)
+	{
+		dataHasHeaderChanges = (bool)e.Value;
+		dataHasHeader = (bool)e.Value;
+	}
+
+	private void _onDataRowsChanged(ChangeEventArgs e)
+	{
+		dataCSVRowsChanged = (List<DataCsvRow>)e.Value;
+		dataCSVRows = (List<DataCsvRow>)e.Value;
+	}
+
+
 	internal IEnumerable<MySelectOption> FilterResults(IEnumerable<MySelectOption> data, string search)
 	{
 		if (String.IsNullOrWhiteSpace(search))
@@ -779,8 +866,6 @@
 		selectData = acFullList.Take(10).ToList();
 		base.OnInitialized();
 	}
-
-
 
 	private void _onTextValueChanged(ChangeEventArgs e)
 	{

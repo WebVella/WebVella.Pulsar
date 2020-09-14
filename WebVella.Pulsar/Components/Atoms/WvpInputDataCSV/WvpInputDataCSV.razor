@@ -1,0 +1,73 @@
+﻿@typeparam TItem
+@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+@using WebVella.Pulsar.Utils
+@using System.Reflection;
+
+<div class="card @(String.Join(" ",_cssList))">
+	<div class="card-header">
+		<div class="nav nav-tabs card-header-tabs">
+			<div class="nav-item">
+				<a class="nav-link @(_activeTab == "input" ? "active" : "")" href="javascript:void(0)" @onclick="@(() => _tabClickHandler("input"))">
+					CSV Input
+				</a>
+			</div>
+			<div class="nav-item">
+				<a class="nav-link @(_activeTab == "preview" ? "active" : "")" href="javascript:void(0)" @onclick="@(() => _tabClickHandler("preview"))">
+					Preview
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="card-body p-2">
+		@if (_activeTab == "input")
+		{
+			<WvpFormGroup Class="mb-2">
+				<WvpFormLabel>CSV Data</WvpFormLabel>
+				<div class="row row-cols-2">
+					<div class="col">
+						<WvpFormGroup Class="mb-2">
+							<WvpInputCheckbox Value="@HasHeader" ValueChanged="@_onHasHeaderChangeHandler" Size="WvpSize.Small" Label="has header row"></WvpInputCheckbox>
+						</WvpFormGroup>
+					</div>
+					<div class="col">
+						<WvpFormGroup Class="mb-2">
+							<WvpInputSelect Value="@_delimiter" ValueChanged="@_onDelimterChangeHandler" Size="WvpSize.Small" Options="_delimiterTypes" TItem="WvpDelimiterType">
+								<WvpInputSelectField>@(context.ToDescriptionString())</WvpInputSelectField>
+								<WvpInputSelectOption>@(context.ToDescriptionString())</WvpInputSelectOption>
+							</WvpInputSelect>
+						</WvpFormGroup>
+					</div>
+				</div>
+				<WvpInputTextarea Value="@_value" ValueChanged="@_onValueChangeHandler" Size="Size" Placeholder="@Placeholder"></WvpInputTextarea>
+			</WvpFormGroup>
+		}
+		else
+		{
+			<table class="table table-bordered table-sm mb-0">
+				<tbody>
+					@{
+						var index = 0;
+					}
+					@foreach (TItem row in _rows)
+					{
+						if(_hasHeader && index == 0)
+						{
+							index++;
+							continue;
+						}
+						<tr>
+							@foreach (PropertyInfo property in typeof(TItem).GetProperties())
+							{
+								<td>@property.GetValue(row)</td>
+							}
+						</tr>
+						index++;
+					}
+				</tbody>
+			</table>
+		}
+	</div>
+</div>
