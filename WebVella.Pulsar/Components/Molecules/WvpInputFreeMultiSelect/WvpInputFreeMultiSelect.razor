@@ -1,0 +1,14 @@
+﻿@namespace WebVella.Pulsar.Components
+@inherits WvpInputBase
+@using WebVella.Pulsar.Models
+@using Microsoft.AspNetCore.Components.Web
+@using Newtonsoft.Json
+
+<WvpInputAutocomplete  
+	FilterFunc="FilterFunc"
+	Options="_filteredOptions"
+	Value="@_filter"
+	OnInput="_onFilterInputHandler"
+	ValueChanged="_onValueChangeHandler"
+	MinLength="@MinLength"
+	Placeholder="@Placeholder"></WvpInputAutocomplete>

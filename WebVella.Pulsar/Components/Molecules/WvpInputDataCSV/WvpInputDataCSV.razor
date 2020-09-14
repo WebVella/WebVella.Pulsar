@@ -46,28 +46,30 @@
 		}
 		else
 		{
-			<table class="table table-bordered table-sm mb-0">
-				<tbody>
-					@{
-						var index = 0;
-					}
-					@foreach (TItem row in _rows)
-					{
-						if(_hasHeader && index == 0)
-						{
-							index++;
-							continue;
+			<div style="overflow-x:scroll">
+				<table class="table table-bordered table-sm mb-0">
+					<tbody>
+						@{
+							var index = 0;
 						}
-						<tr>
-							@foreach (PropertyInfo property in typeof(TItem).GetProperties())
+						@foreach (TItem row in _rows)
+						{
+							if (_hasHeader && index == 0)
 							{
-								<td>@property.GetValue(row)</td>
+								index++;
+								continue;
 							}
-						</tr>
-						index++;
-					}
-				</tbody>
-			</table>
+							<tr>
+								@foreach (PropertyInfo property in typeof(TItem).GetProperties())
+								{
+									<td>@property.GetValue(row)</td>
+								}
+							</tr>
+							index++;
+						}
+					</tbody>
+				</table>
+			</div>
 		}
 	</div>
 </div>

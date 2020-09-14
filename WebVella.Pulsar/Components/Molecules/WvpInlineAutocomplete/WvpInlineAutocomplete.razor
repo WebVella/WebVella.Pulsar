@@ -1,5 +1,4 @@
-﻿@typeparam TItem
-@namespace WebVella.Pulsar.Components
+﻿@namespace WebVella.Pulsar.Components
 @inherits WvpInlineBase
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
@@ -8,10 +7,7 @@
 {
 	<div class="input-group input-group--inline-edit input-group--embed-after @(String.Join(" ",_cssList))"
 		  id="@Id" @ondblclick="() => _toggleInlineEditClickHandler(true,false)">
-		<WvpDisplayAutocomplete TItem="TItem"
-										GetTextFunc="@GetTextFunc"
-										GetValueFunc="@GetValueFunc"
-										Data="@Options"
+		<WvpDisplayAutocomplete Options="@Options"
 										Class="form-control"
 										Value="@_value" />
 		<div class="input-group-append">
@@ -25,13 +21,10 @@ else
 {
 	<div class="input-group @(String.Join(" ",_cssList))" id="@Id">
 		<WvpInputAutocomplete Class="flex-grow-1"
-									 GetTextFunc="@GetTextFunc"
-									 GetValueFunc="@GetValueFunc"
-									 Data="@Options"
+									 Options="@Options"
 									 FilterFunc="@FilterFunc"
 									 OnInput="@OnInput"
 									 Placeholder="@Placeholder"
-									 TItem="TItem"
 									 Value="@_value"
 									 ValueChanged="@_onValueChanged" />
 		<div class="input-group-append">

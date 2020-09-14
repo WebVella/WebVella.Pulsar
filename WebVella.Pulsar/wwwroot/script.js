@@ -105,6 +105,26 @@
 		document.getElementById("wvp-blazor-loader").remove();
 		return true;
 	},
+	blurElement: function (elementId) {
+		window.setTimeout(function () {
+			const element = document.getElementById(elementId);
+			if (element) {
+				element.blur();
+			}
+			return true;
+		}, 100);
+		return true;
+	},
+	blurElementBySelector: function (elementSelector) {
+		window.setTimeout(function () {
+			const element = document.querySelector(elementSelector);
+			if (element) {
+				element.blur();
+			}
+			return true;
+		}, 100);
+		return true;
+	},
 	changeBodyPaddingRight: function (padding) {
 		var dpi = window.devicePixelRatio;
 		if (dpi === 1 || !padding) {

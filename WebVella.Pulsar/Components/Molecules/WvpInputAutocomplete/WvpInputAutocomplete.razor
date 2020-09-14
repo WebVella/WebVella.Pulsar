@@ -1,10 +1,10 @@
-﻿@typeparam TItem
-@namespace WebVella.Pulsar.Components
+﻿@namespace WebVella.Pulsar.Components
 @inherits WvpInputBase
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
 <CascadingValue Value="this">
+	<div>@_isDropdownHovered</div>
 	<WvpDropdown IsMenuVisible="@_isDropdownVisible" Class="@Class">
 		<WvpInputText Name="@Name"
 						  OnKeyDown="@_onKeyDownHandler"
@@ -13,17 +13,15 @@
 						  Placeholder="@Placeholder"
 						  Title="@Title"
 						  Value="@_value"
-						  ValueChanged="@_onValueChangedHandler" />
+						  ValueChanged="@_onValueChangedHandler" 
+						  Id="@_inputId"/>
 		@if (_filteredOptions.Count > 0 && _isDropdownVisible)
 		{
-			<WvpDropdownMenu>
+			<WvpDropdownMenu HoverChanged="_ddMenuHoverChangeHandler">
 				@for (int i = 0; i < _filteredOptions.Count; ++i)
 				{
 					var item = _filteredOptions[i];
-					var text = GetTextFunc.Invoke(item);
-					var value = GetValueFunc.Invoke(item);
-
-					<WvpDropdownItem Value="@value" Class="@(_activeItemIndex == i ? "active" : "")" OnClick="() => _itemSelected(value)">@text</WvpDropdownItem>
+					<WvpDropdownItem Value="@item" Class="@(_activeItemIndex == i ? "active" : "")" OnClick="() => _itemSelected(item)">@item</WvpDropdownItem>
 				}
 
 			</WvpDropdownMenu>

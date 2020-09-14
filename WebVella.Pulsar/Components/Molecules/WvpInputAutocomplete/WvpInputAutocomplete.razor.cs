@@ -12,7 +12,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInputAutocomplete<TItem> : WvpInputBase
+	public partial class WvpInputAutocomplete : WvpInputBase
 	{
 
 		#region << Parameters >>
@@ -20,23 +20,12 @@ namespace WebVella.Pulsar.Components
 		/// <summary>
 		/// Autocomplete data source
 		/// </summary>
-		[Parameter] public IEnumerable<TItem> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
-
-		/// <summary>
-		/// Method used to get the display field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetTextFunc { get; set; }
-
-
-		/// <summary>
-		/// Method used to get the value field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetValueFunc { get; set; }
+		[Parameter] public IEnumerable<string> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
 
 		/// <summary>
 		/// Method used to filter the Data based on a search string. By default it will apply internal contains func
 		/// </summary>
-		[Parameter] public Func<IEnumerable<TItem>, string, IEnumerable<TItem>> FilterFunc { get; set; }
+		[Parameter] public Func<IEnumerable<string>, string, IEnumerable<string>> FilterFunc { get; set; }
 
 		/// <summary>
 		/// Minimal text input length for triggering autocomplete
@@ -65,11 +54,13 @@ namespace WebVella.Pulsar.Components
 
 		private int _activeItemIndex = -1;
 
-		private IEnumerable<TItem> _options;
+		private IEnumerable<string> _options;
 
-		private List<TItem> _filteredOptions = new List<TItem>();
+		private List<string> _filteredOptions = new List<string>();
 
 		private bool _isDataTouched = true;
+
+		private string _inputId = "input-" + Guid.NewGuid();
 
 		/// <summary>
 		/// Field is used to stop the dropdown visibility process when value is submited
@@ -77,6 +68,8 @@ namespace WebVella.Pulsar.Components
 		private bool _preventNextOnInputDropdownVisibilityCheck = false;
 
 		private bool _isDropdownVisible = false;
+
+		private bool _isDropdownHovered = false;
 
 		private string _originalValue = "";
 
@@ -100,30 +93,29 @@ namespace WebVella.Pulsar.Components
 
 		protected override void OnParametersSet()
 		{
-			if(_originalValue != Value)
+			if (_originalValue != Value)
 				_value = FieldValueService.InitAsString(Value);
 
 			if (_isDataTouched)
 				_filteredOptions = _filterData();
 
-			
+
 			base.OnParametersSet();
 		}
 
 		#endregion
 
 		#region << Private methods >>
-		private List<TItem> _internalFilter(string search = "")
+		private List<string> _internalFilter(string search = "")
 		{
 
 			var query = from q in Options
-							let text = GetTextFunc.Invoke(q)
-							where text.IndexOf(search, 0, System.StringComparison.CurrentCultureIgnoreCase) >= 0
+							where q.IndexOf(search, 0, System.StringComparison.CurrentCultureIgnoreCase) >= 0
 							select q;
 
 			return query.ToList();
 		}
-		private List<TItem> _filterData(string search = "")
+		private List<string> _filterData(string search = "")
 		{
 			if (Options != null)
 			{
@@ -136,16 +128,17 @@ namespace WebVella.Pulsar.Components
 			else
 			{
 				_isDataTouched = false;
-				return new List<TItem>();
+				return new List<string>();
 			}
 		}
 
 		public async Task Clear()
 		{
 			_isDropdownVisible = false;
+			_isDropdownHovered = false;
 			_value = null;
-			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			_activeItemIndex = -1;
+			await new JsService(JSRuntime).BlurElement(_inputId);
 		}
 
 		private void UpdateActiveFilterIndex(int activeItemIndex)
@@ -167,10 +160,16 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Ui handlers >>
+
+		private async Task _ddMenuHoverChangeHandler(ChangeEventArgs args)
+		{
+			_isDropdownHovered = (bool)args.Value;
+		}
+
 		private async Task _onKeyDownHandler(KeyboardEventArgs e)
 		{
-			//if (!_isDropdownVisible)
-			//	return;
+			if (!_isDropdownVisible)
+				return;
 
 			// make sure everything is filtered
 			if (_isDataTouched)
@@ -183,12 +182,14 @@ namespace WebVella.Pulsar.Components
 				var selectedItem = _filteredOptions.ElementAtOrDefault(activeItemIndex);
 				if (selectedItem != null)
 				{
-					_value = GetValueFunc(selectedItem);
+					_value = selectedItem;
 				}
+
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-				await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+
 				_isDropdownVisible = false;
 				_preventNextOnInputDropdownVisibilityCheck = true;
+				await Clear();
 			}
 			else if (e.Code == "Escape")
 			{
@@ -202,13 +203,15 @@ namespace WebVella.Pulsar.Components
 			{
 				UpdateActiveFilterIndex(++activeItemIndex);
 			}
+
 			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onInputHandler(ChangeEventArgs args)
 		{
-			_value = args.Value.ToString();
+			var value = args.Value.ToString();
 
+			_value = value;
 			if (!_preventNextOnInputDropdownVisibilityCheck)
 			{
 				if (_value?.Length >= MinLength && _filteredOptions.Any())
@@ -218,29 +221,28 @@ namespace WebVella.Pulsar.Components
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
 
+			Debug.WriteLine("AC: _onInputHandler");
 			await OnInput.InvokeAsync(args);
 			await InvokeAsync(StateHasChanged);
+
 		}
 
 		private async Task _onValueChangedHandler(ChangeEventArgs args)
 		{
-			_isDropdownVisible = false;
-			await ValueChanged.InvokeAsync(args);
-			await OnInput.InvokeAsync(args);
+			//Value change in this case should be triggered only if the dropdown is not visible to prevent double posting (this method will be executed before _itemSelected)
+			if (!_isDropdownHovered)
+			{
+				await ValueChanged.InvokeAsync(args);
+				_isDropdownVisible = false;
+				await Clear();
+			}
 			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _itemSelected(string itemValue)
 		{
-			_isDropdownVisible = false;
-
-			var selectedItem = _filteredOptions.FirstOrDefault(x => GetValueFunc(x) == itemValue);
-
-			_value = selectedItem != null ? GetTextFunc?.Invoke(selectedItem) : string.Empty;
-
-			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = itemValue });
+			await Clear();
 		}
 
 		#endregion

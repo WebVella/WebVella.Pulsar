@@ -7,7 +7,8 @@
 	class="form-control @(String.Join(" ",_cssList))"
 	id="@Id"
 	@attributes="@AdditionalAttributes"
-	@bind-value="@_value" @bind-value:event="oninput"
+	value="@_value"
 	@onblur="(e) => _onBlurHandler(e)"
+	@oninput="(e) => _onInputHandler(e)"
 	@onkeydown="(e) => _onKeyDownHandler(e)"
 	/>

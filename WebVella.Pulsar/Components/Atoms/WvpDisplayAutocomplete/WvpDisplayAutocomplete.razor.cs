@@ -12,7 +12,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpDisplayAutocomplete<TItem> : WvpDisplayBase
+	public partial class WvpDisplayAutocomplete : WvpDisplayBase
 	{
 
 		#region << Parameters >>
@@ -20,18 +20,7 @@ namespace WebVella.Pulsar.Components
 		/// <summary>
 		/// Autocomplete data source
 		/// </summary>
-		[Parameter] public IEnumerable<TItem> Options { get; set; }
-
-		/// <summary>
-		/// Method used to get the display field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetTextFunc { get; set; }
-
-
-		/// <summary>
-		/// Method used to get the value field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetValueFunc { get; set; }
+		[Parameter] public IEnumerable<string> Options { get; set; }
 
 		[Parameter] public string Placeholder { get; set; } = "";
 
@@ -50,7 +39,6 @@ namespace WebVella.Pulsar.Components
 
 		private string _value = null;
 
-		private string _valueLabel = null;
 
 		#endregion
 
@@ -63,23 +51,6 @@ namespace WebVella.Pulsar.Components
 		protected override void OnParametersSet()
 		{
 			_value = FieldValueService.InitAsString(Value);
-			_valueLabel = null;
-
-			if (!String.IsNullOrWhiteSpace(_value))
-			{
-				_valueLabel = _value;
-				if (Options != null)
-				{
-					foreach (var item in Options)
-					{
-						if (GetValueFunc(item) == _value)
-						{
-							_valueLabel = GetTextFunc(item);
-							break;
-						}
-					}
-				}
-			}
 
 			base.OnParametersSet();
 		}

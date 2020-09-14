@@ -110,6 +110,20 @@ namespace WebVella.Pulsar.Services
 				 elementSelector);
 		}
 
+		public async ValueTask<bool> BlurElement(string elementId)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.blurElement",
+				 elementId);
+		}
+
+		public async ValueTask<bool> BlurElementBySelector(string elementSelector)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.blurElementBySelector",
+				 elementSelector);
+		}
+
 		public async ValueTask<bool> ScrollToElement(string elementId)
 		{
 			return await JSRuntime.InvokeAsync<bool>(

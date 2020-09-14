@@ -7,6 +7,29 @@
 <h2>Inputs</h2>
 
 <div class="row">
+	@*Free MultiSelect*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Free MultiSelect</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputFreeMultiSelect Value="@freeMSValue"
+													 FilterFunc="FilterMsResults"
+													 Options="selectMsData"
+													 MinLength="0"
+													 Placeholder="Fill in"
+													 OnInput="_onFreeMsInput"
+													 ValueChanged="_onMSValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @freeMSValueChanges.Count</div>
+					<div>Filter: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
 	@*Autocomplete*@
 	<div class="col-4">
 		<div class="card mb-3">
@@ -14,32 +37,23 @@
 			<div class="card-body p-2">
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Display</WvpFormLabel>
-					<WvpDisplayAutocomplete TItem="MySelectOption"
-													GetTextFunc="@((item) => item.Text)"
-													GetValueFunc="@((item) => item.Value)"
-													Options="selectData"
-													Value="@textValueChanged" />
+					<WvpDisplayAutocomplete Options="selectMsData"
+													Value="@textValueInput" />
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Form</WvpFormLabel>
-					<WvpInputAutocomplete GetTextFunc="@((item) => item.Text)"
-												 GetValueFunc="@((item) => item.Value)"
-												 Options="selectData"
+					<WvpInputAutocomplete Options="selectMsData"
 												 FilterFunc="FilterResults"
 												 OnInput="_onAutocompleteInput"
-												 TItem="MySelectOption"
-												 Value="@textValueChanged"
+												 Value="@textValueInput"
 												 ValueChanged="_onTextValueChanged" />
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Inline</WvpFormLabel>
-					<WvpInlineAutocomplete TItem="MySelectOption"
-												  GetTextFunc="@((item) => item.Text)"
-												  GetValueFunc="@((item) => item.Value)"
-												  FilterFunc="FilterResults"
+					<WvpInlineAutocomplete FilterFunc="FilterResults"
 												  OnInput="_onAutocompleteInput"
-												  Data="selectData"
-												  Value="@textValueChanged"
+												  Options="selectMsData"
+												  Value="@textValueInput"
 												  ValueChanged="_onTextValueChanged" />
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
@@ -58,7 +72,7 @@
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Form</WvpFormLabel>
 					<WvpInputDataCSV Value="@dataCSVValue" TItem="DataCsvRow" Rows="@dataCSVRows" Delimiter="@dataDelimiter" HasHeader="@dataHasHeader"
-						HasHeaderChanged="@_onDataHasHeaderChanged" ValueChanged="@_onDataCsvValueChanged" DelimiterChanged="_onDataDelimiterChanged" RowsChanged="_onDataRowsChanged"/>
+										  HasHeaderChanged="@_onDataHasHeaderChanged" ValueChanged="@_onDataCsvValueChanged" DelimiterChanged="_onDataDelimiterChanged" RowsChanged="_onDataRowsChanged" />
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Test</WvpFormLabel>
@@ -735,8 +749,10 @@
 	private WvpFileInfo imageValueInput = null;
 
 	private List<MySelectOption> acFullList = new List<MySelectOption>();
+	private List<string> acFullListString = new List<string>();
 
 	private List<MySelectOption> selectData = new List<MySelectOption>();
+	private List<string> selectMsData = new List<string>();
 
 	private MySelectOption selectValueChanged = null;
 	private string selectValueInput = null;
@@ -768,6 +784,35 @@
 		[CreditCard]
 		public string CreditCardNumer { get; set; }
 
+	}
+
+	/*Free MultiSelect */
+	private List<string> freeMSValue = new List<string>();
+	private List<string> freeMSValueChanges = new List<string>();
+	private void _onMSValueChanged(ChangeEventArgs e)
+	{
+		freeMSValueChanges = (List<string>)e.Value;
+		freeMSValue = (List<string>)e.Value;
+	}
+
+	internal List<string> FilterMsResults(IEnumerable<string> data, string search)
+	{
+		if (String.IsNullOrWhiteSpace(search))
+		{
+			return new List<string>();
+		}
+		else
+		{
+			var results = data?.ToList().FindAll(x => x.Contains(search)).Take(8).ToList();
+			return results;
+		}
+	}
+
+	private async Task _onFreeMsInput(ChangeEventArgs args)
+	{
+		selectMsData = FilterMsResults(acFullListString, args.Value?.ToString()).Take(8).ToList();
+		//textValueInput = args.Value.ToString();
+		await InvokeAsync(StateHasChanged);
 	}
 
 	/*DataCsv*/
@@ -837,7 +882,7 @@
 	}
 
 
-	internal IEnumerable<MySelectOption> FilterResults(IEnumerable<MySelectOption> data, string search)
+	internal IEnumerable<string> FilterResults(IEnumerable<string> data, string search)
 	{
 		if (String.IsNullOrWhiteSpace(search))
 		{
@@ -845,13 +890,13 @@
 		}
 		else
 		{
-			return data?.ToList().FindAll(x => x.Value.Contains(search));
+			return data?.ToList().FindAll(x => x.Contains(search));
 		}
 	}
 
 	private async Task _onAutocompleteInput(ChangeEventArgs args)
 	{
-		selectData = FilterResults(acFullList, args.Value?.ToString()).Take(8).ToList();
+		selectMsData = FilterResults(acFullListString, args.Value?.ToString()).Take(8).ToList();
 		//textValueInput = args.Value.ToString();
 		await InvokeAsync(StateHasChanged);
 	}
@@ -862,15 +907,23 @@
 		foreach (var key in iconDict.Keys)
 		{
 			if (!String.IsNullOrWhiteSpace(key))
+			{
 				acFullList.Add(new MySelectOption { Value = key, Text = key });
+				acFullListString.Add(key);
+			}
 		}
 		selectData = acFullList.Take(10).ToList();
+
+		selectMsData = acFullListString.Take(10).ToList();
+
 		base.OnInitialized();
 	}
 
 	private void _onTextValueChanged(ChangeEventArgs e)
 	{
+		System.Diagnostics.Debug.WriteLine("Value Changed: " + e.Value);
 		textValueChanged = e.Value?.ToString();
+		textValueInput = e.Value?.ToString();
 	}
 
 	private void _onTextValueInput(ChangeEventArgs e)

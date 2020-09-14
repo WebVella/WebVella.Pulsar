@@ -19,7 +19,7 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Callbacks >>
-
+		[Parameter] public EventCallback<ChangeEventArgs> HoverChanged { get; set; } //Fires when mouse enters or exists the menu
 		#endregion
 
 		#region << Private properties >>
@@ -63,13 +63,18 @@ namespace WebVella.Pulsar.Components
 		#region << Ui handlers >>
 		//All names should start with _
 
+		private void _hoverToggleHandler(bool hoverState)
+		{
+			HoverChanged.InvokeAsync(new ChangeEventArgs { Value = hoverState });
+		}
+
 		#endregion
 
 		#region << JS Callbacks methods >>
 		[JSInvokable]
 		public async Task OnOutClick()
 		{
-			if(Parent.StoreIsMenuVisible)
+			if (Parent.StoreIsMenuVisible)
 				await Parent.StoreHideMenu();
 		}
 		#endregion

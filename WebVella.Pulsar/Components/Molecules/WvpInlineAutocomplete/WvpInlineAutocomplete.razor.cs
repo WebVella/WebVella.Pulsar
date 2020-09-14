@@ -12,7 +12,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInlineAutocomplete<TItem> : WvpInlineBase, IDisposable
+	public partial class WvpInlineAutocomplete : WvpInlineBase, IDisposable
 	{
 
 		#region << Parameters >>
@@ -20,23 +20,12 @@ namespace WebVella.Pulsar.Components
 		/// <summary>
 		/// Autocomplete data source
 		/// </summary>
-		[Parameter] public IEnumerable<TItem> Options { get; set; }
-
-		/// <summary>
-		/// Method used to get the display field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetTextFunc { get; set; }
-
-
-		/// <summary>
-		/// Method used to get the value field from the data source
-		/// </summary>
-		[Parameter] public Func<TItem, string> GetValueFunc { get; set; }
+		[Parameter] public IEnumerable<string> Options { get; set; }
 
 		/// <summary>
 		/// Method used to filter the Data based on a search string. By default it will apply internal contains func
 		/// </summary>
-		[Parameter] public Func<IEnumerable<TItem>, string, IEnumerable<TItem>> FilterFunc { get; set; }
+		[Parameter] public Func<IEnumerable<string>, string, IEnumerable<string>> FilterFunc { get; set; }
 
 		/// <summary>
 		/// Minimal text input length for triggering autocomplete
@@ -63,7 +52,7 @@ namespace WebVella.Pulsar.Components
 
 		private List<string> _cssList = new List<string>();
 
-		private DotNetObjectReference<WvpInlineAutocomplete<TItem>> _objectReference;
+		private DotNetObjectReference<WvpInlineAutocomplete> _objectReference;
 
 		private string _originalValue = "";
 
