@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Components.Web
 
 <CascadingValue Value="this">
-	<WvpDropdown MenuVisible="@_isDropdownVisible" Class="@Class">
+	<WvpDropdown IsMenuVisible="@_isDropdownVisible" Class="@Class">
 		<WvpInputText Name="@Name"
 						  OnKeyDown="@_onKeyDownHandler"
 						  OnInput="@_onInputHandler"

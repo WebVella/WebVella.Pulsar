@@ -7,6 +7,49 @@
 <h2>Inputs</h2>
 
 <div class="row">
+	@*Autocomplete*@
+	<div class="col-4">
+		<div class="card mb-3">
+			<div class="card-header p-2">Autocomplete</div>
+			<div class="card-body p-2">
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Display</WvpFormLabel>
+					<WvpDisplayAutocomplete TItem="MySelectOption"
+													GetTextFunc="@((item) => item.Text)"
+													GetValueFunc="@((item) => item.Value)"
+													Options="selectData"
+													Value="@textValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Form</WvpFormLabel>
+					<WvpInputAutocomplete GetTextFunc="@((item) => item.Text)"
+												 GetValueFunc="@((item) => item.Value)"
+												 Options="selectData"
+												 FilterFunc="FilterResults"
+												 OnInput="_onAutocompleteInput"
+												 TItem="MySelectOption"
+												 Value="@textValueChanged"
+												 ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Inline</WvpFormLabel>
+					<WvpInlineAutocomplete TItem="MySelectOption"
+												  GetTextFunc="@((item) => item.Text)"
+												  GetValueFunc="@((item) => item.Value)"
+												  FilterFunc="FilterResults"
+												  OnInput="_onAutocompleteInput"
+												  Data="selectData"
+												  Value="@textValueChanged"
+												  ValueChanged="_onTextValueChanged" />
+				</WvpFormGroup>
+				<WvpFormGroup Class="mb-2">
+					<WvpFormLabel>Test</WvpFormLabel>
+					<div>ValueChanged: @textValueChanged</div>
+					<div>OnInput: @textValueInput</div>
+				</WvpFormGroup>
+			</div>
+		</div>
+	</div>
 	@*DataCSV*@
 	<div class="col-4">
 		<div class="card mb-3">
@@ -611,49 +654,7 @@
 			</div>
 		</div>
 	</div>
-	@*Autocomplete*@
-	<div class="col-4">
-		<div class="card mb-3">
-			<div class="card-header p-2">Autocomplete</div>
-			<div class="card-body p-2">
-				<WvpFormGroup Class="mb-2">
-					<WvpFormLabel>Display</WvpFormLabel>
-					<WvpDisplayAutocomplete TItem="MySelectOption"
-													GetTextFunc="@((item) => item.Text)"
-													GetValueFunc="@((item) => item.Value)"
-													Options="selectData"
-													Value="@textValueChanged" />
-				</WvpFormGroup>
-				<WvpFormGroup Class="mb-2">
-					<WvpFormLabel>Form</WvpFormLabel>
-					<WvpInputAutocomplete GetTextFunc="@((item) => item.Text)"
-												 GetValueFunc="@((item) => item.Value)"
-												 Options="selectData"
-												 FilterFunc="FilterResults"
-												 OnInput="_onAutocompleteInput"
-												 TItem="MySelectOption"
-												 Value="@textValueChanged"
-												 ValueChanged="_onTextValueChanged" />
-				</WvpFormGroup>
-				<WvpFormGroup Class="mb-2">
-					<WvpFormLabel>Inline</WvpFormLabel>
-					<WvpInlineAutocomplete TItem="MySelectOption"
-												  GetTextFunc="@((item) => item.Text)"
-												  GetValueFunc="@((item) => item.Value)"
-												  FilterFunc="FilterResults"
-												  OnInput="_onAutocompleteInput"
-												  Data="selectData"
-												  Value="@textValueChanged"
-												  ValueChanged="_onTextValueChanged" />
-				</WvpFormGroup>
-				<WvpFormGroup Class="mb-2">
-					<WvpFormLabel>Test</WvpFormLabel>
-					<div>ValueChanged: @textValueChanged</div>
-					<div>OnInput: @textValueInput</div>
-				</WvpFormGroup>
-			</div>
-		</div>
-	</div>
+
 	@*DateTime*@
 	<div class="col-4">
 		<div class="card mb-3">
