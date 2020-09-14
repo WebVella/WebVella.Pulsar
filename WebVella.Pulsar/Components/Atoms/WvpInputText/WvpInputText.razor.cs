@@ -25,6 +25,8 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public string Value { get; set; } = "";
 
+		[Parameter] public bool IsEasySubmitEnabled { get; set; } = true;
+
 		#endregion
 
 		#region << Callbacks >>
@@ -69,7 +71,7 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(Title))
 				AdditionalAttributes["title"] = Title;
 
-			if(!String.IsNullOrWhiteSpace(Pattern))
+			if (!String.IsNullOrWhiteSpace(Pattern))
 				AdditionalAttributes["pattern"] = Pattern;
 
 			await base.OnParametersSetAsync();
@@ -84,14 +86,16 @@ namespace WebVella.Pulsar.Components
 		#region << Ui handlers >>
 		private async Task _onKeyDownHandler(KeyboardEventArgs e)
 		{
-			//Needs to be keydown as keypress is produced only on printable chars (does not work on backspace
-			await Task.Delay(5);
-			if (e.Key == "Enter" || e.Key == "NumpadEnter" || e.Key == "Tab")
+			if (IsEasySubmitEnabled)
 			{
-				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				////Needs to be keydown as keypress is produced only on printable chars (does not work on backspace
+				await Task.Delay(5);
+				if (e.Key == "Enter" || e.Key == "NumpadEnter" || e.Key == "Tab")
+				{
+					await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				}
 			}
-
-			await OnKeyDown.InvokeAsync(e);
+			await OnKeyDown.InvokeAsync(e);			
 			await InvokeAsync(StateHasChanged);
 		}
 

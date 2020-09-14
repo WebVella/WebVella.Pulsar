@@ -23,21 +23,6 @@ namespace WebVella.Pulsar.Components
 		/// </summary>
 		[Parameter] public List<string> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
 
-		/// <summary>
-		/// Method used to filter the Data based on a search string. By default it will apply internal contains func
-		/// </summary>
-		[Parameter] public Func<IEnumerable<string>, string, IEnumerable<string>> FilterFunc { get; set; }
-
-		/// <summary>
-		/// Minimal text input length for triggering autocomplete
-		/// </summary>
-		[Parameter] public int MinLength { get; set; } = 1;
-
-		/// <summary>
-		/// Pattern of accepted string values. Goes with title attribute as description of the pattern
-		/// </summary>
-		[Parameter] public string Pattern { get; set; } = "";
-
 		[Parameter] public string Placeholder { get; set; } = "";
 
 		/// <summary>
@@ -57,11 +42,11 @@ namespace WebVella.Pulsar.Components
 
 		private bool _isDataTouched = true;
 
-		private List<string> _options;
+		private List<string> _originOptions = new List<string>();
+
+		private List<string> _options = new List<string>();
 
 		private string _filter = "";
-
-		private List<string> _filteredOptions = new List<string>();
 
 		private List<string> _originalValue = new List<string>();
 
@@ -88,8 +73,11 @@ namespace WebVella.Pulsar.Components
 				_value = Value.ToList();
 			}
 
-			if (_isDataTouched)
-				_filteredOptions = _filterData(_filter);
+			if (JsonConvert.SerializeObject(_originOptions) != JsonConvert.SerializeObject(Options))
+			{
+				_originOptions = Options;
+				_options = Options;
+			}
 
 			if (!String.IsNullOrWhiteSpace(Name))
 				AdditionalAttributes["name"] = Name;
@@ -103,32 +91,6 @@ namespace WebVella.Pulsar.Components
 
 		#region << Private methods >>
 
-		private List<string> _internalFilter(string search = "")
-		{
-
-			var query = from q in Options
-							where q.IndexOf(search, 0, System.StringComparison.CurrentCultureIgnoreCase) >= 0
-							select q;
-
-			return query.ToList();
-		}
-
-		private List<string> _filterData(string search = "")
-		{
-			if (_options != null)
-			{
-				_isDataTouched = false;
-				if (FilterFunc != null)
-					return FilterFunc?.Invoke(_options, search).ToList();
-				else
-					return _internalFilter(search);
-			}
-			else
-			{
-				_isDataTouched = false;
-				return new List<string>();
-			}
-		}
 
 		#endregion
 
@@ -136,7 +98,6 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onFilterInputHandler(ChangeEventArgs e)
 		{
-			Debug.WriteLine("_onFilterInputHandler");
 			_filter = e.Value?.ToString();
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
 			await InvokeAsync(StateHasChanged);
@@ -144,19 +105,26 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onValueChangeHandler(ChangeEventArgs e)
 		{
-			Debug.WriteLine("_onValueChangeHandler");
 			var stringValue = (string)e.Value;
-			_value.Add(stringValue);
+			if (!String.IsNullOrWhiteSpace(stringValue) && !_value.Contains(stringValue))
+			{
+				_value.Add(stringValue);
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+			}
+
+			await Task.Delay(5);
+			_filter = "";
+			await InvokeAsync(StateHasChanged);
+		}
+
+		private async Task _removeValue(string option)
+		{
+			_value.Remove(option);
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await InvokeAsync(StateHasChanged);
 		}
 
-		private async Task _onAddHandler(ChangeEventArgs e)
-		{
-			_filter = e.Value?.ToString();
-			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
-			await InvokeAsync(StateHasChanged);
-		}
+
 
 		#endregion
 

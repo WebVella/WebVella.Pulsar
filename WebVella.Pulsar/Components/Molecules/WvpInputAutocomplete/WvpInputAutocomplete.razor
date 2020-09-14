@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Components.Web
 
 <CascadingValue Value="this">
-	<div>@_isDropdownHovered</div>
 	<WvpDropdown IsMenuVisible="@_isDropdownVisible" Class="@Class">
 		<WvpInputText Name="@Name"
 						  OnKeyDown="@_onKeyDownHandler"
@@ -14,6 +13,7 @@
 						  Title="@Title"
 						  Value="@_value"
 						  ValueChanged="@_onValueChangedHandler" 
+						  IsEasySubmitEnabled ="_easySubmit"
 						  Id="@_inputId"/>
 		@if (_filteredOptions.Count > 0 && _isDropdownVisible)
 		{

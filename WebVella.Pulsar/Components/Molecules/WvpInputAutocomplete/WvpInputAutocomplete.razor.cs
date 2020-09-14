@@ -75,6 +75,7 @@ namespace WebVella.Pulsar.Components
 
 		private string _value = null;
 
+		private bool _easySubmit = true;
 		#endregion
 
 		#region <<Store properties>>
@@ -94,7 +95,10 @@ namespace WebVella.Pulsar.Components
 		protected override void OnParametersSet()
 		{
 			if (_originalValue != Value)
+			{
+				_originalValue = FieldValueService.InitAsString(Value);
 				_value = FieldValueService.InitAsString(Value);
+			}
 
 			if (_isDataTouched)
 				_filteredOptions = _filterData();
@@ -136,6 +140,7 @@ namespace WebVella.Pulsar.Components
 		{
 			_isDropdownVisible = false;
 			_isDropdownHovered = false;
+			_easySubmit = true;
 			_value = null;
 			_activeItemIndex = -1;
 			await new JsService(JSRuntime).BlurElement(_inputId);
@@ -176,7 +181,6 @@ namespace WebVella.Pulsar.Components
 				_filteredOptions = _filterData();//
 
 			var activeItemIndex = _activeItemIndex;
-
 			if ((e.Code == "Enter" || e.Code == "NumpadEnter" || e.Code == "Tab"))
 			{
 				var selectedItem = _filteredOptions.ElementAtOrDefault(activeItemIndex);
@@ -187,13 +191,14 @@ namespace WebVella.Pulsar.Components
 
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 
-				_isDropdownVisible = false;
 				_preventNextOnInputDropdownVisibilityCheck = true;
 				await Clear();
+				return;
 			}
 			else if (e.Code == "Escape")
 			{
 				await Clear();
+				return;
 			}
 			else if (e.Code == "ArrowUp")
 			{
@@ -202,6 +207,14 @@ namespace WebVella.Pulsar.Components
 			else if (e.Code == "ArrowDown")
 			{
 				UpdateActiveFilterIndex(++activeItemIndex);
+			}
+			if (activeItemIndex > -1)
+			{
+				_easySubmit = false;
+			}
+			else
+			{
+				_easySubmit = true;
 			}
 
 			await InvokeAsync(StateHasChanged);
@@ -234,7 +247,6 @@ namespace WebVella.Pulsar.Components
 			{
 				await ValueChanged.InvokeAsync(args);
 				_isDropdownVisible = false;
-				await Clear();
 			}
 			await InvokeAsync(StateHasChanged);
 		}
