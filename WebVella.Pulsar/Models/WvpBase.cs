@@ -20,7 +20,7 @@ namespace WebVella.Pulsar.Models
 
 		[Parameter] public string Id { get; set; } = "wvp-" + Guid.NewGuid();
 
-		[Parameter] public string Class { get; set; }
+		[Parameter] public string Class { get; set; } = "";
 
 		[Parameter] public CultureInfo Culture { get; set; } = CultureInfo.CurrentUICulture;
 

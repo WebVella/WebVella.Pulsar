@@ -4,15 +4,18 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Newtonsoft.Json
 
-<WvpInputAutocomplete Options="_options"
-							 Value="@_filter"
-							 OnInput="_onFilterInputHandler"
-							 ValueChanged="_onValueChangeHandler"
-							 MinLength="1"
-							 Placeholder="@Placeholder"></WvpInputAutocomplete>
-<div class="mt-1">
-	@foreach (var option in _value)
-	{
-		<div class="btn btn-sm btn-secondary mr-1 mb-1">@option <a href="javascript:void(0)" @onclick="@(() => _removeValue(option))"><WvpIcon Type="WvpIconType.BsX" Class="wvp-red"></WvpIcon></a></div>
-	}
+<div class="@(String.Join(" ",_cssList))">
+	<WvpInputAutocomplete Options="_options"
+								 Value="@_filter"
+								 OnInput="_onFilterInputHandler"
+								 ValueChanged="_onValueChangeHandler"
+								 MinLength="0"
+								 Placeholder="@Placeholder"
+								 Size="Size"></WvpInputAutocomplete>
+	<div class="mt-1">
+		@foreach (var option in _value)
+		{
+			<div class="btn btn-sm btn-secondary mr-1 mb-1">@option <a href="javascript:void(0)" @onclick="@(() => _removeValue(option))"><WvpIcon Type="WvpIconType.BsX" Class="wvp-red"></WvpIcon></a></div>
+		}
+	</div>
 </div>

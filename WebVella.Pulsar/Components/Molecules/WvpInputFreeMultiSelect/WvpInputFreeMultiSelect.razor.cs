@@ -40,6 +40,8 @@ namespace WebVella.Pulsar.Components
 
 		private List<string> _cssList = new List<string>();
 
+		private List<string> _inputCssList = new List<string>();
+
 		private bool _isDataTouched = true;
 
 		private List<string> _originOptions = new List<string>();
@@ -62,10 +64,6 @@ namespace WebVella.Pulsar.Components
 
 			if (!String.IsNullOrWhiteSpace(Class))
 				_cssList.Add(Class);
-
-			var sizeSuffix = Size.ToDescriptionString();
-			if (!String.IsNullOrWhiteSpace(sizeSuffix))
-				_cssList.Add($"input-group-{sizeSuffix}");
 
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
@@ -108,8 +106,9 @@ namespace WebVella.Pulsar.Components
 			var stringValue = (string)e.Value;
 			if (!String.IsNullOrWhiteSpace(stringValue) && !_value.Contains(stringValue))
 			{
-				_value.Add(stringValue);
-				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				var valueClone = _value.ToList();
+				valueClone.Add(stringValue);
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = valueClone });
 			}
 
 			await Task.Delay(5);

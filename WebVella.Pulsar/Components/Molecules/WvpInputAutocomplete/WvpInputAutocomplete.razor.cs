@@ -101,9 +101,11 @@ namespace WebVella.Pulsar.Components
 			}
 
 			if (_isDataTouched)
+			{
 				_filteredOptions = _filterData();
-
-
+				Debug.WriteLine("Options: " + Options.Count());
+				Debug.WriteLine("_filteredOptions: " + _filteredOptions.Count());
+			}
 			base.OnParametersSet();
 		}
 
@@ -112,12 +114,10 @@ namespace WebVella.Pulsar.Components
 		#region << Private methods >>
 		private List<string> _internalFilter(string search = "")
 		{
+			if (String.IsNullOrWhiteSpace(search))
+				return Options.ToList();
 
-			var query = from q in Options
-							where q.IndexOf(search, 0, System.StringComparison.CurrentCultureIgnoreCase) >= 0
-							select q;
-
-			return query.ToList();
+			return Options.ToList().FindAll(x => x.ToLowerInvariant().Contains(search.ToLowerInvariant())).ToList();
 		}
 		private List<string> _filterData(string search = "")
 		{
@@ -149,10 +149,10 @@ namespace WebVella.Pulsar.Components
 		private void UpdateActiveFilterIndex(int activeItemIndex)
 		{
 			if (activeItemIndex < 0)
-				activeItemIndex = 0;
+				activeItemIndex = -1;
 
 			if (activeItemIndex > (_filteredOptions.Count - 1))
-				activeItemIndex = _filteredOptions.Count - 1;
+				activeItemIndex = -1;
 
 			_activeItemIndex = activeItemIndex;
 		}
@@ -173,8 +173,8 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onKeyDownHandler(KeyboardEventArgs e)
 		{
-			if (!_isDropdownVisible)
-				return;
+			//if (!_isDropdownVisible)
+			//	return;
 
 			// make sure everything is filtered
 			if (_isDataTouched)
@@ -190,7 +190,6 @@ namespace WebVella.Pulsar.Components
 				}
 
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-
 				_preventNextOnInputDropdownVisibilityCheck = true;
 				await Clear();
 				return;
@@ -220,11 +219,17 @@ namespace WebVella.Pulsar.Components
 			await InvokeAsync(StateHasChanged);
 		}
 
+		private async Task _onBlurHandler()
+		{
+			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
+			{
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				await InvokeAsync(StateHasChanged);
+			}
+		}
+
 		private async Task _onInputHandler(ChangeEventArgs args)
 		{
-			var value = args.Value.ToString();
-
-			_value = value;
 			if (!_preventNextOnInputDropdownVisibilityCheck)
 			{
 				if (_value?.Length >= MinLength && _filteredOptions.Any())
@@ -234,7 +239,7 @@ namespace WebVella.Pulsar.Components
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
 
-			Debug.WriteLine("AC: _onInputHandler");
+			_value = args.Value.ToString();
 			await OnInput.InvokeAsync(args);
 			await InvokeAsync(StateHasChanged);
 
@@ -243,12 +248,12 @@ namespace WebVella.Pulsar.Components
 		private async Task _onValueChangedHandler(ChangeEventArgs args)
 		{
 			//Value change in this case should be triggered only if the dropdown is not visible to prevent double posting (this method will be executed before _itemSelected)
-			if (!_isDropdownHovered)
+			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
 			{
 				await ValueChanged.InvokeAsync(args);
 				_isDropdownVisible = false;
+				await InvokeAsync(StateHasChanged);
 			}
-			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _itemSelected(string itemValue)
