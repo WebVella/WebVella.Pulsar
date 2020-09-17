@@ -230,6 +230,7 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onInputHandler(ChangeEventArgs args)
 		{
+			_value = args.Value.ToString();
 			if (!_preventNextOnInputDropdownVisibilityCheck)
 			{
 				if (_value?.Length >= MinLength && _filteredOptions.Any())
@@ -239,7 +240,6 @@ namespace WebVella.Pulsar.Components
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
 
-			_value = args.Value.ToString();
 			await OnInput.InvokeAsync(args);
 			await InvokeAsync(StateHasChanged);
 
