@@ -4011,10 +4011,14 @@ namespace WebVella.Pulsar.Models
 
 		#region << Other >>
 		
+		[Description("facebook")]
+		Facebook,
 		[Description("linkedin")]
 		LinkedIn,
 		[Description("twitter")]
 		Twitter,
+		[Description("youtube")]
+		Youtube
 
 		#endregion
 	}
