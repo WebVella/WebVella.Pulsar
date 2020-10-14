@@ -2079,6 +2079,20 @@ span.flatpickr-weekday {
     width: 120px;
     height: 120px; }
 
+.ck.ck-balloon-panel {
+  z-index: 2000 !important; }
+
+.ck .ck-figure-title {
+  padding: 0 1rem 0.5rem 1rem;
+  font-size: 10pt;
+  text-align: center; }
+
+.ck .ck-figure-caption {
+  padding: 0.5rem 1rem 0.25in 1rem;
+  font-size: 8pt;
+  text-align: center;
+  color: #333; }
+
 .wvp-dropdown .dropdown-item {
   padding: 0.25rem;
   font-size: 0.875rem;
