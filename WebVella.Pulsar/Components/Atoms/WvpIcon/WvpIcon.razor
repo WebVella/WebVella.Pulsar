@@ -58,21 +58,7 @@
 		}
 		if (Type != WvpIconType.NoIcon)
 		{
-			svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'>";
-			var typeDescription = Type.ToDescriptionString();
-			if (typeDescription.StartsWith("bs"))
-			{
-				svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='currentColor'>";
-				InternalCssClass += $" wvp-icon--bs ";
-			}
-			else if (typeDescription.StartsWith("mdf"))
-			{
-				svgHtml = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'>";
-				InternalCssClass += $" wvp-icon--mdf ";
-			}
-
-			svgHtml += IconTypeService.GetSVGContentForIconType(Type);
-			svgHtml += "</svg>";
+			svgHtml = IconTypeService.GetSVGContentForIconType(Type);
 		}
 		base.OnParametersSet();
 	}
