@@ -44,6 +44,7 @@ namespace WebVella.Pulsar.Components
 		/// </summary>
 		[Parameter] public string Value { get; set; } = "";
 
+		[Parameter] public bool BlurOnSubmit { get; set; } = false;
 		#endregion
 
 		#region << Callbacks >>
@@ -89,6 +90,10 @@ namespace WebVella.Pulsar.Components
 
 			_originalValue = Value;
 			_value = FieldValueService.InitAsString(Value);
+
+			if(!String.IsNullOrWhiteSpace(Id))
+				_inputId = Id;
+
 			base.OnInitialized();
 		}
 
@@ -99,12 +104,17 @@ namespace WebVella.Pulsar.Components
 				_originalValue = FieldValueService.InitAsString(Value);
 				_value = FieldValueService.InitAsString(Value);
 			}
-
 			if (_isDataTouched)
 			{
 				_filteredOptions = _filterData();
-				Debug.WriteLine("Options: " + Options.Count());
-				Debug.WriteLine("_filteredOptions: " + _filteredOptions.Count());
+				if (_value?.Length >= MinLength)
+				{
+					if (_filteredOptions.Count > 0)
+						_isDropdownVisible = true;
+					else
+						_isDropdownVisible = false;
+				}
+
 			}
 			base.OnParametersSet();
 		}
@@ -115,13 +125,13 @@ namespace WebVella.Pulsar.Components
 		private List<string> _internalFilter(string search = "")
 		{
 			if (String.IsNullOrWhiteSpace(search))
-				return Options.ToList();
+				return _options.ToList();
 
-			return Options.ToList().FindAll(x => x.ToLowerInvariant().Contains(search.ToLowerInvariant())).ToList();
+			return _options.ToList().FindAll(x => x.ToLowerInvariant().Contains(search.ToLowerInvariant())).ToList();
 		}
 		private List<string> _filterData(string search = "")
 		{
-			if (Options != null)
+			if (_options != null)
 			{
 				_isDataTouched = false;
 				if (FilterFunc != null)
@@ -143,7 +153,12 @@ namespace WebVella.Pulsar.Components
 			_easySubmit = true;
 			_value = null;
 			_activeItemIndex = -1;
-			await new JsService(JSRuntime).BlurElement(_inputId);
+			if (BlurOnSubmit)
+				await new JsService(JSRuntime).BlurElement(_inputId);
+			else
+			{
+				await new JsService(JSRuntime).FocusElement(_inputId);
+			}
 		}
 
 		private void UpdateActiveFilterIndex(int activeItemIndex)
@@ -226,6 +241,13 @@ namespace WebVella.Pulsar.Components
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 				await InvokeAsync(StateHasChanged);
 			}
+			if (!_isDropdownHovered)
+			{
+				_isDropdownVisible = false;
+				_value = "";
+				await InvokeAsync(StateHasChanged);
+			}
+
 		}
 
 		private async Task _onInputHandler(ChangeEventArgs args)

@@ -527,6 +527,10 @@
 		}
 		return true;
 	},
+	setPageMetaTitle:function (title) {
+		document.title = title;
+		return true;
+	},
 	setFlatPickrDateChange: function (elementId, dateString) {
 		if (WebVellaPulsar.flatPickrs[elementId]) {
 			//Should not notify the change as it will loop

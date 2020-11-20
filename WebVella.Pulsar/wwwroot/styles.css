@@ -2072,7 +2072,9 @@ span.flatpickr-weekday {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #adb5bd; }
+  color: #adb5bd; 
+  z-index:100;
+}
   #wvp-blazor-loader.hide {
     display: none; }
   #wvp-blazor-loader svg {

@@ -145,6 +145,13 @@ namespace WebVella.Pulsar.Services
 				 elementId, dateTimeString);
 		}
 
+		public async ValueTask<bool> SetPageMetaTitle(string title)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.setPageMetaTitle",
+				 title);
+		}
+
 		public async ValueTask<bool> SetElementHtml(string elementId, string html)
 		{
 			return await JSRuntime.InvokeAsync<bool>(

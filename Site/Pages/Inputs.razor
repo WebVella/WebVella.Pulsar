@@ -129,7 +129,7 @@
 					<WvpFormLabel>Inline</WvpFormLabel>
 					<WvpInlineCheckboxList TItem="MySelectOption" Options="selectData.Take(3)" Value="@chkListValueChanged"
 												  ValueChanged="_onChkListValueChanged" OnInput="_onChkListValueInput">
-						<WvpDisplayCheckboxListField>@context?.Text</WvpDisplayCheckboxListField>
+						<WvpDisplayCheckboxListField>@context?.Text,</WvpDisplayCheckboxListField>
 						<WvpInputCheckboxListOption>@context?.Text</WvpInputCheckboxListOption>
 					</WvpInlineCheckboxList>
 				</WvpFormGroup>
@@ -656,7 +656,11 @@
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Inline</WvpFormLabel>
-					<WvpInlineCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" ShowIcon="true" Label="Checkbox label" />
+					<WvpInlineCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" Label="Checkbox label" >
+						<WvpInlineCheckboxChecked>checked</WvpInlineCheckboxChecked>
+						<WvpInlineCheckboxNotChecked>not checked</WvpInlineCheckboxNotChecked>
+						<WvpInlineCheckboxUnknown>uknown</WvpInlineCheckboxUnknown>
+					</WvpInlineCheckbox>
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Test</WvpFormLabel>
