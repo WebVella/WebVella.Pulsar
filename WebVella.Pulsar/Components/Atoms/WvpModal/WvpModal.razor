@@ -3,10 +3,13 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<div class="wvp-modal modal @Class @(_isOpen ? "d-block" : "")" tabindex="-1">
-  <div class="modal-dialog @_sizeClass">
-    <div class="modal-content">
-      @ChildContent
-    </div>
-  </div>
-</div>
+@if (_isOpen)
+{
+	<div class="wvp-modal modal d-block @Class" tabindex="-1">
+		<div class="modal-dialog @_sizeClass" id="@Id">
+			<div class="modal-content">
+				@ChildContent
+			</div>
+		</div>
+	</div>
+}
