@@ -9,6 +9,7 @@ using WebVella.Pulsar.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Linq;
 
 namespace WebVella.Pulsar.Components
 {
@@ -95,6 +96,9 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _dropdownToggleCallback(bool isVisible)
 		{
+			if(Options == null || Options.ToList().Count == 0) {
+				return;
+			}
 			if (isVisible)
 			{
 				_filter = "";

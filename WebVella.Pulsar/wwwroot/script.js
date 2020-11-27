@@ -5,6 +5,7 @@
 	flatPickrs: {},
 	eventListeners: {},
 	outsideClickListeners: {},
+	infiniteScrollObservers: {},
 	// Functions in alpha sort
 	addBackdrop: function () {
 		const bdEl = document.createElement('div');
@@ -15,8 +16,8 @@
 	},
 	addBodyClass: function (Classname) {
 		if (Classname === "modal-open") {
-			this.changeBodyPaddingRight("17px");
-			this.addBackdrop();
+			WebVellaPulsar.changeBodyPaddingRight("17px");
+			WebVellaPulsar.addBackdrop();
 		}
 		document.body.classList.add(Classname);
 		return true;
@@ -105,6 +106,12 @@
 		document.getElementById("wvp-blazor-loader").remove();
 		return true;
 	},
+	updateAppStartProgress: function (progress) {
+		var progressEl = document.getElementById("wvp-blazor-loader-progress");
+		progressEl.innerHTML = progress + "%";
+		console.log("progress " + progress);
+		return true;
+	},
 	blurElement: function (elementId) {
 		window.setTimeout(function () {
 			const element = document.getElementById(elementId);
@@ -131,6 +138,20 @@
 			document.body.style.paddingRight = padding;
 		}
 		return true;
+	},
+	checkIfElementVisibleAsync: function (domElement) {
+		return new Promise(resolve => {
+			const o = new IntersectionObserver(([entry]) => {
+				resolve(entry.intersectionRatio === 1);
+				o.disconnect();
+			});
+			o.observe(domElement);
+		});
+	},
+	checkIfElementIdVisible: async function (elementId) {
+		var element = document.getElementById(elementId);
+		var result = await WebVellaPulsar.checkIfElementVisibleAsync(element);
+		return result;
 	},
 	clearFlatPickrDate: function (elementId) {
 		if (WebVellaPulsar.flatPickrs[elementId]) {
@@ -418,6 +439,28 @@
 
 		}
 	},
+	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId) {
+		WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
+			function (e) {
+				dotNetHelper.invokeMethodAsync("OnIntersection");
+			},
+			{
+				threshold: 0
+			}
+		);
+
+		let element = document.getElementById(observerTargetId);
+		if (element === null) throw new Error("The observable target was not found (" + observerTargetId + ")");
+		WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
+		return true;
+	},
+	infiniteScrollDestroy: function (componentId) {
+		if (WebVellaPulsar.infiniteScrollObservers[componentId]) {
+			WebVellaPulsar.infiniteScrollObservers[componentId].disconnect();
+			delete WebVellaPulsar.infiniteScrollObservers[componentId];
+		}
+		return true;
+	},
 	initUploadFile: function (elemId, dotNetHelper) {
 		var elem = document.getElementById(elemId);
 
@@ -458,8 +501,8 @@
 			return base64;
 		})
 	},
-	reloadPage: function(){
-		window.location.reload();	
+	reloadPage: function () {
+		window.location.reload();
 		return true;
 	},
 	removeBackdrop: function () {
@@ -471,8 +514,8 @@
 	},
 	removeBodyClass: function (Classname) {
 		if (Classname === "modal-open") {
-			this.changeBodyPaddingRight("");
-			this.removeBackdrop();
+			WebVellaPulsar.changeBodyPaddingRight("");
+			WebVellaPulsar.removeBackdrop();
 		}
 		document.body.classList.remove(Classname);
 		return true;
@@ -527,7 +570,7 @@
 		}
 		return true;
 	},
-	setPageMetaTitle:function (title) {
+	setPageMetaTitle: function (title) {
 		document.title = title;
 		return true;
 	},

@@ -18,6 +18,18 @@
 			margin-top: -1 * map-get($spacers,1);
 			margin-bottom: map-get($spacers,2);
 		}
+		$parent:&;
+		&--with-action{
+			display:flex;
+			justify-content:space-between;
+
+			#{$parent}__action{
+				font-weight:normal;
+				text-transform:lowercase;
+				font-size:$font-size-sm;
+				line-height:1rem;
+			}
+		}
 	}
 
 	.form-control {

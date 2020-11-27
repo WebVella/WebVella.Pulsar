@@ -4,12 +4,16 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible">
+<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible" Class="@(Options == null || Options.ToList().Count == 0 ? "disabled" : "")">
 	<WvpDropdownToggle>
 		<span class="input-group @(String.Join(" ",_cssList))">
 			@if (_value == null)
 			{
-				if (!String.IsNullOrWhiteSpace(Placeholder))
+				if(Options == null || Options.ToList().Count == 0)
+				{
+					<span class="form-control wvp-grey">no more options</span>
+				}
+				else if (!String.IsNullOrWhiteSpace(Placeholder))
 				{
 					<span class="form-control wvp-grey">@Placeholder</span>
 				}
@@ -31,24 +35,20 @@
 			</span>
 		</span>
 	</WvpDropdownToggle>
-	<WvpDropdownMenu Class="w-100 pt-0">
-		@if (IsFilterable)
-		{
-			<div class="p-1 wvp-bkg-grey-100">
-				<div class="input-group input-group-sm">
-					<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
-					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password"/>
+	@if (Options != null && Options.ToList().Count > 0)
+	{
+		<WvpDropdownMenu Class="w-100 pt-0">
+			@if (IsFilterable)
+			{
+				<div class="p-1 wvp-bkg-grey-100">
+					<div class="input-group input-group-sm">
+						<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
+						<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
+					</div>
 				</div>
-			</div>
-		}
-		<div class="wvp-dropdown-wrapper">
-			@if (Options == null || Options.ToList().Count == 0)
-			{
-				<div class="wvp-grey p-1">No options available</div>
 			}
-			else
-			{
-				foreach (var option in Options)
+			<div class="wvp-dropdown-wrapper">
+				@foreach (var option in Options)
 				{
 					<WvpDropdownItem OnClick="() => _onSelectHandler(option)">
 						<div class="dropdown-item">
@@ -65,7 +65,7 @@
 						</div>
 					</WvpDropdownItem>
 				}
-			}
-		</div>
-	</WvpDropdownMenu>
+			</div>
+		</WvpDropdownMenu>
+	}
 </WvpDropdown>

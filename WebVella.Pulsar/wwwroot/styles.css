@@ -2070,16 +2070,19 @@ span.flatpickr-weekday {
   background: rgba(255, 255, 255, 0.75);
   opacity: 1;
   display: flex;
+  flex-flow: column;
   align-items: center;
   justify-content: center;
-  color: #adb5bd; 
-  z-index:100;
-}
+  color: #adb5bd; }
   #wvp-blazor-loader.hide {
     display: none; }
   #wvp-blazor-loader svg {
     width: 120px;
     height: 120px; }
+  #wvp-blazor-loader #wvp-blazor-loader-progress {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 2rem; }
 
 .ck.ck-balloon-panel {
   z-index: 2000 !important; }
@@ -2114,6 +2117,11 @@ span.flatpickr-weekday {
 .wvp-dropdown-wrapper {
   max-height: 10rem;
   overflow-y: auto; }
+
+.wvp-dropdown.disabled {
+  cursor: auto; }
+  .wvp-dropdown.disabled .input-group-text {
+    color: #bdbdbd; }
 
 .wvp-doc-viewer .pc-page-header {
   margin-bottom: 0; }
@@ -2220,6 +2228,14 @@ span.flatpickr-weekday {
     font-size: 0.875rem;
     margin-top: -0.25rem;
     margin-bottom: 0.5rem; }
+  .wvp-field__label--with-action {
+    display: flex;
+    justify-content: space-between; }
+    .wvp-field__label--with-action .wvp-field__label__action {
+      font-weight: normal;
+      text-transform: lowercase;
+      font-size: 0.875rem;
+      line-height: 1rem; }
 
 .wvp-field .form-control-plaintext {
   background: #f5f5f5;

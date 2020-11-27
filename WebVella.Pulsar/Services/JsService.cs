@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using WebVella.Pulsar.Components;
 using WebVella.Pulsar.Models;
 using WebVella.Pulsar.Utils;
 
@@ -46,6 +47,28 @@ namespace WebVella.Pulsar.Services
 				 elementId,dotNetReference, cultureString);
 		}
 
+		public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId,DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.initInfiniteScroll",
+				 componentId,objectRef, observerTargetId);
+		}
+
+		public async ValueTask<bool> DestroyInfiniteScroll(Guid componentId)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.infiniteScrollDestroy",
+				 componentId);
+		}
+
+		public async ValueTask<bool> CheckIfElementIdVisible(string elementId)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.checkIfElementIdVisible",
+				 elementId);
+		}
+
+
 		public async ValueTask<bool> AddDocumentEventListener(WvpDomEventType eventType, object component, string listenerId, string methodName)
 		{
 			var eventName = eventType.ToDescriptionString();
@@ -79,6 +102,12 @@ namespace WebVella.Pulsar.Services
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.appStart");
+		}
+
+		public async ValueTask<bool> UpdateAppStartProgress(int progress)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.updateAppStartProgress",progress);
 		}
 
 		public async ValueTask<bool> ClearFlatPickrDate(string elementId)

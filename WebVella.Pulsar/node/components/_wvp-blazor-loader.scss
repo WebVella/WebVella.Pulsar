@@ -12,6 +12,7 @@
 	background: rgba($white,0.75);
 	opacity: 1;
 	display: flex;
+	flex-flow:column;
 	align-items: center;
 	justify-content: center;
 	color: $gray-500;
@@ -23,5 +24,11 @@
 	svg {
 		width: 120px;
 		height: 120px;
+	}
+
+	#wvp-blazor-loader-progress{
+		text-align:center;
+		margin-top:1rem;
+		font-size:2rem;
 	}
 }
