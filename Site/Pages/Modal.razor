@@ -1,0 +1,23 @@
+﻿@page "/Modal"
+@using WebVella.Pulsar.Components
+@using WebVella.Pulsar.Models
+
+<h2>Modal</h2>
+
+<button class="btn btn-primary" @onclick="@(() => _isOpen = true)">Show Modal</button>
+
+<WvpModal IsOpen="_isOpen" IgnoreClickOnBackdrop="true" Size="WvpSize.ExtraLarge">
+	<WvpModalHeader OnCloseClick="@(()=>_isOpen = false)" Class="p-1">Modal Title</WvpModalHeader>
+	<WvpModalBody Class="wvp-bkg-red p-1">
+		some body
+	</WvpModalBody>
+	<WvpModalFooter Class="p-1">
+		<button class="btn btn-secondary" @onclick="@(() => _isOpen = false)">close</button>
+	</WvpModalFooter>
+</WvpModal>
+
+
+@code{
+	private bool _isOpen = false;
+
+}

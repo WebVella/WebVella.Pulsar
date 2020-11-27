@@ -61,7 +61,6 @@ namespace WebVella.Pulsar.Components
 			var elementIsVisible = true;
 			while(elementIsVisible){
 				await Task.Delay(100);
-				Debug.WriteLine("called");
 				elementIsVisible = await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
 				if(elementIsVisible)
 				{

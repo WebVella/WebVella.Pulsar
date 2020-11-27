@@ -8,10 +8,13 @@
 	infiniteScrollObservers: {},
 	// Functions in alpha sort
 	addBackdrop: function () {
-		const bdEl = document.createElement('div');
-		bdEl.classList.add("modal-backdrop");
-		bdEl.classList.add("show");
-		document.body.appendChild(bdEl);
+		var backdropEl = document.querySelector(".modal-backdrop");
+		if (!backdropEl) {
+			const bdEl = document.createElement('div');
+			bdEl.classList.add("modal-backdrop");
+			bdEl.classList.add("show");
+			document.body.appendChild(bdEl);
+		}
 		return true;
 	},
 	addBodyClass: function (Classname) {

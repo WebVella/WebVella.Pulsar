@@ -9,9 +9,17 @@
 	}
 	.modal-header{
 		justify-content:center;
+		align-items:center;
 		background:$grey-800;
 		color:$grey-200;
 		padding:map-get($spacers,2);
+
+		.close{
+			color:$grey-50;
+			.wvp-icon{
+				vertical-align:unset;
+			}
+		}
 	}
 	.modal-body{
 		padding:map-get($spacers,2);

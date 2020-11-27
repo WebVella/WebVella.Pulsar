@@ -64,9 +64,14 @@ textarea.form-control {
 
 .wvp-modal .modal-header {
   justify-content: center;
+  align-items: center;
   background: #424242;
   color: #eeeeee;
   padding: 0.5rem; }
+  .wvp-modal .modal-header .close {
+    color: #fafafa; }
+    .wvp-modal .modal-header .close .wvp-icon {
+      vertical-align: unset; }
 
 .wvp-modal .modal-body {
   padding: 0.5rem; }
