@@ -9,7 +9,7 @@ using Microsoft.JSInterop;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpModal : WvpBase, IDisposable
+	public partial class WvpModal : WvpBase
 	{
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
@@ -27,29 +27,12 @@ namespace WebVella.Pulsar.Components
 		private string _sizeClass { get; set; } = "";
 		private bool _isIgnoreClickOnBackdrop { get; set; } = false;
 
-		private DotNetObjectReference<WvpModal> _objectReference;
 		#endregion
 
 		#region << Lifecycle methods >>
 
-		void IDisposable.Dispose()
-		{
-			Task.Run(async () =>
-			{
-				await JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
-			});
-		}
-
-		protected override async Task OnInitializedAsync()
-		{
-			_objectReference = DotNetObjectReference.Create(this);
-			await JsService.AddOutsideClickEventListener($"#{Id}", _objectReference, Id, "OnFocusOut");
-			base.OnInitialized();
-		}
-
 		protected override async Task OnParametersSetAsync()
 		{
-
 			if (IsOpen != _isOpen)
 			{
 				if (IsOpen)
@@ -78,8 +61,6 @@ namespace WebVella.Pulsar.Components
 					_sizeClass = "";
 					break;
 			}
-
-
 		}
 
 		#endregion
@@ -87,15 +68,18 @@ namespace WebVella.Pulsar.Components
 		#region << Private methods >>
 		private async Task _show()
 		{
-			await new JsService(JSRuntime).AddBodyClass("modal-open");
 			_isOpen = true;
 			await InvokeAsync(StateHasChanged);
+			await new JsService(JSRuntime).AddBodyClass("modal-open");
 		}
-		public async Task _hide()
+		public async Task _hide(bool isBackdrop = false)
 		{
-			await new JsService(JSRuntime).RemoveBodyClass("modal-open");
+			if(isBackdrop && _isIgnoreClickOnBackdrop)
+				return;	
+
 			_isOpen = false;
 			await InvokeAsync(StateHasChanged);
+			await new JsService(JSRuntime).RemoveBodyClass("modal-open");
 		}
 
 		#endregion
@@ -104,14 +88,7 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << JS Callbacks methods >>
-		[JSInvokable]
-		public async Task OnFocusOut()
-		{
-			if (!_isIgnoreClickOnBackdrop)
-			{
-				await _hide();
-			}
-		}
+
 		#endregion
 	}
 }

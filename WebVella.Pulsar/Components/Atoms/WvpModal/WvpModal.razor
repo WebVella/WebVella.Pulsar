@@ -2,11 +2,12 @@
 @inherits WvpBase
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
+@using System.Diagnostics;
 
 @if (_isOpen)
-{
-	<div class="wvp-modal modal d-block @Class" tabindex="-1">
-		<div class="modal-dialog @_sizeClass" id="@Id">
+{ 
+	<div class="wvp-modal modal d-block @Class" tabindex="-1" @onclick="@(()=> _hide(true))">
+		<div class="modal-dialog @_sizeClass" id="@Id" @onclick:stopPropagation>
 			<div class="modal-content">
 				@ChildContent
 			</div>
