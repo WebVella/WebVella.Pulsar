@@ -7,6 +7,9 @@ using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using WebVella.Pulsar.Services;
 
+
+//Important: Do not foget to add @key to the loaded rows, as otherwise DOM events will not be initialized correctly
+
 namespace WebVella.Pulsar.Components
 {
 	public partial class WvpInfiniteScroll : WvpBase, IDisposable

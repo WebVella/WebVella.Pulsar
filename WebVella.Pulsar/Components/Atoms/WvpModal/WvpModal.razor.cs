@@ -16,10 +16,12 @@ namespace WebVella.Pulsar.Components
 		[Parameter] public bool IsOpen { get; set; } = false;
 		[Parameter] public bool IgnoreClickOnBackdrop { get; set; } = false;
 		[Parameter] public WvpSize Size { get; set; } = WvpSize.Normal;
+
+		[Parameter] public string DialogClass { get; set; } = "";
 		#endregion
 
 		#region << Callbacks >>
-
+		[Parameter] public EventCallback<bool> IsOpenChanged { get; set; }
 		#endregion
 
 		#region << Private properties >>
@@ -33,19 +35,20 @@ namespace WebVella.Pulsar.Components
 
 		protected override async Task OnParametersSetAsync()
 		{
-			if (IsOpen != _isOpen)
-			{
-				if (IsOpen)
-					await _show();
-				else
-					await _hide();
-			}
-
 			if (IgnoreClickOnBackdrop != _isIgnoreClickOnBackdrop)
 			{
 				_isIgnoreClickOnBackdrop = IgnoreClickOnBackdrop ? true : false;
 
 			}
+
+			if (IsOpen != _isOpen)
+			{
+				if (IsOpen)
+					await _show(false);
+				else
+					await _hide(_isIgnoreClickOnBackdrop, false);
+			}
+
 			switch (Size)
 			{
 				case WvpSize.Small:
@@ -66,20 +69,28 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Private methods >>
-		private async Task _show()
+		private async Task _show(bool invokeCallback = true)
 		{
 			_isOpen = true;
 			await InvokeAsync(StateHasChanged);
 			await new JsService(JSRuntime).AddBodyClass("modal-open");
+			if (invokeCallback)
+			{
+				await IsOpenChanged.InvokeAsync(_isOpen);
+			}
 		}
-		public async Task _hide(bool isBackdrop = false)
+		public async Task _hide(bool isBackdrop = false, bool invokeCallback = true)
 		{
-			if(isBackdrop && _isIgnoreClickOnBackdrop)
-				return;	
+			if (isBackdrop && _isIgnoreClickOnBackdrop)
+				return;
 
 			_isOpen = false;
 			await InvokeAsync(StateHasChanged);
 			await new JsService(JSRuntime).RemoveBodyClass("modal-open");
+			if (invokeCallback)
+			{
+				await IsOpenChanged.InvokeAsync(_isOpen);
+			}
 		}
 
 		#endregion
