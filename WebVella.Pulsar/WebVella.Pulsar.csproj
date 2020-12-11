@@ -4,6 +4,8 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<RazorLangVersion>3.0</RazorLangVersion>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<!-- Remove the language litter of code analysis on publish https://github.com/dotnet/roslyn/issues/39458-->
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
 	</PropertyGroup>
 
 	<ItemGroup>

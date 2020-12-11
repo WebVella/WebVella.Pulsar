@@ -1,4 +1,7 @@
-﻿*[data-toggle="dropdown"]:hover {
+﻿.btn-sm .wvp-icon {
+  top: -2px; }
+
+*[data-toggle="dropdown"]:hover {
   cursor: pointer; }
 
 .invalid-feedback {

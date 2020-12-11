@@ -21,7 +21,7 @@ namespace WebVella.Pulsar.Components
 
 		#region << Callbacks >>
 
-		[Parameter] public EventCallback<bool> StatusChange {get; set; }
+		[Parameter] public EventCallback<bool> StatusChange { get; set; }
 
 		#endregion
 
@@ -57,11 +57,11 @@ namespace WebVella.Pulsar.Components
 
 		protected override async Task OnParametersSetAsync()
 		{
-			if(IsMenuVisible != null)
+			if (IsMenuVisible != null)
 				_isMenuVisible = IsMenuVisible.Value;
 			_mode = Mode;
-			var classList = new List<string> { "dropdown  wvp-dropdown"};
-			if(!String.IsNullOrWhiteSpace(Class))
+			var classList = new List<string> { "dropdown  wvp-dropdown" };
+			if (!String.IsNullOrWhiteSpace(Class))
 				classList.Add(Class);
 			classList.Add(_mode.ToDescriptionString());
 			_class = String.Join(" ", classList);
@@ -70,12 +70,8 @@ namespace WebVella.Pulsar.Components
 
 		void IDisposable.Dispose()
 		{
-			Task.Run(async () =>
-			{
-				await JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
-				await JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
-			}
-			);
+			JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();
