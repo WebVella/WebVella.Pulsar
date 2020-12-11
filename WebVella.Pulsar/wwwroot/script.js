@@ -19,14 +19,14 @@
 	},
 	addBodyClass: function (Classname) {
 		if (Classname === "modal-open") {
-			this.changeBodyPaddingRight("17px");
-			this.addBackdrop();
+			WebVellaPulsar.changeBodyPaddingRight("17px");
+			WebVellaPulsar.addBackdrop();
 		}
 		document.body.classList.add(Classname);
 		return true;
 	},
 	addCKEditor: function (elementId, dotNetHelper, cultureString) {
-		if (!this.cKEditors[elementId]) {
+		if (!WebVellaPulsar.cKEditors[elementId]) {
 			var config = {
 				attributes: {
 					class: 'form-control'
@@ -43,9 +43,9 @@
 			var initInterval = setInterval(function () {
 				if (document.getElementById(elementId)) {
 					clearInterval(initInterval);
-					this.initCKEditor(elementId, dotNetHelper, config);
+					WebVellaPulsar.initCKEditor(elementId, dotNetHelper, config);
 				}
-				if (retries > this.elementCheckIntervalRetries) {
+				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
 					clearInterval(initInterval);
 				}
 				retries++;
@@ -54,14 +54,14 @@
 		return true;
 	},
 	addDocumentEventListener: function (eventName, dotNetHelper, listenerId, methodName) {
-		if (!this.eventListeners[eventName]) {
-			this.eventListeners[eventName] = {};
+		if (!WebVellaPulsar.eventListeners[eventName]) {
+			WebVellaPulsar.eventListeners[eventName] = {};
 		}
-		this.eventListeners[eventName][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
+		WebVellaPulsar.eventListeners[eventName][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
 		return true;
 	},
 	addFlatPickrDate: function (elementId, cultureString) {
-		if (!this.flatPickrs[elementId]) {
+		if (!WebVellaPulsar.flatPickrs[elementId]) {
 			if (!cultureString) {
 				cultureString = 'en';
 			}
@@ -69,9 +69,9 @@
 			var initInterval = setInterval(function () {
 				if (document.getElementById(elementId)) {
 					clearInterval(initInterval);
-					this.initFlatPickrDate(elementId, cultureString);
+					WebVellaPulsar.initFlatPickrDate(elementId, cultureString);
 				}
-				if (retries > this.elementCheckIntervalRetries) {
+				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
 					clearInterval(initInterval);
 				}
 				retries++;
@@ -80,7 +80,7 @@
 		return true;
 	},
 	addFlatPickrDateTime: function (elementId, dotNetHelper, utcOffsetInSeconds, cultureString) {
-		if (!this.flatPickrs[elementId]) {
+		if (!WebVellaPulsar.flatPickrs[elementId]) {
 			if (!cultureString) {
 				cultureString = 'en';
 			}
@@ -88,9 +88,9 @@
 			var initInterval = setInterval(function () {
 				if (document.getElementById(elementId)) {
 					clearInterval(initInterval);
-					this.initFlatPickrDateTime(elementId, dotNetHelper, utcOffsetInSeconds, cultureString);
+					WebVellaPulsar.initFlatPickrDateTime(elementId, dotNetHelper, utcOffsetInSeconds, cultureString);
 				}
-				if (retries > this.elementCheckIntervalRetries) {
+				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
 					clearInterval(initInterval);
 				}
 				retries++;
@@ -99,10 +99,10 @@
 		return true;
 	},
 	addOutsideClickEventListener: function (elementSelector, dotNetHelper, listenerId, methodName) {
-		if (!this.outsideClickListeners[elementSelector]) {
-			this.outsideClickListeners[elementSelector] = {};
+		if (!WebVellaPulsar.outsideClickListeners[elementSelector]) {
+			WebVellaPulsar.outsideClickListeners[elementSelector] = {};
 		}
-		this.outsideClickListeners[elementSelector][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
+		WebVellaPulsar.outsideClickListeners[elementSelector][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
 		return true;
 	},
 	appStart: function () {
@@ -156,30 +156,30 @@
 	checkIfElementIdVisible: async function (elementId) {
 		var element = document.getElementById(elementId);
 		if (element) {
-			var result = await this.checkIfElementVisibleAsync(element);
+			var result = await WebVellaPulsar.checkIfElementVisibleAsync(element);
 			return result;
 		}
 		return false;
 	},
 	clearFlatPickrDate: function (elementId) {
-		if (this.flatPickrs[elementId]) {
-			this.flatPickrs[elementId].clear();
-			this.flatPickrs[elementId].close();
+		if (WebVellaPulsar.flatPickrs[elementId]) {
+			WebVellaPulsar.flatPickrs[elementId].clear();
+			WebVellaPulsar.flatPickrs[elementId].close();
 		}
 		return true;
 	},
 	clearFlatPickrDateTime: function (elementId) {
-		if (this.flatPickrs[elementId]) {
-			this.flatPickrs[elementId].clear();
-			this.flatPickrs[elementId].close();
+		if (WebVellaPulsar.flatPickrs[elementId]) {
+			WebVellaPulsar.flatPickrs[elementId].clear();
+			WebVellaPulsar.flatPickrs[elementId].close();
 		}
 		return true;
 	},
 	executeEventCallbacks: function (eventName, context) {
-		if (this.eventListeners[eventName]) {
-			for (const prop in this.eventListeners[eventName]) {
-				const dotNetHelper = this.eventListeners[eventName][prop].dotNetHelper;
-				const methodName = this.eventListeners[eventName][prop].methodName;
+		if (WebVellaPulsar.eventListeners[eventName]) {
+			for (const prop in WebVellaPulsar.eventListeners[eventName]) {
+				const dotNetHelper = WebVellaPulsar.eventListeners[eventName][prop].dotNetHelper;
+				const methodName = WebVellaPulsar.eventListeners[eventName][prop].methodName;
 				if (dotNetHelper && methodName) {
 					dotNetHelper.invokeMethodAsync(methodName)
 				}
@@ -188,10 +188,10 @@
 		return true;
 	},
 	executeOutsideClickEventCallbacks: function (elementSelector, context) {
-		if (this.outsideClickListeners[elementSelector]) {
-			for (const prop in this.outsideClickListeners[elementSelector]) {
-				const dotNetHelper = this.outsideClickListeners[elementSelector][prop].dotNetHelper;
-				const methodName = this.outsideClickListeners[elementSelector][prop].methodName;
+		if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
+			for (const prop in WebVellaPulsar.outsideClickListeners[elementSelector]) {
+				const dotNetHelper = WebVellaPulsar.outsideClickListeners[elementSelector][prop].dotNetHelper;
+				const methodName = WebVellaPulsar.outsideClickListeners[elementSelector][prop].methodName;
 				if (dotNetHelper && methodName) {
 					dotNetHelper.invokeMethodAsync(methodName)
 				}
@@ -220,7 +220,7 @@
 		return true;
 	},
 	getArrayBufferFromFileAsync: function (elem, fileId) {
-		var file = this.getFileById(elem, fileId);
+		var file = WebVellaPulsar.getFileById(elem, fileId);
 
 		// On the first read, convert the FileReader into a Promise<ArrayBuffer>
 		if (!file.readPromise) {
@@ -261,7 +261,7 @@
 		ClassicEditor
 			.create(document.getElementById(elementId), config)
 			.then(function (editor) {
-				this.cKEditors[elementId] = editor;
+				WebVellaPulsar.cKEditors[elementId] = editor;
 				editor.ui.focusTracker.on('change:isFocused', function () {
 					var value = editor.getData();
 					document.getElementById(elementId).value = value;
@@ -354,10 +354,10 @@
 			if (cultureString && cultureString === "bg") {
 				options.locale = BulgarianDateTimeLocale;
 			}
-			this.flatPickrs[elementId] = flatpickr(selector, options);
-			this.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
+			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
+			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
 				if (!e.target.value) {
-					this.flatPickrs[elementId].clear();
+					WebVellaPulsar.flatPickrs[elementId].clear();
 				}
 			});
 
@@ -438,17 +438,17 @@
 			if (cultureString && cultureString === "bg") {
 				options.locale = BulgarianDateTimeLocale;
 			}
-			this.flatPickrs[elementId] = flatpickr(selector, options);
-			this.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
+			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
+			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
 				if (!e.target.value) {
-					this.flatPickrs[elementId].clear();
+					WebVellaPulsar.flatPickrs[elementId].clear();
 				}
 			});
 
 		}
 	},
 	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId) {
-		this.infiniteScrollObservers[componentId] = new IntersectionObserver(
+		WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
 			function (e) {
 				dotNetHelper.invokeMethodAsync("OnIntersection");
 			},
@@ -459,15 +459,15 @@
 
 		let element = document.getElementById(observerTargetId);
 		if (element !== null) {
-			this.infiniteScrollObservers[componentId].observe(element);
+			WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
 		}
 		return true;
 	},
 	infiniteScrollDestroy: function (componentId) {
-		if (this.infiniteScrollObservers[componentId]) {
+		if (WebVellaPulsar.infiniteScrollObservers[componentId]) {
 			try {
-				this.infiniteScrollObservers[componentId].disconnect();
-				delete this.infiniteScrollObservers[componentId];
+				WebVellaPulsar.infiniteScrollObservers[componentId].disconnect();
+				delete WebVellaPulsar.infiniteScrollObservers[componentId];
 			} catch (e) { }
 		}
 		return true;
@@ -504,11 +504,11 @@
 		return true;
 	},
 	readFileData: function (elem, fileId, startOffset, count) {
-		var readPromise = this.getArrayBufferFromFileAsync(elem, fileId);
+		var readPromise = WebVellaPulsar.getArrayBufferFromFileAsync(elem, fileId);
 
 		return readPromise.then(function (arrayBuffer) {
 			var uint8Array = new Uint8Array(arrayBuffer, startOffset, count);
-			var base64 = this.uint8ToBase64(uint8Array);
+			var base64 = WebVellaPulsar.uint8ToBase64(uint8Array);
 			return base64;
 		})
 	},
@@ -525,48 +525,48 @@
 	},
 	removeBodyClass: function (Classname) {
 		if (Classname === "modal-open") {
-			this.changeBodyPaddingRight("");
-			this.removeBackdrop();
+			WebVellaPulsar.changeBodyPaddingRight("");
+			WebVellaPulsar.removeBackdrop();
 		}
 		document.body.classList.remove(Classname);
 		return true;
 	},
 	setCKEditorData: function (elementId, data) {
-		if (this.cKEditors[elementId]) {
-			this.cKEditors[elementId].setData(data);
+		if (WebVellaPulsar.cKEditors[elementId]) {
+			WebVellaPulsar.cKEditors[elementId].setData(data);
 		}
 		return true;
 	},
 	removeCKEditor: function (elementId) {
-		if (this.cKEditors[elementId]) {
-			this.cKEditors[elementId].destroy();
-			delete this.cKEditors[elementId];
+		if (WebVellaPulsar.cKEditors[elementId]) {
+			WebVellaPulsar.cKEditors[elementId].destroy();
+			delete WebVellaPulsar.cKEditors[elementId];
 		}
 		return true;
 	},
 	removeDocumentEventListener: function (eventName, listenerId) {
-		if (this.eventListeners[eventName] && this.eventListeners[eventName][listenerId]) {
-			delete this.eventListeners[eventName][listenerId];
+		if (WebVellaPulsar.eventListeners[eventName] && WebVellaPulsar.eventListeners[eventName][listenerId]) {
+			delete WebVellaPulsar.eventListeners[eventName][listenerId];
 		}
 		return true;
 	},
 	removeFlatPickrDateTime: function (elementId) {
-		if (this.flatPickrs[elementId]) {
-			this.flatPickrs[elementId].destroy();
-			delete this.flatPickrs[elementId];
+		if (WebVellaPulsar.flatPickrs[elementId]) {
+			WebVellaPulsar.flatPickrs[elementId].destroy();
+			delete WebVellaPulsar.flatPickrs[elementId];
 		}
 		return true;
 	},
 	removeFlatPickrDate: function (elementId) {
-		if (this.flatPickrs[elementId]) {
-			this.flatPickrs[elementId].destroy();
-			delete this.flatPickrs[elementId];
+		if (WebVellaPulsar.flatPickrs[elementId]) {
+			WebVellaPulsar.flatPickrs[elementId].destroy();
+			delete WebVellaPulsar.flatPickrs[elementId];
 		}
 		return true;
 	},
 	removeOutsideClickEventListener: function (elementSelector, listenerId) {
-		if (this.outsideClickListeners[elementSelector] && this.outsideClickListeners[elementSelector][listenerId]) {
-			delete this.outsideClickListeners[elementSelector][listenerId];
+		if (WebVellaPulsar.outsideClickListeners[elementSelector] && WebVellaPulsar.outsideClickListeners[elementSelector][listenerId]) {
+			delete WebVellaPulsar.outsideClickListeners[elementSelector][listenerId];
 		}
 		return true;
 	},
@@ -586,16 +586,16 @@
 		return true;
 	},
 	setFlatPickrDateChange: function (elementId, dateString) {
-		if (this.flatPickrs[elementId]) {
+		if (WebVellaPulsar.flatPickrs[elementId]) {
 			//Should not notify the change as it will loop
-			this.flatPickrs[elementId].setDate(dateString, false, "Y-m-d");
+			WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-d");
 		}
 		return true;
 	},
 	setFlatPickrDateTimeChange: function (elementId, dateString) {
-		if (this.flatPickrs[elementId]) {
+		if (WebVellaPulsar.flatPickrs[elementId]) {
 			//Should not notify the change as it will loop
-			this.flatPickrs[elementId].setDate(dateString, false, "Y-m-dTH:i:S");
+			WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-dTH:i:S");
 		}
 		return true;
 	},
