@@ -46,7 +46,7 @@ namespace WebVella.Pulsar.Components
 				if (IsOpen)
 					await _show(false);
 				else
-					await _hide(_isIgnoreClickOnBackdrop, false);
+					await _hide(false);
 			}
 
 			switch (Size)
@@ -79,7 +79,7 @@ namespace WebVella.Pulsar.Components
 				await IsOpenChanged.InvokeAsync(_isOpen);
 			}
 		}
-		public async Task _hide(bool isBackdrop = false, bool invokeCallback = true)
+		public async Task _hide(bool invokeCallback = true, bool isBackdrop = false)
 		{
 			if (isBackdrop && _isIgnoreClickOnBackdrop)
 				return;
