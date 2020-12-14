@@ -68,6 +68,11 @@ namespace WebVella.Pulsar.Components
 		/// </summary>
 		private bool _preventNextOnInputDropdownVisibilityCheck = false;
 
+		/// <summary>
+		/// Field is used to stop the next submit on Blur when the submit is done already by a Enter key or select
+		/// </summary>
+		private bool _skipNextBlurSubmit = false;
+
 		private bool _isDropdownVisible = false;
 
 		private bool _isDropdownHovered = false;
@@ -91,7 +96,7 @@ namespace WebVella.Pulsar.Components
 			_originalValue = Value;
 			_value = FieldValueService.InitAsString(Value);
 
-			if(!String.IsNullOrWhiteSpace(Id))
+			if (!String.IsNullOrWhiteSpace(Id))
 				_inputId = Id;
 
 			base.OnInitialized();
@@ -103,18 +108,17 @@ namespace WebVella.Pulsar.Components
 			{
 				_originalValue = FieldValueService.InitAsString(Value);
 				_value = FieldValueService.InitAsString(Value);
+				//if (_value?.Length >= MinLength)
+				//{
+				//	if (_filteredOptions.Count > 0)
+				//		_isDropdownVisible = true;
+				//	else
+				//		_isDropdownVisible = false;
+				//}
 			}
 			if (_isDataTouched)
 			{
 				_filteredOptions = _filterData();
-				if (_value?.Length >= MinLength)
-				{
-					if (_filteredOptions.Count > 0)
-						_isDropdownVisible = true;
-					else
-						_isDropdownVisible = false;
-				}
-
 			}
 			base.OnParametersSet();
 		}
@@ -153,6 +157,7 @@ namespace WebVella.Pulsar.Components
 			_easySubmit = true;
 			_value = null;
 			_activeItemIndex = -1;
+			await InvokeAsync(StateHasChanged);
 			if (BlurOnSubmit)
 				await new JsService(JSRuntime).BlurElement(_inputId);
 			else
@@ -203,9 +208,9 @@ namespace WebVella.Pulsar.Components
 				{
 					_value = selectedItem;
 				}
-
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 				_preventNextOnInputDropdownVisibilityCheck = true;
+				_skipNextBlurSubmit = true;
 				await Clear();
 				return;
 			}
@@ -236,6 +241,11 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onBlurHandler()
 		{
+			if(_skipNextBlurSubmit)
+			{
+				_skipNextBlurSubmit = false;
+				return;
+			}
 			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
 			{
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
@@ -267,20 +277,10 @@ namespace WebVella.Pulsar.Components
 
 		}
 
-		private async Task _onValueChangedHandler(ChangeEventArgs args)
-		{
-			//Value change in this case should be triggered only if the dropdown is not visible to prevent double posting (this method will be executed before _itemSelected)
-			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
-			{
-				await ValueChanged.InvokeAsync(args);
-				_isDropdownVisible = false;
-				await InvokeAsync(StateHasChanged);
-			}
-		}
-
 		private async Task _itemSelected(string itemValue)
 		{
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = itemValue });
+			_skipNextBlurSubmit = true;
 			await Clear();
 		}
 
