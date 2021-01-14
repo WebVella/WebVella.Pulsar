@@ -18,14 +18,20 @@ namespace WebVella.Pulsar.Services
 
 		public static string GetSVGContentForIconType(WvpIconType type){
 			var typeDescription = type.ToDescriptionString();
-			var iconTypeDict = GetIconTypeDict();
+			Dictionary<WvpIconType,string> iconTypeDict = null;
+			try{
+				iconTypeDict = GetIconTypeDict();
+			}
+			catch{}
+
 			var viewBox = "0 0 16 16";
 			if (typeDescription.StartsWith("mdf"))
 			{
 				viewBox = "0 0 24 24";
 			}
 			var svgHtml = $"<svg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='{viewBox}'>";
-			svgHtml += iconTypeDict[type];
+			if(iconTypeDict != null)
+				svgHtml += iconTypeDict[type];
 			svgHtml += "</svg>";
 			return svgHtml;
 		}
