@@ -104,7 +104,7 @@ namespace WebVella.Pulsar.Services
 				 "WebVellaPulsar.appStart");
 		}
 
-		public async ValueTask<bool> UpdateAppStartProgress(int progress)
+		public async ValueTask<bool> UpdateAppStartProgress(string progress)
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.updateAppStartProgress",progress);

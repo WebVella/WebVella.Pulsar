@@ -111,7 +111,7 @@
 	},
 	updateAppStartProgress: function (progress) {
 		var progressEl = document.getElementById("wvp-blazor-loader-progress");
-		progressEl.innerHTML = progress + "%";
+		progressEl.innerHTML = progress;
 		return true;
 	},
 	blurElement: function (elementId) {
