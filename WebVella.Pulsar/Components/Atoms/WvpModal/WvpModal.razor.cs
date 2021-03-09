@@ -15,6 +15,8 @@ namespace WebVella.Pulsar.Components
 		[Parameter] public RenderFragment ChildContent { get; set; }
 		[Parameter] public bool IsOpen { get; set; } = false;
 		[Parameter] public bool IgnoreClickOnBackdrop { get; set; } = false;
+
+		[Parameter] public bool IsDraggable { get; set; } = false;
 		[Parameter] public WvpSize Size { get; set; } = WvpSize.Normal;
 
 		[Parameter] public string DialogClass { get; set; } = "";
@@ -74,6 +76,8 @@ namespace WebVella.Pulsar.Components
 			_isOpen = true;
 			await InvokeAsync(StateHasChanged);
 			await new JsService(JSRuntime).AddBodyClass("modal-open");
+			if(IsDraggable)
+				await new JsService(JSRuntime).MakeDraggable(Id);
 			if (invokeCallback)
 			{
 				await IsOpenChanged.InvokeAsync(_isOpen);
