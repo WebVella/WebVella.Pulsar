@@ -177,6 +177,7 @@
 	},
 	makeDraggable: function (elementId) {
 		var element = document.getElementById(elementId);
+		var handleEl = element.querySelector(".drag-handle");
 		var isMouseDown = false;
 
 		// initial mouse X and Y for `mousedown`
@@ -188,7 +189,7 @@
 		var elementY = 0;
 
 		// mouse button down over the element
-		element.addEventListener('mousedown', onMouseDown);
+		handleEl.addEventListener('mousedown', onMouseDown);
 
 		/**
 		 * Listens to `mousedown` event.
@@ -202,7 +203,7 @@
 		}
 
 		// mouse button released
-		element.addEventListener('mouseup', onMouseUp);
+		handleEl.addEventListener('mouseup', onMouseUp);
 
 		/**
 		 * Listens to `mouseup` event.
