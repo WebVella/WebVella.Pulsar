@@ -29,6 +29,9 @@
 		background:$grey-200;
 		padding:map-get($spacers,2);
 	}
+	.drag-handle{
+		cursor:move;
+	}
 
 	&--inner {
 		.modal-header{

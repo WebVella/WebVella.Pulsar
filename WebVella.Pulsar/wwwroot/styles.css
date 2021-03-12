@@ -84,6 +84,9 @@ textarea.form-control {
   background: #eeeeee;
   padding: 0.5rem; }
 
+.wvp-modal .drag-handle {
+  cursor: move; }
+
 .wvp-modal--inner .modal-header {
   background: #455a64; }
 
