@@ -62,10 +62,6 @@ textarea.form-control {
   width: 1% !important;
   min-width: 0; }
 
-.wvp-modal .drag-handle {
-   cursor:move;
-}
-
 .wvp-modal .modal-content {
   border: none; }
 
