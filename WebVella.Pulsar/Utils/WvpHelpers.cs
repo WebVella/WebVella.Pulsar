@@ -22,7 +22,7 @@ namespace WebVella.Pulsar.Utils
 			Assembly assembly = null;
 			if (!String.IsNullOrWhiteSpace(assemblyName))
 			{
-				assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(x => x.GetName().Name == assemblyName);
+				assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == assemblyName);
 			}
 			else
 			{
@@ -49,7 +49,7 @@ namespace WebVella.Pulsar.Utils
 			Assembly assembly = null;
 			if (!String.IsNullOrWhiteSpace(assemblyName))
 			{
-				assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(x => x.GetName().Name == assemblyName);
+				assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == assemblyName);
 			}
 			else
 			{
