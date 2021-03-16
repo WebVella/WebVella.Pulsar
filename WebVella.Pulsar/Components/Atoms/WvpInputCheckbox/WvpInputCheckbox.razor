@@ -14,7 +14,11 @@
 			 @oninput="(e) => _onChangeHandler(e)"
 			 title="@Title" />
 	<label class="form-check-label" for="@Id">
-		@if(String.IsNullOrWhiteSpace(Label)){
+		@if(WvpInputCheckboxLabel != null)
+		{
+			@WvpInputCheckboxLabel
+		}
+		else if(String.IsNullOrWhiteSpace(Label)){
 			@:selected
 		}
 		else{

@@ -24,6 +24,8 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public string Label { get; set; } = "";
 
+		[Parameter] public RenderFragment WvpInputCheckboxLabel { get; set; }
+
 		#endregion
 
 		#region << Callbacks >>
