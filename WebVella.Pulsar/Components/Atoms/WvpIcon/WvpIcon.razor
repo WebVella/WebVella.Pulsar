@@ -30,6 +30,9 @@
 
 	protected override void OnParametersSet()
 	{
+		InternalCssClass = "";
+		svgHtml = "";
+
 		if (Size != WvpSize.Normal)
 		{
 			InternalCssClass += $" wvp-icon--{Size.ToDescriptionString()} ";
