@@ -343,6 +343,52 @@
 		var flatPickrServerDateTimeFormat = "Y-m-d";
 		//From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
 		var flatPickrUiDateTimeFormat = "d M Y";
+		var BulgarianDateTimeLocale = {
+			firstDayOfWeek: 1,
+			weekdays: {
+				shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+				longhand: [
+					"Неделя",
+					"Понеделник",
+					"Вторник",
+					"Сряда",
+					"Четвъртък",
+					"Петък",
+					"Събота"
+				]
+			},
+
+			months: {
+				shorthand: [
+					"яну",
+					"фев",
+					"март",
+					"апр",
+					"май",
+					"юни",
+					"юли",
+					"авг",
+					"сеп",
+					"окт",
+					"ное",
+					"дек"
+				],
+				longhand: [
+					"Януари",
+					"Февруари",
+					"Март",
+					"Април",
+					"Май",
+					"Юни",
+					"Юли",
+					"Август",
+					"Септември",
+					"Октомври",
+					"Ноември",
+					"Декември"
+				]
+			}
+		};
 		var fp = document.querySelector(selector)._flatpickr;
 		if (!fp) {
 			var options = {
@@ -365,6 +411,9 @@
 					dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
 				},
 			};
+			if (cultureString && cultureString === "bg") {
+				options.locale = BulgarianDateTimeLocale;
+			}
 			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
 			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
 				if (!e.target.value) {
@@ -379,6 +428,52 @@
 		var flatPickrServerDateTimeFormat = "Y-m-dTH:i:S";//Z
 		//From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
 		var flatPickrUiDateTimeFormat = "d M Y H:i";
+		var BulgarianDateTimeLocale = {
+			firstDayOfWeek: 1,
+			weekdays: {
+				shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+				longhand: [
+					"Неделя",
+					"Понеделник",
+					"Вторник",
+					"Сряда",
+					"Четвъртък",
+					"Петък",
+					"Събота"
+				]
+			},
+
+			months: {
+				shorthand: [
+					"яну",
+					"фев",
+					"март",
+					"апр",
+					"май",
+					"юни",
+					"юли",
+					"авг",
+					"сеп",
+					"окт",
+					"ное",
+					"дек"
+				],
+				longhand: [
+					"Януари",
+					"Февруари",
+					"Март",
+					"Април",
+					"Май",
+					"Юни",
+					"Юли",
+					"Август",
+					"Септември",
+					"Октомври",
+					"Ноември",
+					"Декември"
+				]
+			}
+		};
 		var fp = document.querySelector(selector)._flatpickr;
 		if (!fp) {
 			var options = {
@@ -400,6 +495,9 @@
 					dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
 				},
 			};
+			if (cultureString && cultureString === "bg") {
+				options.locale = BulgarianDateTimeLocale;
+			}
 			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
 			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
 				if (!e.target.value) {
