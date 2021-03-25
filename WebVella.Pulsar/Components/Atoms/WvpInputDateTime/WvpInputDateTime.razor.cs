@@ -57,7 +57,7 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
-				JsService.AddFlatPickrDateTime(Id, _objectReference, "en");
+				JsService.AddFlatPickrDateTime(Id, _objectReference, Culture.TwoLetterISOLanguageName);
 			}
 			await base.OnAfterRenderAsync(firstRender); //Set the proper Id
 		}
