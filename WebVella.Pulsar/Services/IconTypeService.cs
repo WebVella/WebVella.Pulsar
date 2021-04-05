@@ -2077,7 +2077,10 @@ namespace WebVella.Pulsar.Services
 
 		public static Dictionary<string, WvpIconType> GetIconTypeDescriptionEnumDict()
 		{
-			return _iconDecriptionTypeEnumDict;
+			if(_iconDecriptionTypeEnumDict != null)
+				return _iconDecriptionTypeEnumDict;
+			else
+				return new Dictionary<string, WvpIconType>();
 		}
 	}
 }
