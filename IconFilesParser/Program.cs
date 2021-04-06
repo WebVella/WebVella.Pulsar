@@ -89,7 +89,7 @@ namespace IconFileParser
 				var enumString = enumPrefix + processedFileName;
 				var enumDescription = enumPrefix.ToLowerInvariant() + "-" + fileName;
 
-				generatedCode += $"_iconSvgDict[WvpIconType.{enumString}] = \"{currentFileContent}\";" + nr;
+				generatedCode += $"iconTypeSvgDict[WvpIconType.{enumString}] = \"{currentFileContent}\";" + nr;
 
 				generatedEnums += $"[Description(\"{enumDescription}\")]" + nr;
 				generatedEnums += $"{enumString}," + nr;
