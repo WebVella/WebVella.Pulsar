@@ -6,7 +6,7 @@
 
 @if (_isOpen)
 { 
-	<div class="wvp-modal modal d-block @Class" tabindex="-1" @onclick="@(()=> _hide(true,true))">
+	<div class="wvp-modal modal d-block @Class" tabindex="-1" @onclick="@(()=> _hide(true,true))" id="@($"wrapper-{Id}")">
 		<div class="modal-dialog @_sizeClass @DialogClass" id="@Id" @onclick:stopPropagation>
 			<div class="modal-content">
 				@ChildContent

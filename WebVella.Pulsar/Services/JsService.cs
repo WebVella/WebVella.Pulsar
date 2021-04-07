@@ -33,6 +33,22 @@ namespace WebVella.Pulsar.Services
 			return _browserUtcOffsetInMinutes.Value;
 		}
 
+		public async ValueTask<bool> SetOpenModal(string elementId)
+		{
+			await Task.Delay(1);
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.setOpenModal",
+				 elementId);
+		}
+
+		public async ValueTask<bool> SetHideModal(string elementId)
+		{
+			await Task.Delay(1);
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.setHideModal",
+				 elementId);
+		}
+
 		public async ValueTask<bool> AddBodyClass(string className)
 		{
 			return await JSRuntime.InvokeAsync<bool>(

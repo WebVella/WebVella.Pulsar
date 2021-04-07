@@ -60,7 +60,7 @@
 		WebVellaPulsar.eventListeners[eventName][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
 		return true;
 	},
-	addFlatPickrDate: function (elementId,dotNetHelper, cultureString) {
+	addFlatPickrDate: function (elementId, dotNetHelper, cultureString) {
 		if (!WebVellaPulsar.flatPickrs[elementId]) {
 			if (!cultureString) {
 				cultureString = 'en';
@@ -69,7 +69,7 @@
 			var initInterval = setInterval(function () {
 				if (document.getElementById(elementId)) {
 					clearInterval(initInterval);
-					WebVellaPulsar.initFlatPickrDate(elementId,dotNetHelper, cultureString);
+					WebVellaPulsar.initFlatPickrDate(elementId, dotNetHelper, cultureString);
 				}
 				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
 					clearInterval(initInterval);
@@ -178,6 +178,12 @@
 	makeDraggable: function (elementId) {
 		var element = document.getElementById(elementId);
 		var handleEl = element.querySelector(".drag-handle");
+		if (!handleEl)
+			handleEl = element.querySelector(".modal-header");
+
+		if (!handleEl)
+			handleEl = element.querySelector(".modal-body");
+
 		var isMouseDown = false;
 
 		// initial mouse X and Y for `mousedown`
@@ -589,6 +595,65 @@
 			WebVellaPulsar.removeBackdrop();
 		}
 		document.body.classList.remove(Classname);
+		return true;
+	},
+	getBodyModalZindex:function(){
+		var currentZIndexString = document.body.dataset.modalZindex;
+		if (!currentZIndexString) {
+			currentZIndexString = "0";
+		}		
+		var result = 0;
+		try{
+			result = parseInt(currentZIndexString);
+		}
+		catch{
+			return 0;
+		}
+
+		return result;
+	},
+	setOpenModal: function (elemId) {
+		const modalElWrapper = document.getElementById("wrapper-" + elemId);
+		var currentZIndex = WebVellaPulsar.getBodyModalZindex();
+		currentZIndex++;
+		//Set Body
+		WebVellaPulsar.changeBodyPaddingRight("17px");
+		document.body.classList.add("modal-open");
+		document.body.dataset.modalZindex = currentZIndex;
+		//Set Backdrop
+		const bdEl = document.createElement('div');
+		bdEl.classList.add("modal-backdrop");
+		bdEl.classList.add("show");
+		bdEl.style.zIndex = 1050 + currentZIndex;
+		bdEl.id = "backdrop-" + elemId;
+		document.body.appendChild(bdEl);
+
+		//Set modal z-index
+		modalElWrapper.style.zIndex = 1050 + currentZIndex + 1;
+		return true;
+	},
+	setHideModal: function (elemId) {
+		const modalElWrapper = document.getElementById("wrapper-" + elemId);
+		const backdrop = document.getElementById("backdrop-" + elemId);
+		var currentZIndex = WebVellaPulsar.getBodyModalZindex();
+		//Set Body
+		if(currentZIndex <= 1)
+		{
+			document.body.dataset.modalZindex = 0;
+			document.body.classList.remove("modal-open");
+			WebVellaPulsar.changeBodyPaddingRight("");
+		}
+		else{
+			currentZIndex--;
+			document.body.dataset.modalZindex = currentZIndex;
+		}
+		//Set Backdrop
+		if(backdrop)
+			backdrop.remove();
+
+		//Set modal - Already removed
+		//modalElWrapper.style.zIndex = null;
+
 		return true;
 	},
 	setCKEditorData: function (elementId, data) {
