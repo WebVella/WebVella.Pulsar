@@ -75,14 +75,13 @@ namespace WebVella.Pulsar.Components
 		{
 			_isOpen = true;
 			await InvokeAsync(StateHasChanged);
-			//await new JsService(JSRuntime).AddBodyClass("modal-open");
-			await new JsService(JSRuntime).SetOpenModal(Id);
-			if(IsDraggable)
-				await new JsService(JSRuntime).MakeDraggable(Id);
 			if (invokeCallback)
 			{
 				await IsOpenChanged.InvokeAsync(_isOpen);
 			}
+			await Task.Delay(5);
+			if(IsDraggable)
+				await new JsService(JSRuntime).MakeDraggable(Id);
 		}
 		public async Task _hide(bool invokeCallback = true, bool isBackdrop = false)
 		{
@@ -91,8 +90,7 @@ namespace WebVella.Pulsar.Components
 
 			_isOpen = false;
 			await InvokeAsync(StateHasChanged);
-			//await new JsService(JSRuntime).RemoveBodyClass("modal-open");
-			await new JsService(JSRuntime).SetHideModal(Id);
+
 			if (invokeCallback)
 			{
 				await IsOpenChanged.InvokeAsync(_isOpen);
