@@ -130,6 +130,113 @@ namespace WebVella.Pulsar.Utils
 			return fontAwesomeIconName;
 		}
 
+		public static WvpIconType FilePathToIconType(string filePath)
+		{
+			if (String.IsNullOrWhiteSpace(filePath))
+				return WvpIconType.BsFileEarmark;
+
+			var iconType = WvpIconType.BsFileEarmark;
+			if (filePath.EndsWith(".txt"))
+			{
+				iconType = WvpIconType.BsFileEarmark;
+			}
+			else if (filePath.EndsWith(".pdf"))
+			{
+				iconType = WvpIconType.BsFileEarmarkRichtext;
+			}
+			else if (filePath.EndsWith(".doc") || filePath.EndsWith(".docx"))
+			{
+				iconType = WvpIconType.BsFileEarmarkWord;
+			}
+			else if (filePath.EndsWith(".xls") || filePath.EndsWith(".xlsx"))
+			{
+				iconType = WvpIconType.BsFileEarmarkSpreadsheet;
+			}
+			else if (filePath.EndsWith(".ppt") || filePath.EndsWith(".pptx"))
+			{
+				iconType = WvpIconType.BsFileEarmarkPpt;
+			}
+			else if (filePath.EndsWith(".gif") || filePath.EndsWith(".jpg")
+				|| filePath.EndsWith(".jpeg") || filePath.EndsWith(".png")
+				|| filePath.EndsWith(".bmp") || filePath.EndsWith(".tif"))
+			{
+				iconType = WvpIconType.BsFileEarmarkImage;
+			}
+			else if (filePath.EndsWith(".zip") || filePath.EndsWith(".zipx")
+				 || filePath.EndsWith(".rar") || filePath.EndsWith(".tar")
+				  || filePath.EndsWith(".gz") || filePath.EndsWith(".dmg")
+					|| filePath.EndsWith(".iso"))
+			{
+				iconType = WvpIconType.BsFileEarmarkZip;
+			}
+			else if (filePath.EndsWith(".wav") || filePath.EndsWith(".mp3")
+				 || filePath.EndsWith(".fla") || filePath.EndsWith(".flac")
+				  || filePath.EndsWith(".ra") || filePath.EndsWith(".rma")
+					|| filePath.EndsWith(".aif") || filePath.EndsWith(".aiff")
+					|| filePath.EndsWith(".aa") || filePath.EndsWith(".aac")
+					 || filePath.EndsWith(".aax") || filePath.EndsWith(".ac3")
+					  || filePath.EndsWith(".au") || filePath.EndsWith(".ogg")
+						|| filePath.EndsWith(".avr") || filePath.EndsWith(".3ga")
+						|| filePath.EndsWith(".mid") || filePath.EndsWith(".midi")
+						 || filePath.EndsWith(".m4a") || filePath.EndsWith(".mp4a")
+						  || filePath.EndsWith(".amz") || filePath.EndsWith(".mka")
+							|| filePath.EndsWith(".asx") || filePath.EndsWith(".pcm")
+							|| filePath.EndsWith(".m3u") || filePath.EndsWith(".wma")
+							 || filePath.EndsWith(".xwma"))
+			{
+				iconType = WvpIconType.BsFileEarmarkMusic;
+			}
+			else if (filePath.EndsWith(".avi") || filePath.EndsWith(".mpg")
+				 || filePath.EndsWith(".mp4") || filePath.EndsWith(".mkv")
+				  || filePath.EndsWith(".mov") || filePath.EndsWith(".wmv")
+					|| filePath.EndsWith(".vp6") || filePath.EndsWith(".264")
+					|| filePath.EndsWith(".vid") || filePath.EndsWith(".rv")
+					 || filePath.EndsWith(".webm") || filePath.EndsWith(".swf")
+					  || filePath.EndsWith(".h264") || filePath.EndsWith(".flv")
+						|| filePath.EndsWith(".mk3d") || filePath.EndsWith(".gifv")
+						|| filePath.EndsWith(".oggv") || filePath.EndsWith(".3gp")
+						 || filePath.EndsWith(".m4v") || filePath.EndsWith(".movie")
+						  || filePath.EndsWith(".divx"))
+			{
+				iconType = WvpIconType.BsFileEarmarkPlay;
+			}
+			else if (filePath.EndsWith(".c") || filePath.EndsWith(".cpp")
+				 || filePath.EndsWith(".css") || filePath.EndsWith(".js")
+				 || filePath.EndsWith(".py") || filePath.EndsWith(".git")
+				  || filePath.EndsWith(".cs") || filePath.EndsWith(".cshtml")
+				  || filePath.EndsWith(".xml") || filePath.EndsWith(".html")
+					|| filePath.EndsWith(".ini") || filePath.EndsWith(".config")
+					|| filePath.EndsWith(".json") || filePath.EndsWith(".h"))
+			{
+				iconType = WvpIconType.BsFileEarmarkCode;
+			}
+			else if (filePath.EndsWith(".exe") || filePath.EndsWith(".jar")
+				 || filePath.EndsWith(".dll") || filePath.EndsWith(".bat")
+				 || filePath.EndsWith(".pl") || filePath.EndsWith(".scr")
+				  || filePath.EndsWith(".msi") || filePath.EndsWith(".app")
+				  || filePath.EndsWith(".deb") || filePath.EndsWith(".apk")
+					|| filePath.EndsWith(".jar") || filePath.EndsWith(".vb")
+					|| filePath.EndsWith(".prg") || filePath.EndsWith(".sh"))
+			{
+				iconType = WvpIconType.BsFileEarmarkBinary;
+			}
+			else if (filePath.EndsWith(".com") || filePath.EndsWith(".net")
+				 || filePath.EndsWith(".org") || filePath.EndsWith(".edu")
+				 || filePath.EndsWith(".gov") || filePath.EndsWith(".mil")
+				  || filePath.EndsWith("/") || filePath.EndsWith(".html")
+				  || filePath.EndsWith(".htm") || filePath.EndsWith(".xhtml")
+					|| filePath.EndsWith(".jhtml") || filePath.EndsWith(".php")
+					|| filePath.EndsWith(".php3") || filePath.EndsWith(".php4")
+					|| filePath.EndsWith(".php5") || filePath.EndsWith(".phtml")
+					|| filePath.EndsWith(".asp") || filePath.EndsWith(".aspx")
+					|| filePath.EndsWith(".aspx") || filePath.EndsWith("?")
+					|| filePath.EndsWith("#"))
+			{
+				iconType = WvpIconType.BsFileEarmarkCode;
+			}
+			return iconType;
+		}
+
 		public static string FilePathToFileName(string hreflink)
 		{
 			if (String.IsNullOrWhiteSpace(hreflink))
