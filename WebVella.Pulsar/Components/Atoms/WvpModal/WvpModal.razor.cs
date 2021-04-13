@@ -73,6 +73,7 @@ namespace WebVella.Pulsar.Components
 		#region << Private methods >>
 		private async Task _show(bool invokeCallback = true)
 		{
+			await new JsService(JSRuntime).SetModalOpen();
 			_isOpen = true;
 			await InvokeAsync(StateHasChanged);
 			if (invokeCallback)
@@ -89,6 +90,7 @@ namespace WebVella.Pulsar.Components
 				return;
 
 			_isOpen = false;
+			await new JsService(JSRuntime).SetModalClose();
 			await InvokeAsync(StateHasChanged);
 
 			if (invokeCallback)

@@ -283,5 +283,17 @@ namespace WebVella.Pulsar.Services
 				 title, message, type, duration);
 		}
 
+		public async ValueTask<bool> SetModalOpen()
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.setModalOpen");
+		}
+
+		public async ValueTask<bool> SetModalClose()
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.setModalClose");
+		}
+
 	}
 }

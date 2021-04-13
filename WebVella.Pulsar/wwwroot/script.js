@@ -597,20 +597,40 @@
 		document.body.classList.remove(Classname);
 		return true;
 	},
-	getBodyModalZindex:function(){
-		var currentZIndexString = document.body.dataset.modalZindex;
-		if (!currentZIndexString) {
-			currentZIndexString = "0";
+	getModalCount:function(){
+		var currentModalCountString = document.body.dataset.modalCount;
+		if (!currentModalCountString) {
+			currentModalCountString = "0";
 		}		
 		var result = 0;
 		try{
-			result = parseInt(currentZIndexString);
+			result = parseInt(currentModalCount);
 		}
 		catch{
 			return 0;
 		}
 
 		return result;
+	},
+	addModalCount:function(){
+		var currentModalCount = WebVellaPulsar.getModalCount();
+		document.body.dataset.modalCount = currentModalCount + 1;
+	},
+	removeModalCount:function(){
+		var currentModalCount = WebVellaPulsar.getModalCount();
+		if(currentModalCount > 0)
+			document.body.dataset.modalCount = currentModalCount - 1;
+	},
+
+	setModalOpen: function () {
+		WebVellaPulsar.addBodyClass("modal-open");
+		WebVellaPulsar.addModalCount();
+		return true;
+	},
+	setModalClose: function () {
+		WebVellaPulsar.removeBodyClass("modal-open");
+		WebVellaPulsar.removeModalCount();
+		return true;
 	},
 
 	setCKEditorData: function (elementId, data) {
