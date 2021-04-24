@@ -177,12 +177,17 @@
 	},
 	makeDraggable: function (elementId) {
 		var element = document.getElementById(elementId);
+		if(!element)
+			return;
 		var handleEl = element.querySelector(".drag-handle");
 		if (!handleEl)
 			handleEl = element.querySelector(".modal-header");
 
 		if (!handleEl)
 			handleEl = element.querySelector(".modal-body");
+
+		if(!handleEl)
+			return;
 
 		var isMouseDown = false;
 
