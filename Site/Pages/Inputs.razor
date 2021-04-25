@@ -189,7 +189,8 @@
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Form</WvpFormLabel>
 					<WvpInputMultiSelect TItem="MySelectOption" Options="selectData" Value="@multiSelectValueChanged"
-												ValueChanged="_onMultiSelectValueChanged" OnInput="_onMultiSelectValueInput" IsFilterable="true">
+												ValueChanged="_onMultiSelectValueChanged" OnInput="_onMultiSelectValueInput" IsFilterable="true"
+												FetchMoreRows="_onMultiSelectFetchMoreRows" EndIsReached="multiSelectFetchRowsEndReached">
 						<WvpInputMultiSelectField><span class="badge bg-secondary">@context?.Text</span> </WvpInputMultiSelectField>
 						<WvpInputMultiSelectOption>@context?.Text</WvpInputMultiSelectOption>
 					</WvpInputMultiSelect>
@@ -656,7 +657,7 @@
 				</WvpFormGroup>
 				<WvpFormGroup Class="mb-2">
 					<WvpFormLabel>Inline</WvpFormLabel>
-					<WvpInlineCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" Label="Checkbox label" >
+					<WvpInlineCheckbox Value="@boolValueChanged" ValueChanged="_onBoolValueChanged" Label="Checkbox label">
 						<WvpInlineCheckboxChecked>checked</WvpInlineCheckboxChecked>
 						<WvpInlineCheckboxNotChecked>not checked</WvpInlineCheckboxNotChecked>
 						<WvpInlineCheckboxUnknown>uknown</WvpInlineCheckboxUnknown>
@@ -726,6 +727,7 @@
 
 
 @code{
+
 	private CultureInfo bgCulture = new CultureInfo("bg-BG");
 	private string textValueChanged = "";
 	private string textValueInput = "";
@@ -761,6 +763,31 @@
 
 	private List<MySelectOption> multiSelectValueChanged = new List<MySelectOption>();
 	private string multiSelectValueInput = "";
+	private bool multiSelectFetchRowsEndReached = false;
+	private int multiSelectFetchRowsPage = 1;
+	private int multiSelectFetchRowsPageSize = 10;
+	private string multiSelectFilterValue = "";
+
+
+	protected override void OnInitialized()
+	{
+		var iconDict = WebVella.Pulsar.Services.IconTypeService.GetIconTypeDescriptionEnumDict();
+		foreach (var key in iconDict.Keys)
+		{
+			if (!String.IsNullOrWhiteSpace(key))
+			{
+				acFullList.Add(new MySelectOption { Value = key, Text = key });
+				acFullListString.Add(key);
+			}
+		}
+		selectData = acFullList.Take(10).ToList();
+
+		selectMsData = acFullListString.Take(10).ToList();
+
+		base.OnInitialized();
+	}
+
+
 
 	private EmployeeModel employee = new EmployeeModel();
 
@@ -903,23 +930,6 @@
 		await InvokeAsync(StateHasChanged);
 	}
 
-	protected override void OnInitialized()
-	{
-		var iconDict = WebVella.Pulsar.Services.IconTypeService.GetIconTypeDescriptionEnumDict();
-		foreach (var key in iconDict.Keys)
-		{
-			if (!String.IsNullOrWhiteSpace(key))
-			{
-				acFullList.Add(new MySelectOption { Value = key, Text = key });
-				acFullListString.Add(key);
-			}
-		}
-		selectData = acFullList.Take(10).ToList();
-
-		selectMsData = acFullListString.Take(10).ToList();
-
-		base.OnInitialized();
-	}
 
 	private void _onTextValueChanged(ChangeEventArgs e)
 	{
@@ -1010,9 +1020,31 @@
 
 	private void _onMultiSelectValueInput(ChangeEventArgs e)
 	{
-		var filter = (string)e.Value;
-		selectData = acFullList.FindAll(x => x.Text.Contains(filter)).Take(10).ToList();
+		multiSelectFilterValue = (string)e.Value;
+		selectData = acFullList.FindAll(x => x.Text.Contains(multiSelectFilterValue)).Take(multiSelectFetchRowsPageSize).ToList();
+		multiSelectFetchRowsPage = 1;
+		multiSelectFetchRowsEndReached = false;
+		if (selectData.Count < multiSelectFetchRowsPageSize)
+			multiSelectFetchRowsEndReached = true;
 	}
+
+	private async Task _onMultiSelectFetchMoreRows()
+	{
+		if (!multiSelectFetchRowsEndReached)
+		{
+			var newBatch = new List<MySelectOption>();
+			if(String.IsNullOrWhiteSpace(multiSelectFilterValue))
+				newBatch = acFullList.Skip((multiSelectFetchRowsPage - 1) * multiSelectFetchRowsPageSize).Take(multiSelectFetchRowsPageSize).ToList();
+			else
+				newBatch = acFullList.FindAll(x => x.Text.Contains(multiSelectFilterValue)).Skip((multiSelectFetchRowsPage - 1) * multiSelectFetchRowsPageSize).Take(multiSelectFetchRowsPageSize).ToList();
+			multiSelectFetchRowsPage++;
+			if (newBatch.Count < multiSelectFetchRowsPageSize)
+				multiSelectFetchRowsEndReached = true;
+			selectData.AddRange(newBatch);
+			await InvokeAsync(StateHasChanged);
+		}
+	}
+
 
 
 	private MySelectOption radioListValueChanged = null;

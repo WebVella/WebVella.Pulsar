@@ -45,36 +45,43 @@
 					<div class="input-group-append">
 						<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
 					</div>
-					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password"/>
+					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
 				</div>
 			</div>
 		}
 		<div class="wvp-dropdown-wrapper">
-			@foreach (var option in Options)
-			{
-				<WvpDropdownItem OnClick="() => _onSelectHandler(option)">
-					<div class="dropdown-item__icon">
-						@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
-						{
-							<WvpIcon Type="WvpIconType.MdfCheckBox" />
-						}
-						else
-						{
-							<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
-						}
-					</div>
-					<div class="dropdown-item__content">
-						@if (WvpInputMultiSelectOption != null)
-						{
-							@WvpInputMultiSelectOption(option)
-						}
-						else
-						{
-							@Newtonsoft.Json.JsonConvert.SerializeObject(option)
-						}
-					</div>
-				</WvpDropdownItem>
-			}
+			<WvpInfiniteScroll OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")">
+				@{
+					var index = 0;
+				}
+				@foreach (var option in Options)
+				{
+					<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
+						<div class="dropdown-item__icon">
+							@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
+							{
+								<WvpIcon Type="WvpIconType.MdfCheckBox" />
+							}
+							else
+							{
+								<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
+							}
+						</div>
+						<div class="dropdown-item__content">
+							@if (WvpInputMultiSelectOption != null)
+							{
+								@WvpInputMultiSelectOption(option)
+							}
+							else
+							{
+								@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+							}
+						</div>
+					</WvpDropdownItem>
+					index++;
+				}
+				<div id="@($"wvp-loading-bar-{Id}")" class="@(!FetchMoreRows.HasDelegate || EndIsReached ? "d-none" : "")">Loading...</div>
+			</WvpInfiniteScroll>
 			@if (Options.ToList().Count == 0)
 			{
 				<div class="wvp-grey p-1">No options available</div>

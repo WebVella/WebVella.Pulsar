@@ -32,12 +32,15 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public IEnumerable<TItem> Value { get; set; }
 
+		[Parameter] public bool EndIsReached { get; set; } = false;
+
 		#endregion
 
 		#region << Callbacks >>
 
 		[Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; } //Fires when user presses enter or input looses focus
 
+		[Parameter] public EventCallback FetchMoreRows { get; set; } 
 		#endregion
 
 		#region << Private properties >>
@@ -101,7 +104,10 @@ namespace WebVella.Pulsar.Components
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
-				_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(Value)).ToList();
+				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+				var valueJson = JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings);
+				_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(valueJson, jsonSettings).ToList();
 			}
 
 
@@ -154,7 +160,9 @@ namespace WebVella.Pulsar.Components
 				//Abandon change
 				else
 				{
-					_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(_originalValue)).ToList();
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+					_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(_originalValue, Formatting.None, jsonSettings), jsonSettings).ToList();
 				}
 				_editEnabled = false;
 			}

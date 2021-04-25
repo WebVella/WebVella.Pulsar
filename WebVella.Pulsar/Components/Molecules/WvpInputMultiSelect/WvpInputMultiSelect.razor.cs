@@ -29,10 +29,12 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public IEnumerable<TItem> Value { get; set; }
 
+		[Parameter] public bool EndIsReached { get; set; } = false;
+
 		#endregion
 
 		#region << Callbacks >>
-
+		[Parameter] public EventCallback FetchMoreRows { get; set; } 
 		#endregion
 
 		#region << Private properties >>

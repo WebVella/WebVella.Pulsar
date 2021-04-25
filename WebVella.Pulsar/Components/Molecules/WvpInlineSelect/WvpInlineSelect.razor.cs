@@ -31,12 +31,14 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public TItem Value { get; set; }
 
+		[Parameter] public bool EndIsReached { get; set; } = false;
 		#endregion
 
 		#region << Callbacks >>
 
 		[Parameter] public EventCallback<ChangeEventArgs> OnInput { get; set; } //Fires when user presses enter or input looses focus
 
+		[Parameter] public EventCallback FetchMoreRows { get; set; } 
 		#endregion
 
 		#region << Private properties >>
@@ -100,7 +102,9 @@ namespace WebVella.Pulsar.Components
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
-				_value = JsonConvert.DeserializeObject<TItem>(JsonConvert.SerializeObject(Value));
+				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+				_value = JsonConvert.DeserializeObject<TItem>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
 			}
 
 

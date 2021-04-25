@@ -59,7 +59,10 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-			_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(Value)).ToList();
+			var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+			jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+
+			_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings).ToList();
 
 			await base.OnParametersSetAsync();
 		}

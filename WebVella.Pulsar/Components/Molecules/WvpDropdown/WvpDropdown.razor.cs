@@ -30,7 +30,7 @@ namespace WebVella.Pulsar.Components
 
 		private string _class = "";
 
-		private bool _isMenuVisible = false;
+		internal bool _isMenuVisible = false;
 
 		private WvpDropDownDirection _mode = WvpDropDownDirection.DropDown;
 		#endregion

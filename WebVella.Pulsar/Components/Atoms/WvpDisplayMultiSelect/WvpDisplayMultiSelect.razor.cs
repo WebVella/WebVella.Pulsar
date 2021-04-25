@@ -53,15 +53,17 @@ namespace WebVella.Pulsar.Components
 			else
 			{
 				_cssList.Add("form-control-plaintext");
-					if (Value == null)
-						_cssList.Add("form-control-plaintext--empty");
+				if (Value == null)
+					_cssList.Add("form-control-plaintext--empty");
 			}
 
 			var sizeSuffix = Size.ToDescriptionString();
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"form-control-{sizeSuffix}");
 
-			_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(Value)).ToList();
+			var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+			jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+			_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings),jsonSettings).ToList();
 
 			await base.OnParametersSetAsync();
 		}

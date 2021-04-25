@@ -68,8 +68,11 @@ namespace WebVella.Pulsar.Components
 				if (Value == null)
 					_value = null;
 				else
-					_value = JsonConvert.DeserializeObject<WvpFileInfo>(JsonConvert.SerializeObject(Value));
-
+				{
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+					_value = JsonConvert.DeserializeObject<WvpFileInfo>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings),jsonSettings);
+				}
 			}
 
 			await base.OnParametersSetAsync();

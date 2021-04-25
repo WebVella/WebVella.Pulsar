@@ -30,10 +30,11 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public TItem Value { get; set; }
 
+		[Parameter] public bool EndIsReached { get; set; } = false;
 		#endregion
 
 		#region << Callbacks >>
-
+		[Parameter] public EventCallback FetchMoreRows { get; set; } 
 		#endregion
 
 		#region << Private properties >>
@@ -74,7 +75,9 @@ namespace WebVella.Pulsar.Components
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
-				_value = JsonConvert.DeserializeObject<TItem>(JsonConvert.SerializeObject(Value));
+				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+				_value = JsonConvert.DeserializeObject<TItem>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
 			}
 
 			if (!String.IsNullOrWhiteSpace(Name))
@@ -96,7 +99,8 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _dropdownToggleCallback(bool isVisible)
 		{
-			if(Options == null || Options.ToList().Count == 0) {
+			if (Options == null || Options.ToList().Count == 0)
+			{
 				return;
 			}
 			if (isVisible)

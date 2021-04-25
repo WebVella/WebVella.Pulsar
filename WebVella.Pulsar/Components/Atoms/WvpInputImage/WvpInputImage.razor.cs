@@ -36,8 +36,8 @@ namespace WebVella.Pulsar.Components
 		#region << Callbacks >>
 		public async Task UpdateProgressAsync(WvpFileInfo fileInfo)
 		{
-				_value = fileInfo;
-				await InvokeAsync(StateHasChanged);
+			_value = fileInfo;
+			await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion
@@ -92,8 +92,11 @@ namespace WebVella.Pulsar.Components
 				_originalValue = Value;
 				_value = null;
 				if (Value is WvpFileInfo)
-					_value = JsonConvert.DeserializeObject<WvpFileInfo>(JsonConvert.SerializeObject(Value));
-
+				{
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+					_value = JsonConvert.DeserializeObject<WvpFileInfo>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
+				}
 			}
 
 			if (!String.IsNullOrWhiteSpace(Name))
@@ -129,7 +132,7 @@ namespace WebVella.Pulsar.Components
 		public async Task NotifyChange(List<WvpFileInfo> files)
 		{
 			_value = null;
-			if(files.Count > 0)
+			if (files.Count > 0)
 				_value = files[0];
 
 			foreach (var file in files)
@@ -150,8 +153,8 @@ namespace WebVella.Pulsar.Components
 				{
 					file.Status = "Loading...";
 				}
-				
-				await file.WriteTempFileAsync(JSRuntime,_elementRef,UpdateProgressAsync);
+
+				await file.WriteTempFileAsync(JSRuntime, _elementRef, UpdateProgressAsync);
 
 			}
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
