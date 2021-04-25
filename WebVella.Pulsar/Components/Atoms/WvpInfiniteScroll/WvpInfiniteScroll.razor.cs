@@ -17,7 +17,8 @@ namespace WebVella.Pulsar.Components
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
 		[Parameter] public string ObserverTargetId { get; set; }
-
+		[Parameter] public bool ObserverViewportVisible { get; set; } = false;
+		[Parameter] public string ObserverViewportId { get; set; }
 		[Parameter] public EventCallback<bool> OnObservableTargetReached { get; set; }
 		#endregion
 
@@ -44,24 +45,32 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectRef = DotNetObjectReference.Create(this);
+				if (String.IsNullOrWhiteSpace(ObserverTargetId))
+				{
+					ObserverTargetId = $"wvp-loading-bar-{Id}";
+					ObserverViewportVisible = true;
+				}
+				await InvokeAsync(StateHasChanged);
 				await Task.Delay(1);
-				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId);
+				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}
 		#endregion
 
 		#region << Private methods >>
-		private async Task _invokeCallback(){
+		private async Task _invokeCallback()
+		{
 			await OnObservableTargetReached.InvokeAsync(true);
 			var jsSrv = new JsService(JSRuntime);
 			//This fixes the case when even after the first intersect, the observed element is still visible and we need to force more callbacks
 			var elementIsVisible = true;
-			while(elementIsVisible){
+			while (elementIsVisible)
+			{
 				await Task.Delay(100);
 				elementIsVisible = await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
-				if(elementIsVisible)
+				if (elementIsVisible)
 				{
-					await OnObservableTargetReached.InvokeAsync(true);				
+					await OnObservableTargetReached.InvokeAsync(true);
 				}
 			}
 		}

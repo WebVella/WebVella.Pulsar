@@ -47,11 +47,11 @@ namespace WebVella.Pulsar.Services
 				 elementId,dotNetReference, cultureString);
 		}
 
-		public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId,DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId)
+		public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId,DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId, string observerViewportId)
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.initInfiniteScroll",
-				 componentId,objectRef, observerTargetId);
+				 componentId,objectRef, observerTargetId, observerViewportId);
 		}
 
 		public async ValueTask<bool> DestroyInfiniteScroll(Guid componentId)

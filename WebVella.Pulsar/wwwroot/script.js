@@ -177,7 +177,7 @@
 	},
 	makeDraggable: function (elementId) {
 		var element = document.getElementById(elementId);
-		if(!element)
+		if (!element)
 			return;
 		var handleEl = element.querySelector(".drag-handle");
 		if (!handleEl)
@@ -186,7 +186,7 @@
 		if (!handleEl)
 			handleEl = element.querySelector(".modal-body");
 
-		if(!handleEl)
+		if (!handleEl)
 			return;
 
 		var isMouseDown = false;
@@ -518,14 +518,18 @@
 
 		}
 	},
-	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId) {
+	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
+		var options = {
+			threshold: 0
+		};
+		if (observerViewportId) {
+			options.root = document.getElementById(observerViewportId);
+		};
 		WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
 			function (e) {
 				dotNetHelper.invokeMethodAsync("OnIntersection");
 			},
-			{
-				threshold: 0
-			}
+			options
 		);
 
 		let element = document.getElementById(observerTargetId);
@@ -602,28 +606,28 @@
 		document.body.classList.remove(Classname);
 		return true;
 	},
-	getModalCount:function(){
+	getModalCount: function () {
 		var currentModalCountString = document.body.dataset.modalCount;
 		if (!currentModalCountString) {
 			currentModalCountString = "0";
-		}		
+		}
 		var result = 0;
-		try{
+		try {
 			result = parseInt(currentModalCount);
 		}
-		catch{
+		catch {
 			return 0;
 		}
 
 		return result;
 	},
-	addModalCount:function(){
+	addModalCount: function () {
 		var currentModalCount = WebVellaPulsar.getModalCount();
 		document.body.dataset.modalCount = currentModalCount + 1;
 	},
-	removeModalCount:function(){
+	removeModalCount: function () {
 		var currentModalCount = WebVellaPulsar.getModalCount();
-		if(currentModalCount > 0)
+		if (currentModalCount > 0)
 			document.body.dataset.modalCount = currentModalCount - 1;
 	},
 

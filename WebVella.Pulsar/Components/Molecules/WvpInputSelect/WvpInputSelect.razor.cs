@@ -86,6 +86,9 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(Placeholder))
 				AdditionalAttributes["placeholder"] = Placeholder;
 
+			if(!FetchMoreRows.HasDelegate)
+				EndIsReached = true;
+
 			await base.OnParametersSetAsync();
 		}
 		#endregion

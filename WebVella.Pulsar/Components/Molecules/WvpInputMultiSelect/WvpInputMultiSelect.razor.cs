@@ -34,7 +34,7 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Callbacks >>
-		[Parameter] public EventCallback FetchMoreRows { get; set; } 
+		[Parameter] public EventCallback FetchMoreRows { get; set; }
 		#endregion
 
 		#region << Private properties >>
@@ -84,6 +84,9 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(Placeholder))
 				AdditionalAttributes["placeholder"] = Placeholder;
 
+			if (!FetchMoreRows.HasDelegate)
+				EndIsReached = true;
+
 			await base.OnParametersSetAsync();
 		}
 		#endregion
@@ -115,10 +118,12 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _onSelectHandler(TItem item)
 		{
-			if (_value.Any(x=> JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(item))){
-				_value = _value.FindAll(x=> JsonConvert.SerializeObject(x) != JsonConvert.SerializeObject(item));
+			if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(item)))
+			{
+				_value = _value.FindAll(x => JsonConvert.SerializeObject(x) != JsonConvert.SerializeObject(item));
 			}
-			else{
+			else
+			{
 				_value.Add(item);
 			}
 
