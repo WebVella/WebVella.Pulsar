@@ -104,7 +104,7 @@ namespace WebVella.Pulsar.Components
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
-				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
 				var valueJson = JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings);
 				_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(valueJson, jsonSettings).ToList();
@@ -160,7 +160,7 @@ namespace WebVella.Pulsar.Components
 				//Abandon change
 				else
 				{
-					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
 					_value = JsonConvert.DeserializeObject<IEnumerable<TItem>>(JsonConvert.SerializeObject(_originalValue, Formatting.None, jsonSettings), jsonSettings).ToList();
 				}

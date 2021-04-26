@@ -70,7 +70,7 @@ namespace WebVella.Pulsar.Components
 					_value = null;
 				else
 				{
-					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
 					_value = JsonConvert.DeserializeObject<List<WvpFileInfo>>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings),jsonSettings);
 				}
