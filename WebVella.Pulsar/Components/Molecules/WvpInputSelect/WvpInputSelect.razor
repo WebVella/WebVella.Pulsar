@@ -37,7 +37,7 @@
 		</span>
 	</WvpDropdownToggle>
 
-	<WvpDropdownMenu Class="w-100 pt-0">
+	<WvpDropdownMenu Class="pt-0">
 		@if (IsFilterable)
 		{
 			<div class="p-1 wvp-bkg-grey-100">
@@ -56,17 +56,15 @@
 				@foreach (var option in Options)
 				{
 					<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
-						<div class="dropdown-item">
-							<div class="dropdown-item__content">
-								@if (WvpInputSelectOption != null)
-								{
-									@WvpInputSelectOption(option)
-								}
-								else
-								{
-									@Newtonsoft.Json.JsonConvert.SerializeObject(option)
-								}
-							</div>
+						<div class="dropdown-item__content">
+							@if (WvpInputSelectOption != null)
+							{
+								@WvpInputSelectOption(option)
+							}
+							else
+							{
+								@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+							}
 						</div>
 					</WvpDropdownItem>
 					index++;

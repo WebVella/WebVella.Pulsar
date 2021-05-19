@@ -2104,17 +2104,20 @@ span.flatpickr-weekday {
   text-align: center;
   color: #333; }
 
-.wvp-dropdown .dropdown-item {
+.wvp-dropdown .wvp-dropdown-menu {
+  min-width: 100%; }
+
+.wvp-dropdown .wvp-dropdown-item {
   padding: 0.25rem;
   font-size: 0.875rem;
   display: flex;
   align-items: center; }
-  .wvp-dropdown .dropdown-item__icon {
+  .wvp-dropdown .wvp-dropdown-item__icon {
     flex: 0 0 23px;
     display: flex;
     align-items: center;
     justify-content: flex-start; }
-  .wvp-dropdown .dropdown-item__content {
+  .wvp-dropdown .wvp-dropdown-item__content {
     flex: 1 1 auto; }
 
 .wvp-dropdown .dropdown-divider {
