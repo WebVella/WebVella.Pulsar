@@ -246,6 +246,9 @@
 		}
 		return true;
 	},
+	removeDraggable: function (elementId) {
+		return true;
+	},
 	executeEventCallbacks: function (eventName, context) {
 		if (WebVellaPulsar.eventListeners[eventName]) {
 			for (const prop in WebVellaPulsar.eventListeners[eventName]) {
@@ -613,7 +616,7 @@
 		}
 		var result = 0;
 		try {
-			result = parseInt(currentModalCount);
+			result = parseInt(currentModalCountString);
 		}
 		catch {
 			return 0;
@@ -623,22 +626,33 @@
 	},
 	addModalCount: function () {
 		var currentModalCount = WebVellaPulsar.getModalCount();
-		document.body.dataset.modalCount = currentModalCount + 1;
+		var newModalCount = currentModalCount + 1;
+		document.body.dataset.modalCount = newModalCount;
+		console.log("add modal count. new: " + newModalCount)
+		return newModalCount;
 	},
 	removeModalCount: function () {
 		var currentModalCount = WebVellaPulsar.getModalCount();
-		if (currentModalCount > 0)
-			document.body.dataset.modalCount = currentModalCount - 1;
+		var newModalCount = currentModalCount;
+		if (newModalCount > 0) {
+			newModalCount = newModalCount - 1;
+			document.body.dataset.modalCount = newModalCount;
+        }
+		console.log("remove modal count. new: " + newModalCount)
+		return newModalCount;
 	},
 
 	setModalOpen: function () {
-		WebVellaPulsar.addBodyClass("modal-open");
-		WebVellaPulsar.addModalCount();
+		var newModalCount = WebVellaPulsar.addModalCount();
+		if (newModalCount == 1)
+			WebVellaPulsar.addBodyClass("modal-open");
+
 		return true;
 	},
 	setModalClose: function () {
-		WebVellaPulsar.removeBodyClass("modal-open");
-		WebVellaPulsar.removeModalCount();
+		var newModalCount = WebVellaPulsar.removeModalCount();
+		if (newModalCount == 0)
+			WebVellaPulsar.removeBodyClass("modal-open");
 		return true;
 	},
 

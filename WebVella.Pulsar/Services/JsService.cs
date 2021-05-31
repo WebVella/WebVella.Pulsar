@@ -146,6 +146,13 @@ namespace WebVella.Pulsar.Services
 				 elementId);
 		}
 
+		public async ValueTask<bool> RemoveDraggable(string elementId)
+		{
+			return await JSRuntime.InvokeAsync<bool>(
+				 "WebVellaPulsar.removeDraggable",
+				 elementId);
+		}
+
 		public async ValueTask<bool> BlurElement(string elementId)
 		{
 			return await JSRuntime.InvokeAsync<bool>(
