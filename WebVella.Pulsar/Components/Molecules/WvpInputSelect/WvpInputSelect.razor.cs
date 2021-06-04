@@ -29,6 +29,7 @@ namespace WebVella.Pulsar.Components
 		[Parameter] public string Placeholder { get; set; } = "";
 
 		[Parameter] public TItem Value { get; set; }
+		[Parameter] public WvpDropDownDirection Mode { get; set; } = WvpDropDownDirection.DropDown;
 
 		[Parameter] public bool EndIsReached { get; set; } = false;
 		#endregion

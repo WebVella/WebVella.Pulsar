@@ -4,7 +4,8 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible" Class="@(Options == null || Options.ToList().Count == 0 ? "disabled" : "")">
+<WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible" 
+			 Class="@(Options == null || Options.ToList().Count == 0 ? "disabled" : "")" Mode="@Mode">
 	<WvpDropdownToggle>
 		<span class="input-group @(String.Join(" ",_cssList))">
 			@if (_value == null)

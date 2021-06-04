@@ -21,7 +21,7 @@
 else
 {
 	<div class="input-group @(String.Join(" ",_cssList))" id="@Id">
-		<WvpInputSelect Id="@_inputElementId"
+		<WvpInputSelect Id="@_inputElementId" Mode="@Mode"
 							 Value="@_value" Title="@Title" Placeholder="@Placeholder" OnInput="_onInputHandler" ValueChanged="_onValueChangeHandler"
 							 TItem="TItem" Options="Options" IsFilterable="IsFilterable"
 							 FetchMoreRows="FetchMoreRows" EndIsReached="EndIsReached">
