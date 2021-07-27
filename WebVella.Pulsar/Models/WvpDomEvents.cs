@@ -17,6 +17,8 @@ namespace WebVella.Pulsar.Models
 		[Description("mousedown-non-dropdown")]
 		MouseDownNonDropdown = 4,
 		[Description("mousedown-non-modal")]
-		MouseDownNonModal = 5
+		MouseDownNonModal = 5,
+		[Description("keydown")]
+		Keydown = 6
 	}
 }
