@@ -3,7 +3,7 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<input type="number" 
+@*<input type="number" 
 	class="form-control @(String.Join(" ",_cssList))"
 	id="@Id"
 	@attributes="@AdditionalAttributes"
@@ -11,4 +11,14 @@
 	@onblur="(e) => _onBlurHandler(e)"
 	@onkeydown="(e) => _onKeyDownHandler(e)"
 	@onmouseup="(e) => _onMouseDownHandler(e)"
-	/>
+	/>*@
+
+@*BOZ: cannot serve onKeydown as plus and minus signs will not be possible in this case*@
+
+<input type="number"
+       class="form-control @(String.Join(" ",_cssList))"
+       id="@Id"
+       @attributes="@AdditionalAttributes"
+       @bind-value="@_value"
+       @onblur="(e) => _onBlurHandler(e)"
+       @onmouseup="(e) => _onMouseDownHandler(e)" />
