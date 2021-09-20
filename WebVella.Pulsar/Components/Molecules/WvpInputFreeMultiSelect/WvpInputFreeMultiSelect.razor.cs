@@ -68,7 +68,10 @@ namespace WebVella.Pulsar.Components
 			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
 			{
 				_originalValue = Value;
-				_value = Value.ToList();
+				if (Value != null)
+					_value = Value.ToList();
+				else
+					_value = new();
 			}
 
 			if (JsonConvert.SerializeObject(_originOptions) != JsonConvert.SerializeObject(Options))
