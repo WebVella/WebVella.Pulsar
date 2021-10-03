@@ -132,7 +132,7 @@ namespace WebVella.Pulsar.Components
 
 			_isDropdownVisible = false;
 			await InvokeAsync(StateHasChanged);
-			await Task.Delay(1);
+			await Task.Delay(0);
 			_isDropdownVisible = null;
 			await InvokeAsync(StateHasChanged);
 		}

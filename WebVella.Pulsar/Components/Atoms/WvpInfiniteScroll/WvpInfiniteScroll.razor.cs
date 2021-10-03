@@ -19,10 +19,27 @@ namespace WebVella.Pulsar.Components
 		[Parameter] public string ObserverTargetId { get; set; }
 		[Parameter] public bool ObserverViewportVisible { get; set; } = false;
 		[Parameter] public string ObserverViewportId { get; set; }
-		[Parameter] public EventCallback<bool> OnObservableTargetReached { get; set; }
+		[Parameter] public EventCallback OnObservableTargetReached { get; set; }
 		#endregion
 
 		#region << Callbacks >>
+
+		public async Task PerformVisibilityCheck()
+		{
+			Debug.WriteLine($"============== PerformVisibilityCheck START");
+			await Task.Delay(100);
+			var jsSrv = new JsService(JSRuntime);
+			//This fixes the case when even after the first intersect, the observed element is still visible and we need to force more callbacks
+			var isVisible= await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
+			Debug.WriteLine($"============== PerformVisibilityCheck VISIBLE {isVisible}");
+			if (isVisible)
+			{
+				Debug.WriteLine($"============== PerformVisibilityCheck CALLBACK INVOKED");
+				await OnObservableTargetReached.InvokeAsync();
+			}
+
+			Debug.WriteLine($"============== PerformVisibilityCheck END");
+		}
 
 		#endregion
 
@@ -51,29 +68,13 @@ namespace WebVella.Pulsar.Components
 					ObserverViewportVisible = true;
 				}
 				await InvokeAsync(StateHasChanged);
-				await Task.Delay(1);
+				await Task.Delay(0);
 				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}
 		#endregion
 
 		#region << Private methods >>
-		private async Task _invokeCallback()
-		{
-			await OnObservableTargetReached.InvokeAsync(true);
-			var jsSrv = new JsService(JSRuntime);
-			//This fixes the case when even after the first intersect, the observed element is still visible and we need to force more callbacks
-			var elementIsVisible = true;
-			while (elementIsVisible)
-			{
-				await Task.Delay(100);
-				elementIsVisible = await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
-				if (elementIsVisible)
-				{
-					await OnObservableTargetReached.InvokeAsync(true);
-				}
-			}
-		}
 
 		#endregion
 
@@ -85,7 +86,7 @@ namespace WebVella.Pulsar.Components
 		[JSInvokable]
 		public async Task OnIntersection()
 		{
-			await _invokeCallback();
+			await OnObservableTargetReached.InvokeAsync();
 		}
 		#endregion
 	}

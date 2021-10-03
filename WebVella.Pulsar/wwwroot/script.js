@@ -145,7 +145,7 @@
         if (domElement) {
             return new Promise(resolve => {
                 const o = new IntersectionObserver(([entry]) => {
-                    resolve(entry.intersectionRatio === 1);
+                    resolve(entry.intersectionRatio > 0);
                     o.disconnect();
                 });
                 o.observe(domElement);
@@ -528,15 +528,16 @@
         }
     },
     initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
-        var options = {
-            threshold: 0
+		var options = {
+			root: null,
+			threshold: 0
         };
         if (observerViewportId) {
             options.root = document.getElementById(observerViewportId);
         };
         WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
-            function (e) {
-                dotNetHelper.invokeMethodAsync("OnIntersection");
+			function (e) {
+				dotNetHelper.invokeMethodAsync("OnIntersection");
             },
             options
         );
