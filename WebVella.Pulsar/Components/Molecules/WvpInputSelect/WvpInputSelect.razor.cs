@@ -24,7 +24,7 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public bool IsFilterable { get; set; } = false;
 
-		[Parameter] public IEnumerable<TItem> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
+		[Parameter] public IEnumerable<TItem> Options { get; set; }
 
 		[Parameter] public string Placeholder { get; set; } = "";
 
@@ -42,8 +42,6 @@ namespace WebVella.Pulsar.Components
 
 		private List<string> _cssList = new List<string>();
 
-		private IEnumerable<TItem> _options;
-
 		private bool? _isDropdownVisible = null;
 
 		private string _filterElementId = "wvp-filter-" + Guid.NewGuid();
@@ -55,8 +53,6 @@ namespace WebVella.Pulsar.Components
 		private TItem _originalValue;
 
 		private TItem _value;
-
-		private bool _isDataTouched = true;
 
 		#endregion
 

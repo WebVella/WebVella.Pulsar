@@ -3,11 +3,11 @@ using System;
 using System.Timers;
 using System.Diagnostics;
 using WebVella.Pulsar.Models;
-
+using System.Threading.Tasks;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpTimer : WvpBase, IDisposable
+	public partial class WvpTimer : WvpBase, IAsyncDisposable
 	{
 		#region << Parameters >>
 		[Parameter] public int MaxTimeInSeconds { get; set; } = -1;
@@ -27,18 +27,15 @@ namespace WebVella.Pulsar.Components
 
 		private Timer _timer;
 		private Stopwatch _stpWatch;
-		private TimeSpan _max;
+		private TimeSpan? _max;
 
 		public TimeSpan TimeElapsed
 		{
 			get
 			{
-				if (_max != null)
-				{
-					if(IsCountDown)
-						return (_max.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) > 0 ? TimeSpan.FromMilliseconds(_max.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) : TimeSpan.FromMilliseconds(0);
-				}
-				
+				if (_max != null && IsCountDown)
+					return (_max.Value.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) > 0 ? TimeSpan.FromMilliseconds(_max.Value.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) : TimeSpan.FromMilliseconds(0);
+
 				//else
 				return TimeSpan.FromMilliseconds(_stpWatch.ElapsedMilliseconds);
 			}
@@ -49,7 +46,7 @@ namespace WebVella.Pulsar.Components
 			get
 			{
 				if (_max != null)
-					return (_max.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) < 0;
+					return (_max.Value.TotalMilliseconds - _stpWatch.ElapsedMilliseconds) < 0;
 				else
 					return false;
 			}
@@ -75,14 +72,15 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
+			await Task.Delay(0);
 			Stop();
 		}
 
 		protected override void OnInitialized()
 		{
-			_timer = new Timer();			
+			_timer = new Timer();
 			_timer.Elapsed += TimerTick;
 			_timer.AutoReset = false;
 			_stpWatch = new Stopwatch();
@@ -96,13 +94,13 @@ namespace WebVella.Pulsar.Components
 			_max = MaxTimeSpan;
 			_timer.Interval = StepInMs;
 			_requestStop = false;
-			
+
 			base.OnParametersSet();
 		}
 
 		protected override void OnAfterRender(bool firstRender)
 		{
-			if(firstRender && !_requestStop)
+			if (firstRender && !_requestStop)
 				Start();
 
 			base.OnAfterRender(firstRender);
@@ -114,20 +112,20 @@ namespace WebVella.Pulsar.Components
 		private void TimerTick(object sender, ElapsedEventArgs e)
 		{
 			InvokeAsync(() => Tick.InvokeAsync(null));
-			
+
 			if (!_requestStop && !_mustStop)
 			{
 				_timer.Start();//restart the timer
 			}
 			else
 			{
-				if(_mustStop)
+				if (_mustStop)
 					_ = InvokeAsync(() => TimeCountFinished.InvokeAsync(null));
 
 				Stop();
 			}
 
-			InvokeAsync(StateHasChanged); 
+			InvokeAsync(StateHasChanged);
 		}
 
 		public void Start()

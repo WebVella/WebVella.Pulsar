@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpDisplayCheckbox : WvpDisplayBase, IDisposable
+	public partial class WvpDisplayCheckbox : WvpDisplayBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -45,8 +45,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
+			await Task.Delay(0);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();

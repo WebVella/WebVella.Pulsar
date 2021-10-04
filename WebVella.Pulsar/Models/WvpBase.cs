@@ -32,8 +32,6 @@ namespace WebVella.Pulsar.Models
 
 		[Parameter] public EventCallback<object> OnClick { get; set; }
 
-		internal DotNetObjectReference<WvpBase> objectReference;
-
 		private IStringLocalizer localizer = null;
 		
 		protected IStringLocalizer WVT { 

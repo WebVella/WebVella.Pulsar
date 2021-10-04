@@ -82,7 +82,7 @@ namespace WebVella.Pulsar.Components
             AdditionalAttributes["step"] = Step.ToString(CultureInfo.InvariantCulture);
 
             _decimalPlaces = 0;
-            if (Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") > 0)
+            if (Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") > -1)
             {
                 _decimalPlaces = Step.ToString(CultureInfo.InvariantCulture).Substring(Step.ToString(CultureInfo.InvariantCulture).IndexOf(".") + 1).Length;
             }
@@ -116,7 +116,7 @@ namespace WebVella.Pulsar.Components
         //    await InvokeAsync(StateHasChanged);
         //}
 
-        private async Task _onMouseDownHandler(MouseEventArgs e)
+        private async Task _onMouseDownHandler()
         {
             //Needs to be keydown as keypress is produced only on printable chars (does not work on backspace
             await Task.Delay(5);
@@ -124,7 +124,7 @@ namespace WebVella.Pulsar.Components
             await InvokeAsync(StateHasChanged);
         }
 
-        private async Task _onBlurHandler(FocusEventArgs e)
+        private async Task _onBlurHandler()
         {
             await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
             await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });

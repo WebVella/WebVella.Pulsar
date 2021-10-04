@@ -242,7 +242,6 @@ namespace WebVella.Pulsar.Utils
 							InValue = InValue.ToString();
 							InValue = InValue.Replace("<script>", "&lt;script&gt;").Replace("</script>", "&lt;/script&gt;");
 							OutValue = InValue;
-							//TODO
 							//Check if Html value is valid
 							//HtmlDocument doc = new HtmlDocument();
 							//doc.LoadHtml(InValue);
@@ -264,13 +263,14 @@ namespace WebVella.Pulsar.Utils
 					break;
 				case WvpFieldType.MultiSelect:
 					{
+						var inValueListString = InValue as List<string>;
 						if (InValue == null || InValue.ToString() == "")
 						{
 							OutValue = new List<string>();
 						}
-						else if (InValue is List<string>)
+						else if (inValueListString != null)
 						{
-							OutValue = (List<string>)InValue;
+							OutValue = inValueListString;
 						}
 						else
 						{
@@ -3124,7 +3124,7 @@ namespace WebVella.Pulsar.Utils
 				Uri uri = new Uri(hreflink);
 				return Path.GetFileName(uri.LocalPath);
 			}
-			catch (Exception ex)
+			catch
 			{
 				return "unknown name";
 			}

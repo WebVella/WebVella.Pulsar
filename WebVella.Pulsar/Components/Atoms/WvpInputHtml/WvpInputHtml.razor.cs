@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInputHtml : WvpInputBase, IDisposable
+	public partial class WvpInputHtml : WvpInputBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -48,9 +48,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender); //Set the proper Id
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			JsService.RemoveCKEditor(Id);
+			await JsService.RemoveCKEditor(Id);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();
@@ -103,7 +103,7 @@ namespace WebVella.Pulsar.Components
 			await InvokeAsync(StateHasChanged);
 		}
 
-		private async Task _onBlurHandler(FocusEventArgs e)
+		private async Task _onBlurHandler()
 		{
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });

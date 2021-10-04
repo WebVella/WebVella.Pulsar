@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInputFile : WvpInputBase, IDisposable
+	public partial class WvpInputFile : WvpInputBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -39,7 +39,7 @@ namespace WebVella.Pulsar.Components
 
 			if (_value != null)
 				_value.FindIndex(x => x.Name == fileInfo.Name);
-			if (fileIndex > -1)
+			if (_value != null && fileIndex > -1)
 			{
 				_value[fileIndex] = fileInfo;
 				await InvokeAsync(StateHasChanged);
@@ -70,13 +70,14 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
-				new JsService(JSRuntime).InitFileUpload(Id, _objectReference);
+				await new JsService(JSRuntime).InitFileUpload(Id, _objectReference);
 			}
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
+			await Task.Delay(0);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();
@@ -100,9 +101,9 @@ namespace WebVella.Pulsar.Components
 					_value = new List<WvpFileInfo>();
 				else
 				{
-				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
-				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
-					_value = JsonConvert.DeserializeObject<List<WvpFileInfo>>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings),jsonSettings);
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
+					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
+					_value = JsonConvert.DeserializeObject<List<WvpFileInfo>>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
 				}
 
 			}
@@ -129,8 +130,8 @@ namespace WebVella.Pulsar.Components
 		private async Task _removeFile(WvpFileInfo file)
 		{
 			_value.Remove(file);
-			ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await InvokeAsync(StateHasChanged);
 		}
 		#endregion
@@ -201,9 +202,9 @@ namespace WebVella.Pulsar.Components
 
 					if (file == null)
 					{
-						file.Status = "File not found";
-						_errorFiles.Add(file);
-						await InvokeAsync(StateHasChanged);
+						//file.Status = "File not found";
+						//_errorFiles.Add(file);
+						//await InvokeAsync(StateHasChanged);
 						return;
 					}
 					else if (file.Size > MaxFileSize)

@@ -21,7 +21,7 @@ namespace WebVella.Pulsar.Components
 		/// <summary>
 		/// Autocomplete data source
 		/// </summary>
-		[Parameter] public List<string> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
+		[Parameter] public List<string> Options { get; set; }
 
 		[Parameter] public string Placeholder { get; set; } = "";
 
@@ -41,8 +41,6 @@ namespace WebVella.Pulsar.Components
 		private List<string> _cssList = new List<string>();
 
 		private List<string> _inputCssList = new List<string>();
-
-		private bool _isDataTouched = true;
 
 		private List<string> _originOptions = new List<string>();
 

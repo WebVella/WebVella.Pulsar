@@ -27,7 +27,7 @@ namespace WebVella.Pulsar.Components
 		protected override void OnInitialized()
 		{
 			if (Parent == null)
-				throw new ArgumentNullException(nameof(Parent), "WvpDropdownDivider must exist within a WvpDropdown");
+				throw new Exception("WvpDropdownDivider must exist within a WvpDropdown");
 
 			base.OnInitialized();
 		}

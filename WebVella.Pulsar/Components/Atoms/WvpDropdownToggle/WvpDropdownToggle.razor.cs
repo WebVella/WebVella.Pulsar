@@ -30,7 +30,7 @@ namespace WebVella.Pulsar.Components
 		protected override void OnInitialized()
 		{
 			if (Parent == null)
-				throw new ArgumentNullException(nameof(Parent), "WvpDropdownMenu must exist within a WvpDropdown");
+				throw new Exception("WvpDropdownMenu must exist within a WvpDropdown");
 
 			base.OnInitialized();
 		}
@@ -42,7 +42,7 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Ui handlers >>
-		private void _onClickHandler(MouseEventArgs ev){
+		private void _onClickHandler(){
 			Parent.StoreToggleMenu();
 		}
 

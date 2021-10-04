@@ -12,7 +12,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInlineAutocomplete : WvpInlineBase, IDisposable
+	public partial class WvpInlineAutocomplete : WvpInlineBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -76,9 +76,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			await JsService .RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
 			if (_objectReference != null)
 			{

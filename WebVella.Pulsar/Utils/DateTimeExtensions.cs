@@ -60,9 +60,9 @@
 			browserUtcOffsetInMinutes = browserUtcOffsetInMinutes * -1;
 
 			//If the requested zone is UTC then the browser offset should be ignored
-			var isUtcTargetTimeZone = false;
-			if(timeZoneName == "UTC")
-				isUtcTargetTimeZone = true;
+			//var isUtcTargetTimeZone = false;
+			//if(timeZoneName == "UTC")
+			//	isUtcTargetTimeZone = true;
 
 			if (inputDate == null)
 				return null;

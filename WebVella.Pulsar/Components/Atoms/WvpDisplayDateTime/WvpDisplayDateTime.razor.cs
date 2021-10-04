@@ -41,8 +41,6 @@ namespace WebVella.Pulsar.Components
 
 		private List<string> _cssList = new List<string>();
 
-		private TimeZoneInfo _timezone = null;
-
 		private string _value = null;
 
 		#endregion

@@ -188,6 +188,7 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _ddMenuHoverChangeHandler(ChangeEventArgs args)
 		{
+			await Task.Delay(0);
 			_isDropdownHovered = (bool)args.Value;
 		}
 

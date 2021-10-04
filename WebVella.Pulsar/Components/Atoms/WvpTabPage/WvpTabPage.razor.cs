@@ -29,7 +29,7 @@ namespace WebVella.Pulsar.Components
 		protected override void OnInitialized()
 		{
 			if (Parent == null)
-				throw new ArgumentNullException(nameof(Parent), "WvpTabPage must exist within a WvpTabNav");
+				throw new Exception("WvpTabPage must exist within a WvpTabNav");
 
 			Parent.StoreAddTabPage(this);
 			base.OnInitialized();

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInputImage : WvpInputBase, IDisposable
+	public partial class WvpInputImage : WvpInputBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -67,8 +67,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
+			await Task.Delay(0);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();
@@ -91,9 +92,10 @@ namespace WebVella.Pulsar.Components
 			{
 				_originalValue = Value;
 				_value = null;
-				if (Value is WvpFileInfo)
+				var valueCasted = Value as WvpFileInfo;
+				if (valueCasted != null)
 				{
-					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
+					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
 					_value = JsonConvert.DeserializeObject<WvpFileInfo>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
 				}
@@ -139,8 +141,8 @@ namespace WebVella.Pulsar.Components
 			{
 				if (file == null)
 				{
-					file.Status = "File not found";
-					await InvokeAsync(StateHasChanged);
+					//file.Status = "File not found";
+					//await InvokeAsync(StateHasChanged);
 					return;
 				}
 				else if (file.Size > MaxFileSize)

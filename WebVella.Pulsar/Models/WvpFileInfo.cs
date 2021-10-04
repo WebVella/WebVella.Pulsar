@@ -27,9 +27,9 @@ namespace WebVella.Pulsar.Models
 
 		public string Status { get; set; } = "";
 
-		public long ProgressMax = 100;
+		public long ProgressMax { get; set; } = 100;
 
-		public long ProgressValue = 0;
+		public long ProgressValue { get; set; } = 0;
 
 
 	}

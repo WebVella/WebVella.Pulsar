@@ -20,7 +20,7 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public RenderFragment<TItem> WvpInputRadioListOption { get; set; }
 
-		[Parameter] public IEnumerable<TItem> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
+		[Parameter] public IEnumerable<TItem> Options { get; set; }
 
 		[Parameter] public TItem Value { get; set; }
 
@@ -34,15 +34,11 @@ namespace WebVella.Pulsar.Components
 
 		private List<string> _cssList = new List<string>();
 
-		private IEnumerable<TItem> _options;
-
 		private string _groupName = "wvp-group-" + Guid.NewGuid();
 
 		private TItem _originalValue;
 
 		private TItem _value;
-
-		private bool _isDataTouched = true;
 
 		#endregion
 

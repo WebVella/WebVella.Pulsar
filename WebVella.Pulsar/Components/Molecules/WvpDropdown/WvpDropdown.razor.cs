@@ -9,7 +9,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpDropdown : WvpBase, IDisposable
+	public partial class WvpDropdown : WvpBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -68,10 +68,10 @@ namespace WebVella.Pulsar.Components
 			await base.OnParametersSetAsync();
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
-			JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
+			await JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			await JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();

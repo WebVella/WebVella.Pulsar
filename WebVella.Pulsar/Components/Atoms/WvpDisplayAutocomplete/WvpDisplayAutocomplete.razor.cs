@@ -43,11 +43,6 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		protected override void OnInitialized()
-		{
-			base.OnInitialized();
-		}
-
 		protected override void OnParametersSet()
 		{
 			_value = FieldValueService.InitAsString(Value);

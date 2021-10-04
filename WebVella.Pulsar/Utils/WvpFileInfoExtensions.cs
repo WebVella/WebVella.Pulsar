@@ -55,7 +55,7 @@ namespace WebVella.Pulsar.Models
 
 		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
-			string tmpFilePath = Path.GetTempFileName();
+			string tmpFilePath = Path.GetRandomFileName();
 			using (Stream fileStream = File.OpenWrite(tmpFilePath))
 			{
 				using (Stream stream = new MemoryStream())
@@ -97,7 +97,6 @@ namespace WebVella.Pulsar.Models
 						using (FileStream fs = File.OpenRead(fileInfo.ServerTempPath))
 						{
 							byte[] b = new byte[1024];
-							UTF8Encoding temp = new UTF8Encoding(true);
 							while (fs.Read(b, 0, b.Length) > 0)
 							{
 								await stream.WriteAsync(b, cancellationToken);
@@ -147,9 +146,9 @@ namespace WebVella.Pulsar.Models
 
 					stream.Seek(0, SeekOrigin.Begin);
 				}
-				catch (Exception ex)
+				catch
 				{
-					int i = 0;
+					//Ignore
 				}
 				finally
 				{

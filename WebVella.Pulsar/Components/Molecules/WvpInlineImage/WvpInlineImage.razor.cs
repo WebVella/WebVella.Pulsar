@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInlineImage : WvpInlineBase, IDisposable
+	public partial class WvpInlineImage : WvpInlineBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -65,9 +65,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			await new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
 			if (_objectReference != null)
 			{
@@ -189,6 +189,7 @@ namespace WebVella.Pulsar.Components
 		[JSInvokable]
 		public async Task OnEscapeKey()
 		{
+			await Task.Delay(0);
 			if (_editEnabled)
 			{
 				scheduledEnableEditChange = false;

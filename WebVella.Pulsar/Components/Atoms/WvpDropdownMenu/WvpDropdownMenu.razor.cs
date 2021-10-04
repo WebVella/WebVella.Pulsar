@@ -9,7 +9,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpDropdownMenu : WvpBase, IDisposable
+	public partial class WvpDropdownMenu : WvpBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -27,16 +27,16 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
+			await JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
 		}
-		protected override void OnInitialized()
+		protected override async Task OnInitializedAsync()
 		{
 			if (Parent == null)
-				throw new ArgumentNullException(nameof(Parent), "WvpDropdownMenu must exist within a WvpDropdown");
+				throw new Exception("WvpDropdownMenu must exist within a WvpDropdown");
 
-			JsService.AddOutsideClickEventListener($"#{Id}", DotNetObjectReference.Create(this), Id, "OnOutClick");
+			await JsService.AddOutsideClickEventListener($"#{Id}", DotNetObjectReference.Create(this), Id, "OnOutClick");
 			base.OnInitialized();
 		}
 

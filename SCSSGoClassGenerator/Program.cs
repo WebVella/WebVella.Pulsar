@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace SCSSGoClassGenerator
 {
-	class Program
+	static class Program
 	{
 		static void Main(string[] args)
 		{
@@ -16,7 +17,7 @@ namespace SCSSGoClassGenerator
 			}
 
 			var files = new DirectoryInfo(folderPath).GetFiles();
-			var generatedCode = "";
+			StringBuilder stringBldGeneratedCode = new();
 			var generatedClasses = 0;
 			foreach (var file in files)
 			{
@@ -47,17 +48,17 @@ namespace SCSSGoClassGenerator
 					var goBkgClassLine = $".{goBkgClassName}{{background-color: {colorVariable} !important;}}";
 
 					if(isNewColor){
-						generatedCode += nr;
-						generatedCode += $"//{dashColorVariableSplit[1]}" + nr;
+						stringBldGeneratedCode.Append(nr);
+						stringBldGeneratedCode.Append($"//{dashColorVariableSplit[1]}" + nr);
 					}
 
-					generatedCode += $"{goClassLine}" + nr;
-					generatedCode += $"{goBkgClassLine}" + nr;
+					stringBldGeneratedCode.Append($"{goClassLine}" + nr);
+					stringBldGeneratedCode.Append($"{goBkgClassLine}" + nr);
 					generatedClasses++;
 				}
 			}
 
-			File.WriteAllText($"{folderPath}_go-color.scss", generatedCode);
+			File.WriteAllText($"{folderPath}_go-color.scss", stringBldGeneratedCode.ToString());
 
 			Console.WriteLine($"Success! {generatedClasses} classes generated");
 			Console.ReadKey();

@@ -41,7 +41,7 @@ namespace WebVella.Pulsar.Components
         {
             if (IgnoreClickOnBackdrop != _isIgnoreClickOnBackdrop)
             {
-                _isIgnoreClickOnBackdrop = IgnoreClickOnBackdrop ? true : false;
+                _isIgnoreClickOnBackdrop = IgnoreClickOnBackdrop;
 
             }
 

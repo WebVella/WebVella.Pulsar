@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInlineDateTime : WvpInlineBase, IDisposable
+	public partial class WvpInlineDateTime : WvpInlineBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -66,9 +66,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			await new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
 			if (_objectReference != null)
 			{
@@ -192,7 +192,7 @@ namespace WebVella.Pulsar.Components
 		{
 			if (_editEnabled)
 			{
-				_toggleInlineEditClickHandler(false, false);
+				await _toggleInlineEditClickHandler(false, false);
 				StateHasChanged();
 			}
 		}

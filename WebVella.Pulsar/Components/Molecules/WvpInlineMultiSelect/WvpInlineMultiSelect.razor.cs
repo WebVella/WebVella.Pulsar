@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInlineMultiSelect<TItem> : WvpInlineBase, IDisposable
+	public partial class WvpInlineMultiSelect<TItem> : WvpInlineBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -28,7 +28,7 @@ namespace WebVella.Pulsar.Components
 
 		[Parameter] public RenderFragment<TItem> WvpInputMultiSelectOption { get; set; }
 
-		[Parameter] public IEnumerable<TItem> Options { get { return _options; } set { _options = value; _isDataTouched = true; } }
+		[Parameter] public IEnumerable<TItem> Options { get; set; }
 
 		[Parameter] public IEnumerable<TItem> Value { get; set; }
 
@@ -51,8 +51,6 @@ namespace WebVella.Pulsar.Components
 
 		private DotNetObjectReference<WvpInlineMultiSelect<TItem>> _objectReference;
 
-		private IEnumerable<TItem> _options;
-
 		private IEnumerable<TItem> _originalValue;
 
 		private List<TItem> _value;
@@ -60,8 +58,6 @@ namespace WebVella.Pulsar.Components
 		private bool? scheduledEnableEditChange = null;
 
 		private bool? scheduledApplyChange = null;
-
-		private bool _isDataTouched = true;
 
 		#endregion
 
@@ -76,9 +72,9 @@ namespace WebVella.Pulsar.Components
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			await new JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
 			if (_objectReference != null)
 			{
@@ -142,7 +138,7 @@ namespace WebVella.Pulsar.Components
 			{
 				_editEnabled = true;
 				await Task.Delay(5);
-				new JsService(JSRuntime).FocusElementBySelector("#" + _inputElementId);
+				await new JsService(JSRuntime).FocusElementBySelector("#" + _inputElementId);
 			}
 
 			//Hide edit
@@ -175,6 +171,7 @@ namespace WebVella.Pulsar.Components
 		[JSInvokable]
 		public async Task OnEscapeKey()
 		{
+			await Task.Delay(0);
 			if (_editEnabled)
 			{
 				scheduledEnableEditChange = false;

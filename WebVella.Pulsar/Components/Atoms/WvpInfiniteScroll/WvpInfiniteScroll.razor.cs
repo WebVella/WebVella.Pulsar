@@ -12,7 +12,7 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInfiniteScroll : WvpBase, IDisposable
+	public partial class WvpInfiniteScroll : WvpBase, IAsyncDisposable
 	{
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
@@ -47,9 +47,9 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
+			await new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
 		}
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)

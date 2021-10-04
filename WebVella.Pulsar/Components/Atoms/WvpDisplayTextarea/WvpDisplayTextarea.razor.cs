@@ -39,7 +39,6 @@ namespace WebVella.Pulsar.Components
 		protected override async Task OnParametersSetAsync()
 		{
 			if (!String.IsNullOrWhiteSpace(Class))
-			if (!String.IsNullOrWhiteSpace(Class))
 			{
 				_cssList.Add(Class);
 				if (!Class.Contains("form-control"))

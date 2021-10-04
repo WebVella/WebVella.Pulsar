@@ -252,7 +252,7 @@ namespace WebVella.Pulsar.Utils
 				Uri uri = new Uri(hreflink);
 				return Path.GetFileName(uri.LocalPath);
 			}
-			catch (Exception ex)
+			catch 
 			{
 				return "unknown name";
 			}
@@ -278,7 +278,7 @@ namespace WebVella.Pulsar.Utils
 				Uri uri = new Uri(hreflink);
 				return Path.GetExtension(uri.LocalPath);
 			}
-			catch (Exception ex)
+			catch
 			{
 				return "unknown name";
 			}
@@ -733,9 +733,9 @@ namespace WebVella.Pulsar.Utils
 					writer.WriteStartObject();
 					writer.WritePropertyName("$type", false);
 
-					switch (serializer.TypeNameAssemblyFormat)
+					switch (serializer.TypeNameAssemblyFormatHandling)
 					{
-						case FormatterAssemblyStyle.Full:
+						case TypeNameAssemblyFormatHandling.Full:
 							writer.WriteValue(value.GetType().AssemblyQualifiedName);
 							break;
 						default:

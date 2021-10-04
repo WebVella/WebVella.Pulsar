@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="My SonarLint rules" Description="" ToolsVersion="14.0">
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <!-- Refactor your code not to use hardcoded absolute paths or URIs -->
+    <Rule Id="S1075" Action="None" /> 
  
     <!-- Update this method so that its implementation is not identical to 'blah' -->
     <Rule Id="S4144" Action="None" />

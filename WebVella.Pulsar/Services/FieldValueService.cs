@@ -7,7 +7,7 @@ using System.Text;
 
 namespace WebVella.Pulsar.Services
 {
-	public class FieldValueService
+	public static class FieldValueService
 	{
 		public static bool InitAsBool(object input)
 		{
@@ -16,12 +16,9 @@ namespace WebVella.Pulsar.Services
 			if (input is Boolean)
 				return (bool)input;
 
-			if (input is String)
+			if (input is String && Boolean.TryParse((string)input, out bool outBool))
 			{
-				if (Boolean.TryParse((string)input, out bool outBool))
-				{
-					return outBool;
-				}
+				return outBool;
 			}
 
 			return false;
@@ -34,12 +31,9 @@ namespace WebVella.Pulsar.Services
 			if (input is Boolean)
 				return (bool?)input;
 
-			if (input is String)
+			if (input is String && Boolean.TryParse((string)input, out bool outBool))
 			{
-				if (Boolean.TryParse((string)input, out bool outBool))
-				{
-					return outBool;
-				}
+				return outBool;
 			}
 
 			return false;
@@ -93,26 +87,30 @@ namespace WebVella.Pulsar.Services
 			if (input == null)
 				return new List<string>();
 
-			if (input is List<string>)
-				return ((List<string>)input).ToList();
+			var inputListString = input as List<string>;
+			if (inputListString != null)
+				return inputListString.ToList();
 
-			if (input is List<Guid>)
+			var inputListGuid = input as List<Guid>;
+			if (inputListGuid != null)
 			{
 				var result = new List<string>();
-				((List<Guid>)input).ForEach(x => result.Add(x.ToString()));
+				inputListGuid.ForEach(x => result.Add(x.ToString()));
 				return result;
 			}
-			if (input is List<decimal>)
+			var inputListDecimal = input as List<decimal>;
+			if (inputListDecimal != null)
 			{
 				var result = new List<string>();
-				((List<decimal>)input).ForEach(x => result.Add(x.ToString()));
+				inputListDecimal.ForEach(x => result.Add(x.ToString()));
 				return result;
 			}
 
-			if (input is List<int>)
+			var inputListInt = input as List<int>;
+			if (inputListInt != null)
 			{
 				var result = new List<string>();
-				((List<int>)input).ForEach(x => result.Add(x.ToString()));
+				inputListInt.ForEach(x => result.Add(x.ToString()));
 				return result;
 			}
 
@@ -122,7 +120,7 @@ namespace WebVella.Pulsar.Services
 
 		public static List<T> InitAsGenericList<T>(object input)
 		{
-			if (input != null && input is List<T>)
+			if (input is List<T>)
 				return input as List<T>;
 
 			return new List<T>();
@@ -130,7 +128,7 @@ namespace WebVella.Pulsar.Services
 
 		public static T InitAsGeneric<T>(object input)
 		{
-			if (input != null && input is T)
+			if (input is T)
 				return (T)input;
 
 			return default;
@@ -167,7 +165,7 @@ namespace WebVella.Pulsar.Services
 			if (input == null)
 				return null;
 
-			if(input is DateTime)
+			if (input is DateTime)
 				return (DateTime)input;
 
 			if (DateTime.TryParse(input.ToString(), out DateTime outDt))
@@ -191,7 +189,7 @@ namespace WebVella.Pulsar.Services
 					prop.SetValue(target, value, null);
 				else
 				{
-					if (prop.PropertyType == value.GetType())
+					if (value != null && prop.PropertyType == value.GetType())
 						prop.SetValue(target, value, null);
 					else
 						throw new Exception("Target value does not match the provided type");

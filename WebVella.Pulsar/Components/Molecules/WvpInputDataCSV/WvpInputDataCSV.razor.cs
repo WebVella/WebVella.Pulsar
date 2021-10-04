@@ -73,6 +73,7 @@ namespace WebVella.Pulsar.Components
 
 		protected override async Task OnInitializedAsync()
 		{
+			await Task.Delay(0);
 			var enumList = Enum.GetValues(typeof(WvpDelimiterType)).Cast<WvpDelimiterType>();
 			foreach (WvpDelimiterType item in enumList)
 			{
@@ -117,8 +118,8 @@ namespace WebVella.Pulsar.Components
 
 			if (JsonConvert.SerializeObject(_originalHasHeader) != JsonConvert.SerializeObject(HasHeader))
 			{
-				_originalHasHeader = HasHeader ? true : false;
-				_hasHeader = HasHeader ? true : false;
+				_originalHasHeader = HasHeader;
+				_hasHeader = HasHeader;
 				hasHeaderHasChanged = true;
 			}
 

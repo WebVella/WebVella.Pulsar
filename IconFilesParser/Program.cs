@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using HtmlAgilityPack;
 
 namespace IconFileParser
 {
-	class Program
+	static class Program
 	{
 
 		static void Main(string[] args)
 		{
-			
+
 			var codeFileName = "icon-code.txt";
 			var enumFileName = "icon-enum.txt";
 			//var enumPrefix = "Mdf";
@@ -24,7 +25,7 @@ namespace IconFileParser
 				folderPath = args[0];
 			}
 			var files = new DirectoryInfo(folderPath).GetFiles();
-			var generatedCode = "";
+			StringBuilder generatedCodeSb = new();
 			var generatedEnums = "";
 
 			foreach (var file in files)
@@ -34,7 +35,7 @@ namespace IconFileParser
 
 				processedCount++;
 				var fileLines = File.ReadAllLines(file.FullName);
-				var currentFileContent = "";
+				StringBuilder stringBld = new StringBuilder();
 				if (enumPrefix == "Bs")
 				{
 					foreach (var line in fileLines)
@@ -42,7 +43,7 @@ namespace IconFileParser
 						if (fileLines.First() == line || fileLines.Last() == line)
 							continue;
 
-						currentFileContent += line.Trim();
+						stringBld.Append(line.Trim());
 					}
 				}
 				if (enumPrefix == "Mdf")
@@ -52,49 +53,53 @@ namespace IconFileParser
 
 					foreach (var line in fileLines)
 					{
-						currentFileContent += line.Trim();
+						stringBld.Append(line.Trim());
 					}
 
 					HtmlDocument doc = new HtmlDocument();
-					doc.LoadHtml(currentFileContent);
+					doc.LoadHtml(stringBld.ToString());
 
 					foreach (HtmlNode svg in doc.DocumentNode.SelectNodes("//svg"))
 					{
-						currentFileContent = svg.InnerHtml;
+						stringBld.Clear();
+						stringBld.Append(svg.InnerHtml);
 					}
 
 				}
-				currentFileContent = currentFileContent.Replace("\"", "'");
+				var currentFileContent = stringBld.ToString().Replace("\"", "'");
 
 
 				var nr = System.Environment.NewLine;
 				var fileName = file.Name.Replace(".svg", "").Replace("ic_", "").Replace("_24px", "");
-				var processedFileName = "";
+				StringBuilder stringBld2 = new StringBuilder();
 				var fileNameParts = new List<string>();
-				if (enumPrefix == "Bs"){
+				if (enumPrefix == "Bs")
+				{
 					fileNameParts = fileName.Split("-", StringSplitOptions.RemoveEmptyEntries).ToList();
 				}
-				if (enumPrefix == "Mdf"){
+				if (enumPrefix == "Mdf")
+				{
 					fileNameParts = fileName.Split("_", StringSplitOptions.RemoveEmptyEntries).ToList();
 				}
 				foreach (var part in fileNameParts)
 				{
 					if (part.Length == 0)
 						continue;
-					else if (part.Length == 1)
-						processedFileName += char.ToUpper(part[0]);
+
+					if (part.Length == 1)
+						stringBld2.Append(char.ToUpper(part[0]));
 					else
-						processedFileName += char.ToUpper(part[0]) + part.Substring(1);
+						stringBld2.Append(char.ToUpper(part[0]) + part.Substring(1));
 				}
-				var enumString = enumPrefix + processedFileName;
+				var enumString = enumPrefix + stringBld2.ToString();
 				var enumDescription = enumPrefix.ToLowerInvariant() + "-" + fileName;
 
-				generatedCode += $"iconTypeSvgDict[WvpIconType.{enumString}] = \"{currentFileContent}\";" + nr;
+				generatedCodeSb.Append($"iconTypeSvgDict[WvpIconType.{enumString}] = \"{currentFileContent}\";" + nr);
 
-				generatedEnums += $"[Description(\"{enumDescription}\")]" + nr;
-				generatedEnums += $"{enumString}," + nr;
+				generatedCodeSb.Append($"[Description(\"{enumDescription}\")]" + nr);
+				generatedCodeSb.Append($"{enumString}," + nr);
 			}
-			File.WriteAllText($"{folderPath}{codeFileName}", generatedCode);
+			File.WriteAllText($"{folderPath}{codeFileName}", generatedCodeSb.ToString());
 			File.WriteAllText($"{folderPath}{enumFileName}", generatedEnums);
 
 			Console.WriteLine($"Success. Processed {processedCount} files");

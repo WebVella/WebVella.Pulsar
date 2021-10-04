@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInputDate : WvpInputBase, IDisposable
+	public partial class WvpInputDate : WvpInputBase, IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -52,14 +52,14 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
-				JsService.AddFlatPickrDate(Id, _objectReference, Culture.TwoLetterISOLanguageName);
+				await JsService .AddFlatPickrDate(Id, _objectReference, Culture.TwoLetterISOLanguageName);
 			}
 			await base.OnAfterRenderAsync(firstRender); //Set the proper Id
 		}
 
-		void IDisposable.Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			JsService.RemoveFlatPickrDate(Id);
+			await JsService.RemoveFlatPickrDate(Id);
 			if (_objectReference != null)
 			{
 				_objectReference.Dispose();
