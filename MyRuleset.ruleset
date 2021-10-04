@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="My SonarLint rules" Description="" ToolsVersion="14.0">
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+ 
+    <!-- Update this method so that its implementation is not identical to 'blah' -->
+    <Rule Id="S4144" Action="None" />
+    
+    <!-- Update this implementation of 'ISerializable' to conform to the recommended serialization pattern -->
+    <Rule Id="S3925" Action="None" />
+    
+    <!-- Rename class 'IOCActivator' to match pascal case naming rules, consider using 'IocActivator' -->
+    <Rule Id="S101" Action="None" />
+    
+    <!-- Extract this nested code block into a separate method -->
+    <Rule Id="S1199" Action="None" />
+
+    <!-- Remove unassigned auto-property 'Blah', or set its value -->
+    <Rule Id="S3459" Action="None" />
+
+    <!-- Remove the unused private set accessor in property 'Version' -->
+    <Rule Id="S1144" Action="None" />
+
+    <!-- Remove this commented out code -->
+    <Rule Id="S125" Action="None" />
+    
+    <!-- 'System.Exception' should not be thrown by user code -->
+    <Rule Id="S112" Action="None" />
+  </Rules>
+</RuleSet>

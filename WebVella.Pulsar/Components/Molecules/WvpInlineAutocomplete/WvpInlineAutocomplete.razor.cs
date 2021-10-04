@@ -168,7 +168,7 @@ namespace WebVella.Pulsar.Components
 		{
 			if (_editEnabled)
 			{
-				_toggleInlineEditClickHandler(false,false);
+				await _toggleInlineEditClickHandler(false,false);
 			}
 		}
 		#endregion
