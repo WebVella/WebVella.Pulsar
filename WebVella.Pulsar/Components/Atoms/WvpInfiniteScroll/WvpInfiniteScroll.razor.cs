@@ -17,7 +17,6 @@ namespace WebVella.Pulsar.Components
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
 		[Parameter] public string ObserverTargetId { get; set; }
-		[Parameter] public bool ObserverViewportVisible { get; set; } = false;
 		[Parameter] public string ObserverViewportId { get; set; }
 		[Parameter] public EventCallback OnObservableTargetReached { get; set; }
 		#endregion
@@ -57,13 +56,6 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectRef = DotNetObjectReference.Create(this);
-				if (String.IsNullOrWhiteSpace(ObserverTargetId))
-				{
-					ObserverTargetId = $"wvp-loading-bar-{Id}";
-					ObserverViewportVisible = true;
-				}
-				await InvokeAsync(StateHasChanged);
-				await Task.Delay(0);
 				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}

@@ -54,6 +54,8 @@ namespace WebVella.Pulsar.Components
 
 		private TItem _value;
 
+		private WvpInfiniteScroll _infiniteScrollRef = null;
+
 		#endregion
 
 		#region << Lifecycle methods >>
@@ -91,7 +93,11 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Private methods >>
-
+		public async Task PerformVisibilityCheck()
+		{
+			if(_infiniteScrollRef != null)
+				await _infiniteScrollRef.PerformVisibilityCheck();
+		}
 
 		#endregion
 

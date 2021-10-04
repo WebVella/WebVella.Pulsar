@@ -92,8 +92,7 @@ namespace WebVella.Pulsar.Components
 			{
 				_originalValue = Value;
 				_value = null;
-				var valueCasted = Value as WvpFileInfo;
-				if (valueCasted != null)
+				if (Value != null)
 				{
 					var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 					jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());

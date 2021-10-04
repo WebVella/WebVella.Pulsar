@@ -50,7 +50,7 @@
 			</div>
 		}
 		<div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
-			<WvpInfiniteScroll OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverViewportVisible="@(!EndIsReached)">
+			<WvpInfiniteScroll @ref="_infiniteScrollRef" OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")">
 				@{
 					var index = 0;
 				}
@@ -80,6 +80,11 @@
 					</WvpDropdownItem>
 					index++;
 				}
+				<WvpDropdownItem>
+					<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
+						Loading...
+					</div>
+				</WvpDropdownItem>
 			</WvpInfiniteScroll>
 			@if (Options.ToList().Count == 0)
 			{

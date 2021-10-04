@@ -533,7 +533,7 @@
 			threshold: 0
         };
         if (observerViewportId) {
-            options.root = document.getElementById(observerViewportId);
+			options.root = document.getElementById(observerViewportId);
         };
         WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
 			function (e) {
@@ -544,7 +544,7 @@
 
         let element = document.getElementById(observerTargetId);
         if (element !== null) {
-            WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
+			WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
         }
         return true;
     },
