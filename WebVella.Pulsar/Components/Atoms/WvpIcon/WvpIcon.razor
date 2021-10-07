@@ -28,46 +28,7 @@
 
 	protected string svgHtml = "";
 
-	//protected override void OnParametersSet()
-	//{
-	//	InternalCssClass = "";
-	//	svgHtml = "";
-
-	//	if (Size != WvpSize.Normal)
-	//	{
-	//		InternalCssClass += $" wvp-icon--{Size.ToDescriptionString()} ";
-	//	}
-
-	//	if (IsSpinning)
-	//	{
-	//		InternalCssClass += $" wvp-icon--spin ";
-	//	}
-
-	//	//SVG content
-	//	if (!String.IsNullOrWhiteSpace(Source))
-	//	{
-	//		if (Source.StartsWith("<svg"))
-	//		{
-	//			svgHtml = Source;
-	//		}
-	//		else
-	//		{
-	//			var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
-	//			if (enumDescDict.ContainsKey(Source))
-	//			{
-	//				Type = enumDescDict[Source];
-	//			}
-	//		}
-	//	}
-	//	if (Type != WvpIconType.NoIcon)
-	//	{
-	//		svgHtml = IconTypeService.GetSVGContentForIconType(Type);
-	//	}
-	//	base.OnParametersSet();
-	//}
-
-
-	protected override void OnInitialized()
+	protected override void OnParametersSet()
 	{
 		InternalCssClass = "";
 		svgHtml = "";
@@ -102,5 +63,44 @@
 		{
 			svgHtml = IconTypeService.GetSVGContentForIconType(Type);
 		}
+		base.OnParametersSet();
 	}
+
+
+	//protected override void OnInitialized()
+	//{
+	//	InternalCssClass = "";
+	//	svgHtml = "";
+
+	//	if (Size != WvpSize.Normal)
+	//	{
+	//		InternalCssClass += $" wvp-icon--{Size.ToDescriptionString()} ";
+	//	}
+
+	//	if (IsSpinning)
+	//	{
+	//		InternalCssClass += $" wvp-icon--spin ";
+	//	}
+
+	//	//SVG content
+	//	if (!String.IsNullOrWhiteSpace(Source))
+	//	{
+	//		if (Source.StartsWith("<svg"))
+	//		{
+	//			svgHtml = Source;
+	//		}
+	//		else
+	//		{
+	//			var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
+	//			if (enumDescDict.ContainsKey(Source))
+	//			{
+	//				Type = enumDescDict[Source];
+	//			}
+	//		}
+	//	}
+	//	if (Type != WvpIconType.NoIcon)
+	//	{
+	//		svgHtml = IconTypeService.GetSVGContentForIconType(Type);
+	//	}
+	//}
 }

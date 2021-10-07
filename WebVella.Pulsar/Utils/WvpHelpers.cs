@@ -104,7 +104,7 @@ namespace WebVella.Pulsar.Utils
 		{
 			OutValue = null;
 			errorList = new List<string>();
-			if (InValue != null && InValue is Enum)
+			if (InValue is Enum)
 			{
 				InValue = ((int)InValue).ToString();
 			}
@@ -3155,7 +3155,7 @@ namespace WebVella.Pulsar.Utils
 
 		public static List<TItem> GetCsvData<TItem>(string csvData, bool hasHeader = true, WvpDelimiterType delimiterType = WvpDelimiterType.COMMA, CultureInfo Culture = null)
 		{
-			var records = new List<TItem>();
+			List<TItem> records = null;
 			if (Culture == null)
 				Culture = CultureInfo.InvariantCulture;
 

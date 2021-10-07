@@ -8,7 +8,6 @@ using System;
 using WebVella.Pulsar.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Newtonsoft.Json;
-using System.Diagnostics;
 using System.Linq;
 
 namespace WebVella.Pulsar.Components

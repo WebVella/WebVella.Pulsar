@@ -55,7 +55,7 @@ namespace WebVella.Pulsar.Models
 
 		public static async Task WriteTempFileAsync(this WvpFileInfo fileInfo, IJSRuntime JSRuntime, ElementReference elementRef, Func<WvpFileInfo, Task> UpdateProgressCallback)
 		{
-			string tmpFilePath = Path.GetRandomFileName();
+			string tmpFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 			using (Stream fileStream = File.OpenWrite(tmpFilePath))
 			{
 				using (Stream stream = new MemoryStream())

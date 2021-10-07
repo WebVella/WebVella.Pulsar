@@ -3,6 +3,7 @@
 @inherits WvpInputBase
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
+@using System.Diagnostics;
 
 <WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible"
 			 Class="@(Options == null || Options.ToList().Count == 0 ? "disabled" : "")" Mode="@Mode">
@@ -50,9 +51,9 @@
 			</div>
 		}
 		<div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
-			<WvpInfiniteScroll @ref="_infiniteScrollRef" 
-				OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")"
-				ObserverViewportId="@($"wvp-infinite-scroll-{Id}")">
+			<WvpInfiniteScroll @ref="_infiniteScrollRef"
+							   OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")"
+							   ObserverViewportId="@($"wvp-infinite-scroll-{Id}")">
 				@{
 					var index = 0;
 				}
