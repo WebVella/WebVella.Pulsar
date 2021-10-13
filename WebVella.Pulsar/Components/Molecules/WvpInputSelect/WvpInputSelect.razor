@@ -54,30 +54,34 @@
 			<WvpInfiniteScroll @ref="_infiniteScrollRef"
 							   OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")"
 							   ObserverViewportId="@($"wvp-infinite-scroll-{Id}")">
-				@{
-					var index = 0;
-				}
-				@foreach (var option in Options)
-				{
-					<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
-						<div class="dropdown-item__content">
-							@if (WvpInputSelectOption != null)
-							{
-								@WvpInputSelectOption(option)
-							}
-							else
-							{
-								@Newtonsoft.Json.JsonConvert.SerializeObject(option)
-							}
+				<ChildContent>
+					@{
+						var index = 0;
+					}
+					@foreach (var option in Options)
+					{
+						<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
+							<div class="dropdown-item__content">
+								@if (WvpInputSelectOption != null)
+								{
+									@WvpInputSelectOption(option)
+								}
+								else
+								{
+									@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+								}
+							</div>
+						</WvpDropdownItem>
+						index++;
+					}
+				</ChildContent>
+				<ObservedItem>
+					<WvpDropdownItem Disabled="true">
+						<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
+							Loading...
 						</div>
 					</WvpDropdownItem>
-					index++;
-				}
-				<WvpDropdownItem>
-					<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
-						Loading...
-					</div>
-				</WvpDropdownItem>
+				</ObservedItem>
 			</WvpInfiniteScroll>
 			@if (Options.ToList().Count == 0)
 			{

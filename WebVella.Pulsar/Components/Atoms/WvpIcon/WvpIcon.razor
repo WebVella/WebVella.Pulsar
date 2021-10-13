@@ -3,12 +3,16 @@
 @using WebVella.Pulsar.Models
 @using WebVella.Pulsar.Utils
 @using WebVella.Pulsar.Services;
+@using System.Diagnostics;
 
 @if (!String.IsNullOrWhiteSpace(svgHtml))
 {
 	<span class="wvp-icon @InternalCssClass @Class" @attributes="@AdditionalAttributes">
 		@((MarkupString)svgHtml)
 	</span>
+}
+else{ 
+	<span>???</span>
 }
 @code {
 
@@ -28,10 +32,13 @@
 
 	protected string svgHtml = "";
 
-	protected override void OnParametersSet()
+	private string _source = "";
+
+	private WvpIconType _type = WvpIconType.NoIcon;
+
+	protected override async Task OnParametersSetAsync()
 	{
 		InternalCssClass = "";
-		svgHtml = "";
 
 		if (Size != WvpSize.Normal)
 		{
@@ -44,63 +51,33 @@
 		}
 
 		//SVG content
-		if (!String.IsNullOrWhiteSpace(Source))
+		if (Source != _source)
 		{
-			if (Source.StartsWith("<svg"))
+			_source = Source;
+			if (!String.IsNullOrWhiteSpace(Source))
 			{
-				svgHtml = Source;
-			}
-			else
-			{
-				var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
-				if (enumDescDict.ContainsKey(Source))
+				if (Source.StartsWith("<svg"))
 				{
-					Type = enumDescDict[Source];
+					svgHtml = Source;
+				}
+				else
+				{
+					var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
+					if (enumDescDict.ContainsKey(Source))
+					{
+						Type = enumDescDict[Source];
+					}
 				}
 			}
 		}
-		if (Type != WvpIconType.NoIcon)
+
+		if (Type != _type)
 		{
-			svgHtml = IconTypeService.GetSVGContentForIconType(Type);
+			_type = Type;
+			if (Type != WvpIconType.NoIcon)
+			{
+				svgHtml = IconTypeService.GetSVGContentForIconType(Type);
+			}
 		}
-		base.OnParametersSet();
 	}
-
-
-	//protected override void OnInitialized()
-	//{
-	//	InternalCssClass = "";
-	//	svgHtml = "";
-
-	//	if (Size != WvpSize.Normal)
-	//	{
-	//		InternalCssClass += $" wvp-icon--{Size.ToDescriptionString()} ";
-	//	}
-
-	//	if (IsSpinning)
-	//	{
-	//		InternalCssClass += $" wvp-icon--spin ";
-	//	}
-
-	//	//SVG content
-	//	if (!String.IsNullOrWhiteSpace(Source))
-	//	{
-	//		if (Source.StartsWith("<svg"))
-	//		{
-	//			svgHtml = Source;
-	//		}
-	//		else
-	//		{
-	//			var enumDescDict = IconTypeService.GetIconTypeDescriptionEnumDict();
-	//			if (enumDescDict.ContainsKey(Source))
-	//			{
-	//				Type = enumDescDict[Source];
-	//			}
-	//		}
-	//	}
-	//	if (Type != WvpIconType.NoIcon)
-	//	{
-	//		svgHtml = IconTypeService.GetSVGContentForIconType(Type);
-	//	}
-	//}
 }

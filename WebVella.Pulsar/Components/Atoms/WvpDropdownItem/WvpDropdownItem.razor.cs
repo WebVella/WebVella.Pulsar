@@ -21,6 +21,8 @@ namespace WebVella.Pulsar.Components
 		/// Will be passed back on OnClick
 		/// </summary>
 		[Parameter] public object Value { get; set; }
+		[Parameter] public bool Disabled { get; set; } = false;
+
 		#endregion
 
 		#region << Callbacks >>

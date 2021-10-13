@@ -3,4 +3,13 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<a class="@_class" href="javascript:void(0)" @onclick="_onClickHandler" @onclick:stopPropagation="true" @onclick:preventDefault="true">@ChildContent</a>
+@if (!Disabled)
+{
+	<a class="@_class" href="javascript:void(0)" @onclick="_onClickHandler" @onclick:stopPropagation="true" @onclick:preventDefault="true">@ChildContent</a>
+}
+else
+{
+	<div class="@_class" style="cursor:default">
+		@ChildContent
+	</div>
+}

@@ -16,6 +16,7 @@ namespace WebVella.Pulsar.Components
 	{
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
+		[Parameter] public RenderFragment ObservedItem { get; set; }
 		[Parameter] public string ObserverTargetId { get; set; }
 		[Parameter] public string ObserverViewportId { get; set; }
 		[Parameter] public EventCallback OnObservableTargetReached { get; set; }

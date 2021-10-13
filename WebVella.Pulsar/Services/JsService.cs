@@ -16,7 +16,7 @@ namespace WebVella.Pulsar.Services
 	{
 		protected IJSRuntime JSRuntime { get; }
 
-		private int? _browserUtcOffsetInMinutes= null;
+		private int? _browserUtcOffsetInMinutes = null;
 
 		public JsService(IJSRuntime jsRuntime)
 		{
@@ -44,14 +44,14 @@ namespace WebVella.Pulsar.Services
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.addCKEditor",
-				 elementId,dotNetReference, cultureString);
+				 elementId, dotNetReference, cultureString);
 		}
 
-		public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId,DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId, string observerViewportId)
+		public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId, DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId, string observerViewportId)
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.initInfiniteScroll",
-				 componentId,objectRef, observerTargetId, observerViewportId);
+				 componentId, objectRef, observerTargetId, observerViewportId);
 		}
 
 		public async ValueTask<bool> DestroyInfiniteScroll(Guid componentId)
@@ -107,7 +107,7 @@ namespace WebVella.Pulsar.Services
 		public async ValueTask<bool> UpdateAppStartProgress(string progress)
 		{
 			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.updateAppStartProgress",progress);
+				 "WebVellaPulsar.updateAppStartProgress", progress);
 		}
 
 		public async ValueTask<bool> ClearFlatPickrDate(string elementId)
@@ -265,7 +265,7 @@ namespace WebVella.Pulsar.Services
 		{
 			return await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.setCKEditorData",
-				 elementId,content);
+				 elementId, content);
 		}
 
 		public async ValueTask<bool> ScrollElement(ElementReference elRef, int x, int y)
@@ -285,9 +285,13 @@ namespace WebVella.Pulsar.Services
 
 		public async ValueTask<bool> ShowToast(string title, string message, string type, int duration = 3000)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
+			await Task.Delay(0);
+#pragma warning disable 4014
+			_ = JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.showToast",
 				 title, message, type, duration);
+#pragma warning restore 4014
+			return true;
 		}
 
 		public async ValueTask<bool> SetModalOpen()

@@ -98,16 +98,12 @@ namespace WebVella.Pulsar.Components
 
 			_originalValue = Value;
 			_value = FieldValueService.InitAsString(Value);
-
-			base.OnInitialized();
 		}
 
 		protected override void OnParametersSet()
 		{
 			if(_originalValue != Value && !_editEnabled)
 				_value = FieldValueService.InitAsString(Value);
-
-			base.OnParametersSet();
 		}
 
 		#endregion

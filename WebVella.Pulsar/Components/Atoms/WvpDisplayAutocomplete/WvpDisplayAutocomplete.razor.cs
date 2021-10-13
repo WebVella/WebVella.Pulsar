@@ -46,8 +46,6 @@ namespace WebVella.Pulsar.Components
 		protected override void OnParametersSet()
 		{
 			_value = FieldValueService.InitAsString(Value);
-
-			base.OnParametersSet();
 		}
 
 		#endregion

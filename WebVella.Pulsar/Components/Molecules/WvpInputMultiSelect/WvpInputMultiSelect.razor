@@ -51,40 +51,44 @@
 		}
 		<div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
 			<WvpInfiniteScroll @ref="_infiniteScrollRef" OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")">
-				@{
-					var index = 0;
-				}
-				@foreach (var option in Options)
-				{
-					<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
-						<div class="dropdown-item__icon">
-							@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
-							{
-								<WvpIcon Type="WvpIconType.MdfCheckBox" />
-							}
-							else
-							{
-								<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
-							}
-						</div>
-						<div class="dropdown-item__content">
-							@if (WvpInputMultiSelectOption != null)
-							{
-								@WvpInputMultiSelectOption(option)
-							}
-							else
-							{
-								@Newtonsoft.Json.JsonConvert.SerializeObject(option)
-							}
+				<ChildContent>
+					@{
+						var index = 0;
+					}
+					@foreach (var option in Options)
+					{
+						<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
+							<div class="dropdown-item__icon">
+								@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
+								{
+									<WvpIcon Type="WvpIconType.MdfCheckBox" />
+								}
+								else
+								{
+									<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
+								}
+							</div>
+							<div class="dropdown-item__content">
+								@if (WvpInputMultiSelectOption != null)
+								{
+									@WvpInputMultiSelectOption(option)
+								}
+								else
+								{
+									@Newtonsoft.Json.JsonConvert.SerializeObject(option)
+								}
+							</div>
+						</WvpDropdownItem>
+						index++;
+					}
+				</ChildContent>
+				<ObservedItem>
+					<WvpDropdownItem Disabled="true">
+						<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
+							Loading...
 						</div>
 					</WvpDropdownItem>
-					index++;
-				}
-				<WvpDropdownItem>
-					<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
-						Loading...
-					</div>
-				</WvpDropdownItem>
+				</ObservedItem>
 			</WvpInfiniteScroll>
 			@if (Options.ToList().Count == 0)
 			{

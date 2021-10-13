@@ -99,7 +99,6 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(Id))
 				_inputId = Id;
 
-			base.OnInitialized();
 		}
 
 		protected override void OnParametersSet()
@@ -120,7 +119,6 @@ namespace WebVella.Pulsar.Components
 			{
 				_filteredOptions = _filterData();
 			}
-			base.OnParametersSet();
 		}
 
 		#endregion
@@ -188,7 +186,7 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _ddMenuHoverChangeHandler(ChangeEventArgs args)
 		{
-			await Task.Delay(0);
+			await Task.Delay(1);
 			_isDropdownHovered = (bool)args.Value;
 		}
 
