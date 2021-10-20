@@ -41,18 +41,15 @@ namespace WebVella.Pulsar.Components
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
+			{
 				_objectReference = DotNetObjectReference.Create(this);
-			await base.OnAfterRenderAsync(firstRender);
+			}
 		}
 
 		public async ValueTask DisposeAsync()
 		{
 			await Task.Delay(1);
-			if (_objectReference != null)
-			{
-				_objectReference.Dispose();
-				_objectReference = null;
-			}
+			_objectReference?.Dispose();
 		}
 
 		protected override async Task OnParametersSetAsync()

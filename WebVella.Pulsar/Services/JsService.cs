@@ -56,9 +56,20 @@ namespace WebVella.Pulsar.Services
 
 		public async ValueTask<bool> DestroyInfiniteScroll(Guid componentId)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.infiniteScrollDestroy",
-				 componentId);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+					 "WebVellaPulsar.infiniteScrollDestroy",
+					 componentId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> CheckIfElementIdVisible(string elementId)
@@ -235,30 +246,74 @@ namespace WebVella.Pulsar.Services
 		public async ValueTask<bool> RemoveDocumentEventListener(WvpDomEventType eventType, string listenerId)
 		{
 			var eventName = eventType.ToDescriptionString();
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.removeDocumentEventListener",
-				 eventName, listenerId);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+					 "WebVellaPulsar.removeDocumentEventListener",
+					 eventName, listenerId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> RemoveFlatPickrDate(string elementId)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
 				 "WebVellaPulsar.removeFlatPickrDate",
 				 elementId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> RemoveFlatPickrDateTime(string elementId)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.removeFlatPickrDateTime",
-				 elementId);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+					 "WebVellaPulsar.removeFlatPickrDateTime",
+					 elementId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> RemoveOutsideClickEventListener(string elementSelector, string listenerId)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.removeOutsideClickEventListener",
-				 elementSelector, listenerId);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+						 "WebVellaPulsar.removeOutsideClickEventListener",
+						 elementSelector, listenerId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> SetCKEditorData(string elementId, string content)

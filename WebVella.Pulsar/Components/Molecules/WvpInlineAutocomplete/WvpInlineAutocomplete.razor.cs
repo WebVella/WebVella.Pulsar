@@ -80,11 +80,7 @@ namespace WebVella.Pulsar.Components
 		{
 			await JsService .RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
-			if (_objectReference != null)
-			{
-				_objectReference.Dispose();
-				_objectReference = null;
-			}
+			_objectReference?.Dispose();
 		}
 
 		protected override void OnInitialized()

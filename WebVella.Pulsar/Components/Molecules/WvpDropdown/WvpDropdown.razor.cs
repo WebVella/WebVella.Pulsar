@@ -73,11 +73,7 @@ namespace WebVella.Pulsar.Components
 		{
 			await JsService.RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 			await JsService.RemoveOutsideClickEventListener($"#{Id}", Id);
-			if (_objectReference != null)
-			{
-				_objectReference.Dispose();
-				_objectReference = null;
-			}
+			_objectReference?.Dispose();
 		}
 		#endregion
 

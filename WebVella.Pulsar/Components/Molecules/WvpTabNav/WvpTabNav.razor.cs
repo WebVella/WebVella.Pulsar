@@ -8,7 +8,7 @@ using System;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpTabNav : WvpBase, IAsyncDisposable
+	public partial class WvpTabNav : WvpBase,IAsyncDisposable
 	{
 
 		#region << Parameters >>
@@ -42,21 +42,16 @@ namespace WebVella.Pulsar.Components
 
 		#region << Lifecycle methods >>
 
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+		protected override void OnAfterRender(bool firstRender)
 		{
 			if (firstRender)
 				_objectReference = DotNetObjectReference.Create(this);
-			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(1);
-			if (_objectReference != null)
-			{
-				_objectReference.Dispose();
-				_objectReference = null;
-			}
+			_objectReference?.Dispose();
+			await Task.Delay(0);
 		}
 
 		#endregion

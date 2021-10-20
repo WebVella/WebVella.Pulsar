@@ -60,11 +60,7 @@ namespace WebVella.Pulsar.Components
 		public async ValueTask DisposeAsync()
 		{
 			await JsService.RemoveFlatPickrDate(Id);
-			if (_objectReference != null)
-			{
-				_objectReference.Dispose();
-				_objectReference = null;
-			}
+			_objectReference?.Dispose();
 		}
 
 		protected override async Task OnParametersSetAsync()

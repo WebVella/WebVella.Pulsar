@@ -50,6 +50,7 @@ namespace WebVella.Pulsar.Components
 		public async ValueTask DisposeAsync()
 		{
 			await new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
+			_objectRef?.Dispose();
 		}
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
