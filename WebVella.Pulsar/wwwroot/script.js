@@ -6,6 +6,33 @@
 	eventListeners: {},
 	outsideClickListeners: {},
 	infiniteScrollObservers: {},
+	dispose: function () {
+		WebVellaPulsar.cKEditors = {};
+		WebVellaPulsar.flatPickrs = {};
+		if (WebVellaPulsar.eventListeners) {
+			for (var eventName in WebVellaPulsar.eventListeners) {
+				if (WebVellaPulsar.eventListeners[eventName]) {
+					for (var listenerId in WebVellaPulsar.eventListeners[eventName]) {
+						WebVellaPulsar.removeDocumentEventListener(eventName, listenerId);
+					}
+				}
+			}
+		}
+		if (WebVellaPulsar.outsideClickListeners) {
+			for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
+				if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
+					for (var listenerId in WebVellaPulsar.outsideClickListeners[elementSelector]) {
+						WebVellaPulsar.removeOutsideClickEventListener(elementSelector, listenerId);
+					}
+				}
+			}
+		}
+		if (WebVellaPulsar.infiniteScrollObservers) {
+			for (var componentId in WebVellaPulsar.infiniteScrollObservers) {
+				WebVellaPulsar.infiniteScrollDestroy(componentId);
+			}
+		}
+	},
 	// Functions in alpha sort
 	addBackdrop: function () {
 		var backdropEl = document.querySelector(".modal-backdrop");

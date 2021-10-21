@@ -12,7 +12,7 @@ namespace WebVella.Pulsar.Services
 {
 	//Alpha sorted list of methods
 
-	public class JsService
+	public class JsService: IAsyncDisposable
 	{
 		protected IJSRuntime JSRuntime { get; }
 
@@ -21,6 +21,12 @@ namespace WebVella.Pulsar.Services
 		public JsService(IJSRuntime jsRuntime)
 		{
 			JSRuntime = jsRuntime;
+		}
+
+		public async ValueTask DisposeAsync()
+		{
+			//Dispose all listeners and objects
+			await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.dispose");
 		}
 
 		public async ValueTask<int> GetBrowserUtcOffsetInMinutes()
