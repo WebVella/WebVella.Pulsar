@@ -32,6 +32,7 @@
 				WebVellaPulsar.infiniteScrollDestroy(componentId);
 			}
 		}
+		return true;
 	},
 	// Functions in alpha sort
 	addBackdrop: function () {
