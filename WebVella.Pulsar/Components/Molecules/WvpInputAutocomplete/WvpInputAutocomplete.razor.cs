@@ -155,6 +155,7 @@ namespace WebVella.Pulsar.Components
 			_easySubmit = true;
 			_value = null;
 			_activeItemIndex = -1;
+			await Task.Delay(1);
 			await InvokeAsync(StateHasChanged);
 			if (BlurOnSubmit)
 				await new JsService(JSRuntime).BlurElement(_inputId);
@@ -186,8 +187,8 @@ namespace WebVella.Pulsar.Components
 
 		private async Task _ddMenuHoverChangeHandler(ChangeEventArgs args)
 		{
-			await Task.Delay(1);
 			_isDropdownHovered = (bool)args.Value;
+			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onKeyDownHandler(KeyboardEventArgs e)
@@ -207,10 +208,10 @@ namespace WebVella.Pulsar.Components
 				{
 					_value = selectedItem;
 				}
-				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 				_preventNextOnInputDropdownVisibilityCheck = true;
 				_skipNextBlurSubmit = true;
-				await Clear();
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				await Clear(); //boz: should be after the invoke so _value is not cleared
 				return;
 			}
 			else if (e.Code == "Escape")
@@ -234,27 +235,29 @@ namespace WebVella.Pulsar.Components
 			{
 				_easySubmit = true;
 			}
-
+			await Task.Delay(1);
 			await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onBlurHandler()
 		{
-			if(_skipNextBlurSubmit)
+			if (_skipNextBlurSubmit)
 			{
 				_skipNextBlurSubmit = false;
 				return;
 			}
 			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
 			{
-				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
+				await Task.Delay(1);
 				await InvokeAsync(StateHasChanged);
 			}
 			if (!_isDropdownHovered)
 			{
 				_isDropdownVisible = false;
 				_value = "";
+				await Task.Delay(1);
 				await InvokeAsync(StateHasChanged);
+				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			}
 
 		}
@@ -270,17 +273,16 @@ namespace WebVella.Pulsar.Components
 					_isDropdownVisible = false;
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
-
-			await OnInput.InvokeAsync(args);
+			await Task.Delay(1);
 			await InvokeAsync(StateHasChanged);
-
+			await OnInput.InvokeAsync(args);
 		}
 
 		private async Task _itemSelected(string itemValue)
 		{
-			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = itemValue });
 			_skipNextBlurSubmit = true;
 			await Clear();
+			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = itemValue });
 		}
 
 		#endregion

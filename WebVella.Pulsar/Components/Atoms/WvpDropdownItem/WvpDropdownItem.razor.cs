@@ -6,6 +6,7 @@ using WebVella.Pulsar.Models;
 using WebVella.Pulsar.Utils;
 using System;
 using Microsoft.AspNetCore.Components.Web;
+using System.Diagnostics;
 
 namespace WebVella.Pulsar.Components
 {
@@ -62,8 +63,9 @@ namespace WebVella.Pulsar.Components
 
 		#region << Ui handlers >>
 		private async Task _onClickHandler(MouseEventArgs e){
-			await OnClick.InvokeAsync(Value);
+			await Task.Delay(1);
 			await InvokeAsync(StateHasChanged);
+			await OnClick.InvokeAsync(Value);
 		}
 
 		#endregion

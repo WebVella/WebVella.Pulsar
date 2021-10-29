@@ -12,7 +12,7 @@ namespace WebVella.Pulsar.Services
 {
 	//Alpha sorted list of methods
 
-	public class JsService: IAsyncDisposable
+	public class JsService : IAsyncDisposable
 	{
 		protected IJSRuntime JSRuntime { get; }
 
@@ -237,16 +237,38 @@ namespace WebVella.Pulsar.Services
 
 		public async ValueTask<bool> RemoveBodyClass(string className)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.removeBodyClass",
-				 className);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+						 "WebVellaPulsar.removeBodyClass",
+						 className);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> RemoveCKEditor(string elementId)
 		{
-			return await JSRuntime.InvokeAsync<bool>(
-				 "WebVellaPulsar.removeCKEditor",
-				 elementId);
+			try
+			{
+				await JSRuntime.InvokeAsync<bool>(
+						 "WebVellaPulsar.removeCKEditor",
+						 elementId);
+			}
+			catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+			{
+				// Ignore exceptions from task cancellations.
+				// Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+				// CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+				// It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+			}
+			return true;
 		}
 
 		public async ValueTask<bool> RemoveDocumentEventListener(WvpDomEventType eventType, string listenerId)

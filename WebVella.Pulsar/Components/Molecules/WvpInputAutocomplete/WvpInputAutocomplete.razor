@@ -19,7 +19,7 @@
 				@for (int i = 0; i < _filteredOptions.Count; ++i)
 				{
 					var item = _filteredOptions[i];
-					<WvpDropdownItem Value="@item" Class="@(_activeItemIndex == i ? "active" : "")" OnClick="() => _itemSelected(item)">@item</WvpDropdownItem>
+					<WvpDropdownItem @key="item" Value="@item" Class="@(_activeItemIndex == i ? "active" : "")" OnClick="() => _itemSelected(item)">@item</WvpDropdownItem>
 				}
 
 			</WvpDropdownMenu>

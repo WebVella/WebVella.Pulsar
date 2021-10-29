@@ -7,8 +7,18 @@
 	outsideClickListeners: {},
 	infiniteScrollObservers: {},
 	dispose: function () {
-		WebVellaPulsar.cKEditors = {};
-		WebVellaPulsar.flatPickrs = {};
+		if (WebVellaPulsar.cKEditors) {
+			for (var elementId in WebVellaPulsar.cKEditors) {
+				WebVellaPulsar.cKEditors[elementId].destroy();
+				delete WebVellaPulsar.cKEditors[elementId];
+			}
+		}
+		if (WebVellaPulsar.flatPickrs) {
+			for (var elementId in WebVellaPulsar.flatPickrs) {
+				WebVellaPulsar.flatPickrs[elementId].destroy();
+				delete WebVellaPulsar.flatPickrs[elementId];
+			}
+		}
 		if (WebVellaPulsar.eventListeners) {
 			for (var eventName in WebVellaPulsar.eventListeners) {
 				if (WebVellaPulsar.eventListeners[eventName]) {
