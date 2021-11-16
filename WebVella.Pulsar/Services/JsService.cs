@@ -72,7 +72,7 @@ namespace WebVella.Pulsar.Services
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.addBodyClass",
                 className);
             }
@@ -86,14 +86,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> AddCKEditor(string elementId, object dotNetReference, string cultureString)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                "WebVellaPulsar.addCKEditor",
                elementId, dotNetReference, cultureString);
             }
@@ -107,14 +107,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> InitializeInfiniteScroll(Guid componentId, DotNetObjectReference<WvpInfiniteScroll> objectRef, string observerTargetId, string observerViewportId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.initInfiniteScroll",
                 componentId, objectRef, observerTargetId, observerViewportId);
             }
@@ -128,14 +128,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> DestroyInfiniteScroll(Guid componentId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                      "WebVellaPulsar.infiniteScrollDestroy",
                      componentId);
             }
@@ -149,14 +149,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> CheckIfElementIdVisible(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.checkIfElementIdVisible",
                 elementId);
             }
@@ -170,7 +170,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
 
@@ -179,7 +179,7 @@ namespace WebVella.Pulsar.Services
             try
             {
                 var eventName = eventType.ToDescriptionString();
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                     "WebVellaPulsar.addDocumentEventListener",
                     eventName, component, listenerId, methodName);
             }
@@ -193,14 +193,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> AddFlatPickrDateTime(string elementId, object inputFileElement, string cultureString)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                      "WebVellaPulsar.addFlatPickrDateTime",
                      elementId, inputFileElement, cultureString);
             }
@@ -214,14 +214,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> AddFlatPickrDate(string elementId, object inputFileElement, string cultureString)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.addFlatPickrDate",
                 elementId, inputFileElement, cultureString);
             }
@@ -235,14 +235,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> AddOutsideClickEventListener(string elementSelector, object component, string listenerId, string methodName)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.addOutsideClickEventListener",
                 elementSelector, component, listenerId, methodName);
             }
@@ -256,14 +256,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> AppStart()
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.appStart");
             }
             catch (JSDisconnectedException)
@@ -276,14 +276,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> UpdateAppStartProgress(string progress)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.updateAppStartProgress", progress);
             }
             catch (JSDisconnectedException)
@@ -296,14 +296,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> ClearFlatPickrDate(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.clearFlatPickrDate",
                 elementId);
             }
@@ -317,7 +317,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
 
@@ -325,7 +325,7 @@ namespace WebVella.Pulsar.Services
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.clearFlatPickrDateTime",
                 elementId);
             }
@@ -339,14 +339,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> FocusElement(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.focusElement",
                 elementId);
             }
@@ -360,14 +360,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> FocusElementBySelector(string elementSelector)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.focusElementBySelector",
                 elementSelector);
             }
@@ -381,14 +381,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> MakeDraggable(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.makeDraggable",
                 elementId);
             }
@@ -402,14 +402,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveDraggable(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.removeDraggable",
                 elementId);
             }
@@ -423,14 +423,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> BlurElement(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.blurElement",
                 elementId);
             }
@@ -444,14 +444,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> BlurElementBySelector(string elementSelector)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.blurElementBySelector",
                 elementSelector);
             }
@@ -465,14 +465,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> ScrollToElement(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.scrollToElement",
                 elementId);
             }
@@ -486,14 +486,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetFlatPickrDateChange(string elementId, string dateTimeString)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setFlatPickrDateChange",
                 elementId, dateTimeString);
             }
@@ -507,14 +507,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetFlatPickrDateTimeChange(string elementId, string dateTimeString)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setFlatPickrDateTimeChange",
                 elementId, dateTimeString);
             }
@@ -528,14 +528,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetPageMetaTitle(string title)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setPageMetaTitle",
                 title);
             }
@@ -549,14 +549,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetElementHtml(string elementId, string html)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setElementHtml",
                 elementId, html);
             }
@@ -570,7 +570,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> InitFileUpload(object inputFileElement, object component)
@@ -578,7 +578,7 @@ namespace WebVella.Pulsar.Services
 
             try
             {
-                await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.initUploadFile", inputFileElement, component);
+                return await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.initUploadFile", inputFileElement, component);
             }
             catch (JSDisconnectedException)
             {
@@ -590,14 +590,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<List<string>> GetSelectedValues(ElementReference elRef)
         {
             try
             {
-                await JSRuntime.InvokeAsync<List<string>>("WebVellaPulsar.getSelectedValues", elRef);
+                return await JSRuntime.InvokeAsync<List<string>>("WebVellaPulsar.getSelectedValues", elRef);
             }
             catch (JSDisconnectedException)
             {
@@ -616,7 +616,7 @@ namespace WebVella.Pulsar.Services
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.reloadPage");
             }
             catch (JSDisconnectedException)
@@ -629,14 +629,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveBodyClass(string className)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                          "WebVellaPulsar.removeBodyClass",
                          className);
             }
@@ -650,14 +650,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveCKEditor(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                          "WebVellaPulsar.removeCKEditor",
                          elementId);
             }
@@ -671,7 +671,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveDocumentEventListener(WvpDomEventType eventType, string listenerId)
@@ -679,7 +679,7 @@ namespace WebVella.Pulsar.Services
             var eventName = eventType.ToDescriptionString();
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                      "WebVellaPulsar.removeDocumentEventListener",
                      eventName, listenerId);
             }
@@ -693,14 +693,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveFlatPickrDate(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                  "WebVellaPulsar.removeFlatPickrDate",
                  elementId);
             }
@@ -714,14 +714,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveFlatPickrDateTime(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                      "WebVellaPulsar.removeFlatPickrDateTime",
                      elementId);
             }
@@ -735,14 +735,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> RemoveOutsideClickEventListener(string elementSelector, string listenerId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                          "WebVellaPulsar.removeOutsideClickEventListener",
                          elementSelector, listenerId);
             }
@@ -756,14 +756,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetCKEditorData(string elementId, string content)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setCKEditorData",
                 elementId, content);
             }
@@ -777,14 +777,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> ScrollElement(ElementReference elRef, int x, int y)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.scrollElement", elRef, x, y);
+                return await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.scrollElement", elRef, x, y);
             }
             catch (JSDisconnectedException)
             {
@@ -796,14 +796,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SimulateClick(ElementReference elRef)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.simulateClick", elRef);
+                return await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.simulateClick", elRef);
             }
             catch (JSDisconnectedException)
             {
@@ -815,14 +815,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SimulateClickById(string elementId)
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.simulateClickById", elementId);
+                return await JSRuntime.InvokeAsync<bool>("WebVellaPulsar.simulateClickById", elementId);
             }
             catch (JSDisconnectedException)
             {
@@ -834,7 +834,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> ShowToast(string title, string message, string type, int duration = 3000)
@@ -865,7 +865,7 @@ namespace WebVella.Pulsar.Services
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setModalOpen");
             }
             catch (JSDisconnectedException)
@@ -878,14 +878,14 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
         public async ValueTask<bool> SetModalClose()
         {
             try
             {
-                await JSRuntime.InvokeAsync<bool>(
+                return await JSRuntime.InvokeAsync<bool>(
                 "WebVellaPulsar.setModalClose");
             }
             catch (JSDisconnectedException)
@@ -898,7 +898,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
-            return true;
+            return false;
         }
 
     }
