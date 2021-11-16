@@ -6,9 +6,6 @@
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 		<!-- Remove the language litter of code analysis on publish https://github.com/dotnet/roslyn/issues/39458-->
 		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-		<RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
-		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
-		<EnableNETAnalyzers>False</EnableNETAnalyzers>
 	</PropertyGroup>
 
 	<ItemGroup>
