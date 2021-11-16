@@ -92,10 +92,12 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Private methods >>
-		public async Task PerformVisibilityCheck()
+		public async Task<bool> PerformVisibilityCheck()
 		{
 			if(_infiniteScrollRef != null)
-				await _infiniteScrollRef.PerformVisibilityCheck();
+				return await _infiniteScrollRef.PerformVisibilityCheck();
+
+			return false;
 		}
 
 		#endregion
