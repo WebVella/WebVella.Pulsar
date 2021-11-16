@@ -24,7 +24,7 @@ namespace WebVella.Pulsar.Components
 
 		#region << Callbacks >>
 
-		public async Task PerformVisibilityCheck()
+		public async Task<bool> PerformVisibilityCheck()
 		{
 			await Task.Delay(100);
 			var jsSrv = new JsService(JSRuntime);
@@ -32,8 +32,9 @@ namespace WebVella.Pulsar.Components
 			var isVisible= await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
 			if (isVisible)
 			{
-				await OnObservableTargetReached.InvokeAsync();
+				return true;
 			}
+			return false;
 		}
 
 		#endregion
