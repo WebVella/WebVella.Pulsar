@@ -49,7 +49,7 @@ namespace WebVella.Pulsar.Components
 
 		private List<TItem> _filteredOptions = new List<TItem>();
 
-		private TItem _originalValue;
+		private string _originalValueJson = null;
 
 		private TItem _value;
 
@@ -70,9 +70,9 @@ namespace WebVella.Pulsar.Components
 			if (!String.IsNullOrWhiteSpace(sizeSuffix))
 				_cssList.Add($"input-group-{sizeSuffix}");
 
-			if (JsonConvert.SerializeObject(_originalValue) != JsonConvert.SerializeObject(Value))
+			if (_originalValueJson != JsonConvert.SerializeObject(Value))
 			{
-				_originalValue = Value;
+				_originalValueJson = JsonConvert.SerializeObject(Value);
 				var jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All,TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full };
 				jsonSettings.Converters.Insert(0, new PrimitiveJsonConverter());
 				_value = JsonConvert.DeserializeObject<TItem>(JsonConvert.SerializeObject(Value, Formatting.None, jsonSettings), jsonSettings);
