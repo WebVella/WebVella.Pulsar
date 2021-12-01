@@ -256,6 +256,7 @@ namespace WebVella.Pulsar.Services
                 // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
                 // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
             }
+            catch { }
             return false;
         }
 
