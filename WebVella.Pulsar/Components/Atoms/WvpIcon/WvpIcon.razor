@@ -38,6 +38,7 @@ else{
 
 	protected override async Task OnParametersSetAsync()
 	{
+		await Task.Delay(0);
 		InternalCssClass = "";
 
 		if (Size != WvpSize.Normal)

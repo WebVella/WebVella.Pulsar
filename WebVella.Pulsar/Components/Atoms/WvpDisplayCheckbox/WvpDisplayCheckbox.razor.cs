@@ -40,6 +40,7 @@ namespace WebVella.Pulsar.Components
 		#region << Lifecycle methods >>
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
+			await Task.Delay(0);
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
