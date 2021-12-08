@@ -72,7 +72,6 @@ namespace WebVella.Pulsar.Components
 				_objectReference = DotNetObjectReference.Create(this);
 				await new JsService(JSRuntime).InitFileUpload(Id, _objectReference);
 			}
-			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		public async ValueTask DisposeAsync()

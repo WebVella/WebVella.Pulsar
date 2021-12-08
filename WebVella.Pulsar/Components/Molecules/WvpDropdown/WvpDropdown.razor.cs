@@ -53,7 +53,6 @@ namespace WebVella.Pulsar.Components
 				await JsService.AddDocumentEventListener(WvpDomEventType.KeydownEscape, _objectReference, Id, "OnFocusOut");
 				await JsService.AddOutsideClickEventListener($"#{Id}", _objectReference, Id, "OnFocusOut");
 			}
-			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		protected override async Task OnParametersSetAsync()

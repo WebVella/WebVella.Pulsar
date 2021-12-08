@@ -45,7 +45,6 @@ namespace WebVella.Pulsar.Components
 				_objectReference = DotNetObjectReference.Create(this);
 				await JsService.AddCKEditor(Id,_objectReference, "en");
 			}
-			await base.OnAfterRenderAsync(firstRender); //Set the proper Id
 		}
 
 		public async ValueTask DisposeAsync()

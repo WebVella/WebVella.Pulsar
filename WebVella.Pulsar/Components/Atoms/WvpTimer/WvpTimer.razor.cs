@@ -102,8 +102,6 @@ namespace WebVella.Pulsar.Components
 		{
 			if (firstRender && !_requestStop)
 				Start();
-
-			base.OnAfterRender(firstRender);
 		}
 		#endregion
 

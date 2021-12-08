@@ -58,7 +58,6 @@ namespace WebVella.Pulsar.Components
 				_objectReference = DotNetObjectReference.Create(this);
 				await new JsService(JSRuntime).AddDocumentEventListener(WvpDomEventType.KeydownEscape, _objectReference, Id, "OnEscapeKey");
 			}
-			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		public async ValueTask DisposeAsync()
