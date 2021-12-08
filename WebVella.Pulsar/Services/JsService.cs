@@ -840,12 +840,11 @@ namespace WebVella.Pulsar.Services
             }
             return false;
         }
-
+#pragma warning disable 1998
         public async ValueTask<bool> ShowToast(string title, string message, string type, int duration = 3000)
         {
             try
             {
-                await Task.Delay(0);
 #pragma warning disable 4014
                 _ = JSRuntime.InvokeAsync<bool>(
                      "WebVellaPulsar.showToast",
@@ -864,7 +863,7 @@ namespace WebVella.Pulsar.Services
             }
             return true;
         }
-
+#pragma warning restore 1998
         public async ValueTask<bool> SetModalOpen()
         {
             try

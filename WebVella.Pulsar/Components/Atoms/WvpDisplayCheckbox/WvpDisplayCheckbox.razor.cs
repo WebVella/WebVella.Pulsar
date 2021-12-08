@@ -38,20 +38,19 @@ namespace WebVella.Pulsar.Components
 		#endregion
 
 		#region << Lifecycle methods >>
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+		protected override void OnAfterRender(bool firstRender)
 		{
-			await Task.Delay(0);
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
 			}
 		}
-
+#pragma warning disable 1998
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(1);
 			_objectReference?.Dispose();
 		}
+#pragma warning restore 1998
 
 		protected override async Task OnParametersSetAsync()
 		{

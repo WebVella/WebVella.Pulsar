@@ -36,9 +36,8 @@ else{
 
 	private WvpIconType _type = WvpIconType.NoIcon;
 
-	protected override async Task OnParametersSetAsync()
+	protected override void OnParametersSet()
 	{
-		await Task.Delay(0);
 		InternalCssClass = "";
 
 		if (Size != WvpSize.Normal)

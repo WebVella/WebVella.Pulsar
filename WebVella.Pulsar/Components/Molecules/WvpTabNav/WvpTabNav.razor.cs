@@ -48,11 +48,12 @@ namespace WebVella.Pulsar.Components
 				_objectReference = DotNetObjectReference.Create(this);
 		}
 
+#pragma warning disable 1998
 		public async ValueTask DisposeAsync()
 		{
 			_objectReference?.Dispose();
-			await Task.Delay(0);
 		}
+#pragma warning restore 1998
 
 		#endregion
 
