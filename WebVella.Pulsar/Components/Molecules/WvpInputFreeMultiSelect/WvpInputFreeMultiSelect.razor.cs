@@ -98,8 +98,8 @@ namespace WebVella.Pulsar.Components
 		private async Task _onFilterInputHandler(ChangeEventArgs e)
 		{
 			_filter = e.Value?.ToString();
-			await InvokeAsync(StateHasChanged);
-			await Task.Delay(1);
+			//await InvokeAsync(StateHasChanged);
+			//await Task.Delay(1);
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
 		}
 
@@ -116,14 +116,14 @@ namespace WebVella.Pulsar.Components
 
 			await Task.Delay(5);
 			_filter = "";
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _removeValue(string option)
 		{
 			_value.Remove(option);
-			await Task.Delay(1);
-			await InvokeAsync(StateHasChanged);
+			//await Task.Delay(1);
+			//await InvokeAsync(StateHasChanged);
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 		}
 

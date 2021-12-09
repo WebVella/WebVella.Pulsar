@@ -99,7 +99,7 @@ namespace WebVella.Pulsar.Components
 		private async Task _onInputHandler(ChangeEventArgs e)
 		{
 			_value = (bool)e.Value;
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 
@@ -133,7 +133,7 @@ namespace WebVella.Pulsar.Components
 				}
 				_editEnabled = false;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion
@@ -145,7 +145,7 @@ namespace WebVella.Pulsar.Components
 			if (_editEnabled)
 			{
 				await _toggleInlineEditClickHandler(false, false);
-				StateHasChanged();
+				//StateHasChanged();
 			}
 		}
 		#endregion

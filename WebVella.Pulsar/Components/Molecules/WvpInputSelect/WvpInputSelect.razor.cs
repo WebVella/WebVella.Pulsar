@@ -115,16 +115,16 @@ namespace WebVella.Pulsar.Components
 				_filter = "";
 				await JsService.FocusElementBySelector($"#{_filterElementId}");
 				await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
-				await InvokeAsync(StateHasChanged);
+				//await InvokeAsync(StateHasChanged);
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onFilterInputHandler(ChangeEventArgs e)
 		{
 			_filter = e.Value?.ToString();
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onSelectHandler(TItem item)
@@ -137,7 +137,7 @@ namespace WebVella.Pulsar.Components
 			await InvokeAsync(StateHasChanged);
 			await Task.Delay(1);
 			_isDropdownVisible = null;
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

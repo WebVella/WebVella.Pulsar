@@ -114,13 +114,13 @@ namespace WebVella.Pulsar.Components
 		{
 			await OnInput.InvokeAsync(e);
 
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onValueChangeHandler(ChangeEventArgs e)
 		{
 			_value = (TItem)e.Value;
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 
@@ -153,7 +153,7 @@ namespace WebVella.Pulsar.Components
 				}
 				_editEnabled = false;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

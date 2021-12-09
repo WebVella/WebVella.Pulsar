@@ -126,7 +126,6 @@ namespace WebVella.Pulsar.Components
 			if (StoreIsMenuVisible)
 			{
 				await StoreHideMenu();
-				await InvokeAsync(StateHasChanged);
 			}
 		}
 		#endregion

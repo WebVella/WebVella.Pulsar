@@ -110,14 +110,14 @@ namespace WebVella.Pulsar.Components
 				await JsService.FocusElementBySelector($"#{_filterElementId}");
 				await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onFilterInputHandler(ChangeEventArgs e)
 		{
 			_filter = e.Value?.ToString();
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onSelectHandler(TItem item)
@@ -132,7 +132,7 @@ namespace WebVella.Pulsar.Components
 			}
 
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

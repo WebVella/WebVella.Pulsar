@@ -94,14 +94,14 @@ namespace WebVella.Pulsar.Components
 
 			await OnKeyDown.InvokeAsync(e);
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onBlurHandler()
 		{
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion

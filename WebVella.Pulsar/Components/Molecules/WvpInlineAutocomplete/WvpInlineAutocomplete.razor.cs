@@ -142,12 +142,12 @@ namespace WebVella.Pulsar.Components
 				}
 				_editEnabled = false;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onValueChanged(ChangeEventArgs args){
 			_value = FieldValueService.InitAsString(args.Value?.ToString());
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 	
 		}
 

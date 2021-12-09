@@ -26,7 +26,7 @@ namespace WebVella.Pulsar.Components
 
 		public async Task<bool> PerformVisibilityCheck()
 		{
-			await Task.Delay(50);
+			await Task.Delay(1);
 			var jsSrv = new JsService(JSRuntime);
 			//This fixes the case when even after the first intersect, the observed element is still visible and we need to force more callbacks
 			var isVisible= await jsSrv.CheckIfElementIdVisible(ObserverTargetId);

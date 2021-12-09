@@ -3,7 +3,7 @@
 @using WebVella.Pulsar.Models
 @using Microsoft.AspNetCore.Components.Web
 
-<div id="@Id" class="@_class @(Parent._isMenuVisible ? "" : "d-none")" @attributes="@AdditionalAttributes" @onmouseover="@(() => _hoverToggleHandler(true))" @onmouseout="@(() => _hoverToggleHandler(false))">
+<div id="@Id" class="@_class @(Parent.StoreIsMenuVisible ? "" : "d-none")" @attributes="@AdditionalAttributes" @onmouseover="@(() => _hoverToggleHandler(true))" @onmouseout="@(() => _hoverToggleHandler(false))">
 	@ChildContent
 </div>
 

@@ -130,7 +130,7 @@ namespace WebVella.Pulsar.Components
 				scheduledEnableEditChange = false;
 				scheduledApplyChange = false;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onInputHandler(ChangeEventArgs e)
@@ -145,7 +145,7 @@ namespace WebVella.Pulsar.Components
 				//Apply value only if a change is not scheduled
 				_value = (DateTime?)e.Value;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _toggleInlineEditClickHandler(bool enableEdit, bool applyChange)
@@ -176,7 +176,7 @@ namespace WebVella.Pulsar.Components
 				}
 				_editEnabled = false;
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 
@@ -188,7 +188,7 @@ namespace WebVella.Pulsar.Components
 			if (_editEnabled)
 			{
 				await _toggleInlineEditClickHandler(false, false);
-				StateHasChanged();
+				//StateHasChanged();
 			}
 		}
 		#endregion

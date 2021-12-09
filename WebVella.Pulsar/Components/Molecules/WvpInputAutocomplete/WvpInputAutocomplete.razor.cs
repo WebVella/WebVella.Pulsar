@@ -156,7 +156,7 @@ namespace WebVella.Pulsar.Components
 			_value = null;
 			_activeItemIndex = -1;
 			await Task.Delay(1);
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 			if (BlurOnSubmit)
 				await new JsService(JSRuntime).BlurElement(_inputId);
 			else
@@ -188,7 +188,7 @@ namespace WebVella.Pulsar.Components
 		private async Task _ddMenuHoverChangeHandler(ChangeEventArgs args)
 		{
 			_isDropdownHovered = (bool)args.Value;
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onKeyDownHandler(KeyboardEventArgs e)
@@ -235,8 +235,8 @@ namespace WebVella.Pulsar.Components
 			{
 				_easySubmit = true;
 			}
-			await Task.Delay(1);
-			await InvokeAsync(StateHasChanged);
+			//await Task.Delay(1);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		private async Task _onBlurHandler()
@@ -249,14 +249,14 @@ namespace WebVella.Pulsar.Components
 			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
 			{
 				await Task.Delay(1);
-				await InvokeAsync(StateHasChanged);
+				//await InvokeAsync(StateHasChanged);
 			}
 			if (!_isDropdownHovered)
 			{
 				_isDropdownVisible = false;
 				_value = "";
 				await Task.Delay(1);
-				await InvokeAsync(StateHasChanged);
+				//await InvokeAsync(StateHasChanged);
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			}
 
@@ -274,7 +274,7 @@ namespace WebVella.Pulsar.Components
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
 			await Task.Delay(1);
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 			await OnInput.InvokeAsync(args);
 		}
 

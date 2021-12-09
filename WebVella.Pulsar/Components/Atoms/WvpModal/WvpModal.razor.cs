@@ -45,7 +45,6 @@ namespace WebVella.Pulsar.Components
 
             }
 
-            Debug.WriteLine($"new: {IsOpen} | old: {_isOpen} | id: {Id}");
             if (IsOpen != _isOpen)
             {
                 if (IsOpen)
@@ -80,7 +79,7 @@ namespace WebVella.Pulsar.Components
             {
                 _isOpen = true;
                 await new JsService(JSRuntime).SetModalOpen();
-                await InvokeAsync(StateHasChanged);
+                //await InvokeAsync(StateHasChanged);
                 if (invokeCallback)
                 {
                     await IsOpenChanged.InvokeAsync(_isOpen);
@@ -99,7 +98,7 @@ namespace WebVella.Pulsar.Components
 
                 _isOpen = false;
                 await new JsService(JSRuntime).SetModalClose();
-                await InvokeAsync(StateHasChanged);
+                //await InvokeAsync(StateHasChanged);
 
                 if (invokeCallback)
                 {

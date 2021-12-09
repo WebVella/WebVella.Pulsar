@@ -37,7 +37,7 @@ namespace WebVella.Pulsar.Components
 		public async Task UpdateProgressAsync(WvpFileInfo fileInfo)
 		{
 			_value = fileInfo;
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 		#endregion
@@ -119,7 +119,7 @@ namespace WebVella.Pulsar.Components
 			_value = null;
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 
@@ -142,7 +142,7 @@ namespace WebVella.Pulsar.Components
 				else if (file.Size > MaxFileSize)
 				{
 					file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
-					await InvokeAsync(StateHasChanged);
+					//await InvokeAsync(StateHasChanged);
 					return;
 				}
 				else
@@ -156,7 +156,7 @@ namespace WebVella.Pulsar.Components
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 

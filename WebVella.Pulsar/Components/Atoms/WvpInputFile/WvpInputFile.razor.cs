@@ -42,7 +42,7 @@ namespace WebVella.Pulsar.Components
 			if (_value != null && fileIndex > -1)
 			{
 				_value[fileIndex] = fileInfo;
-				await InvokeAsync(StateHasChanged);
+				//await InvokeAsync(StateHasChanged);
 			}
 
 		}
@@ -127,7 +127,7 @@ namespace WebVella.Pulsar.Components
 			_value.Remove(file);
 			await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 		#endregion
 
@@ -150,14 +150,14 @@ namespace WebVella.Pulsar.Components
 					{
 						file.Status = "File not found";
 						_errorFiles.Add(file);
-						await InvokeAsync(StateHasChanged);
+						//await InvokeAsync(StateHasChanged);
 						return;
 					}
 					else if (file.Size > MaxFileSize)
 					{
 						file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
 						_errorFiles.Add(file);
-						await InvokeAsync(StateHasChanged);
+						//await InvokeAsync(StateHasChanged);
 						return;
 					}
 					else if (eligibleFiles.Any(x => x.Name == file.Name))
@@ -206,7 +206,7 @@ namespace WebVella.Pulsar.Components
 					{
 						file.Status = $"That's too big. Max size: {WvpHelpers.GetSizeStringFromSize(MaxFileSize)}";
 						_errorFiles.Add(file);
-						await InvokeAsync(StateHasChanged);
+						//await InvokeAsync(StateHasChanged);
 						return;
 					}
 					else
@@ -230,7 +230,7 @@ namespace WebVella.Pulsar.Components
 					await OnInput.InvokeAsync(new ChangeEventArgs { Value = _value });
 				}
 			}
-			await InvokeAsync(StateHasChanged);
+			//await InvokeAsync(StateHasChanged);
 		}
 
 

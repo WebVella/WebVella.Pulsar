@@ -571,7 +571,6 @@
 		}
 	},
 	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
-		console.log("======= " + observerTargetId + " ==========");
 		var options = {
 			root: null,
 			threshold: 0
@@ -581,7 +580,6 @@
 		};
 		WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
 			function (e) {
-				console.log("======= " + observerTargetId + " ==========");
 				dotNetHelper.invokeMethodAsync("OnIntersection");
 			},
 			options
@@ -680,7 +678,6 @@
 		var currentModalCount = WebVellaPulsar.getModalCount();
 		var newModalCount = currentModalCount + 1;
 		document.body.dataset.modalCount = newModalCount;
-		console.log("add modal count. new: " + newModalCount)
 		return newModalCount;
 	},
 	removeModalCount: function () {
@@ -690,7 +687,6 @@
 			newModalCount = newModalCount - 1;
 			document.body.dataset.modalCount = newModalCount;
 		}
-		console.log("remove modal count. new: " + newModalCount)
 		return newModalCount;
 	},
 
