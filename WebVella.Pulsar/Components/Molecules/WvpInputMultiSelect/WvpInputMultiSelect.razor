@@ -6,94 +6,92 @@
 @using Newtonsoft.Json
 
 <WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible">
-	<WvpDropdownToggle>
-		<span class="input-group @(String.Join(" ",_cssList))">
-			@if (_value == null || _value.Count == 0)
-			{
-				if (!String.IsNullOrWhiteSpace(Placeholder))
-				{
-					<span class="form-control wvp-grey">@Placeholder</span>
-				}
-				else
-				{
-					<span class="form-control wvp-grey">&nbsp;</span>
-				}
-			}
-			else if (WvpInputMultiSelectField != null)
-			{
-				<span class="form-control">
-					@foreach (var item in _value)
-					{
-						@WvpInputMultiSelectField(item)
-					}
-				</span>
-			}
-			else
-			{
-				<span class="form-control">@JsonConvert.SerializeObject(_value)</span>
-			}
-			<span class="input-group-append">
-				<span class="input-group-text"><WvpIcon Type="WvpIconType.BsCaretDownFill" /></span>
-			</span>
-		</span>
-	</WvpDropdownToggle>
-	<WvpDropdownMenu Class="w-100 pt-0">
-		@if (IsFilterable)
-		{
-			<div class="p-1">
-				<div class="input-group input-group-sm">
-					<div class="input-group-append">
-						<div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
-					</div>
-					<input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
-				</div>
-			</div>
-		}
-		<div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
-			<WvpInfiniteScroll @ref="_infiniteScrollRef" OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")">
-				<ChildContent>
-					@{
-						var index = 0;
-					}
-					@foreach (var option in Options)
-					{
-						<WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
-							<div class="wvp-dropdown-item__icon">
-								@if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
-								{
-									<WvpIcon Type="WvpIconType.MdfCheckBox" />
-								}
-								else
-								{
-									<WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
-								}
-							</div>
-							<div class="wvp-dropdown-item__content">
-								@if (WvpInputMultiSelectOption != null)
-								{
-									@WvpInputMultiSelectOption(option)
-								}
-								else
-								{
-									@Newtonsoft.Json.JsonConvert.SerializeObject(option)
-								}
-							</div>
-						</WvpDropdownItem>
-						index++;
-					}
-				</ChildContent>
-				<ObservedItem>
-					<WvpDropdownItem Disabled="true">
-						<div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
-							Loading...
-						</div>
-					</WvpDropdownItem>
-				</ObservedItem>
-			</WvpInfiniteScroll>
-			@if (Options.ToList().Count == 0)
-			{
-				<div class="wvp-grey p-1">No options available</div>
-			}
-		</div>
-	</WvpDropdownMenu>
+    <WvpDropdownToggle>
+        <span class="input-group @(String.Join(" ",_cssList))">
+            @if (_value == null || _value.Count == 0)
+            {
+                if (!String.IsNullOrWhiteSpace(Placeholder))
+                {
+                    <span class="form-control wvp-grey">@Placeholder</span>
+                }
+                else
+                {
+                    <span class="form-control wvp-grey">&nbsp;</span>
+                }
+            }
+            else if (WvpInputMultiSelectField != null)
+            {
+                <span class="form-control">
+                    @foreach (var item in _value)
+                    {
+                        @WvpInputMultiSelectField(item)
+                    }
+                </span>
+            }
+            else
+            {
+                <span class="form-control">@JsonConvert.SerializeObject(_value)</span>
+            }
+            <span class="input-group-append">
+                <span class="input-group-text"><WvpIcon Type="WvpIconType.BsCaretDownFill" /></span>
+            </span>
+        </span>
+    </WvpDropdownToggle>
+    <WvpDropdownMenu Class="w-100 pt-0">
+        @if (IsFilterable)
+        {
+            <div class="p-1">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
+                    </div>
+                    <input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
+                </div>
+            </div>
+        }
+        <div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
+                @{
+                    var index = 0;
+                }
+                @foreach (var option in Options)
+                {
+                    <WvpDropdownItem OnClick="() => _onSelectHandler(option)" @key="@($"option-{index}")">
+                        <div class="wvp-dropdown-item__icon">
+                            @if (_value.Any(x => JsonConvert.SerializeObject(x) == JsonConvert.SerializeObject(option)))
+                            {
+                                <WvpIcon Type="WvpIconType.MdfCheckBox" />
+                            }
+                            else
+                            {
+                                <WvpIcon Type="WvpIconType.MdfCheckBoxOutlineBlank" />
+                            }
+                        </div>
+                        <div class="wvp-dropdown-item__content">
+                            @if (WvpInputMultiSelectOption != null)
+                            {
+                                @WvpInputMultiSelectOption(option)
+                            }
+                            else
+                            {
+                                @Newtonsoft.Json.JsonConvert.SerializeObject(option)
+                            }
+                        </div>
+                    </WvpDropdownItem>
+                    index++;
+                }
+
+            <WvpObservedItem @ref="_infiniteScrollRef"  IsVisible="!EndIsReached"
+                OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")">
+                <WvpDropdownItem Disabled="true">
+                    <div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
+                        Loading...
+                    </div>
+                </WvpDropdownItem>
+            </WvpObservedItem>
+            @if (Options.ToList().Count == 0)
+            {
+                <div class="wvp-grey p-1">No options available</div>
+            }
+        </div>
+    </WvpDropdownMenu>
 </WvpDropdown>

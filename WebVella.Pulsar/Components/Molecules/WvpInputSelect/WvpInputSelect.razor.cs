@@ -53,7 +53,7 @@ namespace WebVella.Pulsar.Components
 
 		private TItem _value;
 
-		private WvpInfiniteScroll _infiniteScrollRef = null;
+		private WvpObservedItem _infiniteScrollRef = null;
 
 		#endregion
 
