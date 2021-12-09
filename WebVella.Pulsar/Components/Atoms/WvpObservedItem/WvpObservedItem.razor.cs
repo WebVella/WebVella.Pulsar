@@ -12,17 +12,18 @@ using WebVella.Pulsar.Services;
 
 namespace WebVella.Pulsar.Components
 {
-	public partial class WvpInfiniteScroll : WvpBase, IAsyncDisposable
+	public partial class WvpObservedItem : WvpBase, IAsyncDisposable
 	{
 		#region << Parameters >>
 		[Parameter] public RenderFragment ChildContent { get; set; }
-		[Parameter] public RenderFragment ObservedItem { get; set; }
 		[Parameter] public string ObserverTargetId { get; set; }
 		[Parameter] public string ObserverViewportId { get; set; }
+		[Parameter] public bool IsVisible { get; set; } = true;
 		[Parameter] public EventCallback OnObservableTargetReached { get; set; }
 		#endregion
 
 		#region << Callbacks >>
+		private bool _isVisible = false;
 		private bool _isPerformingCheck = false;
 		public async Task<bool> PerformVisibilityCheck()
 		{
@@ -32,7 +33,6 @@ namespace WebVella.Pulsar.Components
 			var jsSrv = new JsService(JSRuntime);
 			//This fixes the case when even after the first intersect, the observed element is still visible and we need to force more callbacks
 			var isVisible= await jsSrv.CheckIfElementIdVisible(ObserverTargetId);
-
 			_isPerformingCheck = false;
 			if (isVisible)
 			{
@@ -45,29 +45,44 @@ namespace WebVella.Pulsar.Components
 
 		#region << Private properties >>
 
-		private DotNetObjectReference<WvpInfiniteScroll> _objectRef;
+		private DotNetObjectReference<WvpObservedItem> _objectRef;
 
 		private Guid _componentId = Guid.NewGuid();
 
-		#endregion
+        #endregion
 
-		#region << Lifecycle methods >>
-		public async ValueTask DisposeAsync()
+        #region << Lifecycle methods >>
+        protected override void OnInitialized()
+        {
+			_isVisible = IsVisible;
+
+		}
+
+        public async ValueTask DisposeAsync()
 		{
-			await new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
+			await new JsService(JSRuntime).DestroyObservedItem(_componentId);
 			_objectRef?.Dispose();
 		}
 
+        protected override bool ShouldRender()
+        {
+            if (IsVisible != _isVisible)
+            {
+                _isVisible = IsVisible;
+                return true;
+            }
+            return false;
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-
 			if (firstRender)
 			{
 				_objectRef = DotNetObjectReference.Create(this);
 				//Render so Child content can be populated
 				await InvokeAsync(StateHasChanged);
 				await Task.Delay(1);
-				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
+				await new JsService(JSRuntime).InitializeObservedItem(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}
 		#endregion
@@ -84,6 +99,7 @@ namespace WebVella.Pulsar.Components
 		[JSInvokable]
 		public async Task OnIntersection()
 		{
+			System.Diagnostics.Debug.WriteLine($" ********** {ObserverTargetId} ***** OnIntersection");
 			await OnObservableTargetReached.InvokeAsync();
 		}
 		#endregion

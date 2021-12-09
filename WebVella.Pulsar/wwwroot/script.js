@@ -1,930 +1,965 @@
 ﻿window.WebVellaPulsar = {
-	// Variables in alpha sort
-	elementCheckIntervalRetries: 10,
-	cKEditors: {},
-	flatPickrs: {},
-	eventListeners: {},
-	outsideClickListeners: {},
-	infiniteScrollObservers: {},
-	dispose: function () {
-		if (WebVellaPulsar.cKEditors) {
-			for (var elementId in WebVellaPulsar.cKEditors) {
-				WebVellaPulsar.cKEditors[elementId].destroy();
-				delete WebVellaPulsar.cKEditors[elementId];
-			}
-		}
-		if (WebVellaPulsar.flatPickrs) {
-			for (var elementId in WebVellaPulsar.flatPickrs) {
-				WebVellaPulsar.flatPickrs[elementId].destroy();
-				delete WebVellaPulsar.flatPickrs[elementId];
-			}
-		}
-		if (WebVellaPulsar.eventListeners) {
-			for (var eventName in WebVellaPulsar.eventListeners) {
-				if (WebVellaPulsar.eventListeners[eventName]) {
-					for (var listenerId in WebVellaPulsar.eventListeners[eventName]) {
-						WebVellaPulsar.removeDocumentEventListener(eventName, listenerId);
-					}
-				}
-			}
-		}
-		if (WebVellaPulsar.outsideClickListeners) {
-			for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
-				if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
-					for (var listenerId in WebVellaPulsar.outsideClickListeners[elementSelector]) {
-						WebVellaPulsar.removeOutsideClickEventListener(elementSelector, listenerId);
-					}
-				}
-			}
-		}
-		if (WebVellaPulsar.infiniteScrollObservers) {
-			for (var componentId in WebVellaPulsar.infiniteScrollObservers) {
-				WebVellaPulsar.infiniteScrollDestroy(componentId);
-			}
-		}
-		return true;
-	},
-	// Functions in alpha sort
-	addBackdrop: function () {
-		var backdropEl = document.querySelector(".modal-backdrop");
-		if (!backdropEl) {
-			const bdEl = document.createElement('div');
-			bdEl.classList.add("modal-backdrop");
-			bdEl.classList.add("show");
-			document.body.appendChild(bdEl);
-		}
-		return true;
-	},
-	addBodyClass: function (Classname) {
-		if (Classname === "modal-open") {
-			WebVellaPulsar.changeBodyPaddingRight("17px");
-			WebVellaPulsar.addBackdrop();
-		}
-		document.body.classList.add(Classname);
-		return true;
-	},
-	addCKEditor: function (elementId, dotNetHelper, cultureString) {
-		if (!WebVellaPulsar.cKEditors[elementId]) {
-			var config = {
-				attributes: {
-					class: 'form-control'
-				}
-			};
-			if (cultureString) {
-				config.language = cultureString;
-			}
-			else {
-				config.language = 'en';
-			}
+    // Variables in alpha sort
+    elementCheckIntervalRetries: 10,
+    cKEditors: {},
+    flatPickrs: {},
+    eventListeners: {},
+    outsideClickListeners: {},
+    infiniteScrollObservers: {},
+    observedItemObservers: {},
+    observedItemObserverTimouts: {},
+    dispose: function () {
+        if (WebVellaPulsar.cKEditors) {
+            for (var elementId in WebVellaPulsar.cKEditors) {
+                WebVellaPulsar.cKEditors[elementId].destroy();
+                delete WebVellaPulsar.cKEditors[elementId];
+            }
+        }
+        if (WebVellaPulsar.flatPickrs) {
+            for (var elementId in WebVellaPulsar.flatPickrs) {
+                WebVellaPulsar.flatPickrs[elementId].destroy();
+                delete WebVellaPulsar.flatPickrs[elementId];
+            }
+        }
+        if (WebVellaPulsar.eventListeners) {
+            for (var eventName in WebVellaPulsar.eventListeners) {
+                if (WebVellaPulsar.eventListeners[eventName]) {
+                    for (var listenerId in WebVellaPulsar.eventListeners[eventName]) {
+                        WebVellaPulsar.removeDocumentEventListener(eventName, listenerId);
+                    }
+                }
+            }
+        }
+        if (WebVellaPulsar.outsideClickListeners) {
+            for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
+                if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
+                    for (var listenerId in WebVellaPulsar.outsideClickListeners[elementSelector]) {
+                        WebVellaPulsar.removeOutsideClickEventListener(elementSelector, listenerId);
+                    }
+                }
+            }
+        }
+        if (WebVellaPulsar.infiniteScrollObservers) {
+            for (var componentId in WebVellaPulsar.infiniteScrollObservers) {
+                WebVellaPulsar.infiniteScrollDestroy(componentId);
+            }
+        }
+        return true;
+    },
+    // Functions in alpha sort
+    addBackdrop: function () {
+        var backdropEl = document.querySelector(".modal-backdrop");
+        if (!backdropEl) {
+            const bdEl = document.createElement('div');
+            bdEl.classList.add("modal-backdrop");
+            bdEl.classList.add("show");
+            document.body.appendChild(bdEl);
+        }
+        return true;
+    },
+    addBodyClass: function (Classname) {
+        if (Classname === "modal-open") {
+            WebVellaPulsar.changeBodyPaddingRight("17px");
+            WebVellaPulsar.addBackdrop();
+        }
+        document.body.classList.add(Classname);
+        return true;
+    },
+    addCKEditor: function (elementId, dotNetHelper, cultureString) {
+        if (!WebVellaPulsar.cKEditors[elementId]) {
+            var config = {
+                attributes: {
+                    class: 'form-control'
+                }
+            };
+            if (cultureString) {
+                config.language = cultureString;
+            }
+            else {
+                config.language = 'en';
+            }
 
-			var retries = 0;
-			var initInterval = setInterval(function () {
-				if (document.getElementById(elementId)) {
-					clearInterval(initInterval);
-					WebVellaPulsar.initCKEditor(elementId, dotNetHelper, config);
-				}
-				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
-					clearInterval(initInterval);
-				}
-				retries++;
-			}, 10);
-		}
-		return true;
-	},
-	addDocumentEventListener: function (eventName, dotNetHelper, listenerId, methodName) {
-		if (!WebVellaPulsar.eventListeners[eventName]) {
-			WebVellaPulsar.eventListeners[eventName] = {};
-		}
-		WebVellaPulsar.eventListeners[eventName][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
-		return true;
-	},
-	addFlatPickrDate: function (elementId, dotNetHelper, cultureString) {
-		if (!WebVellaPulsar.flatPickrs[elementId]) {
-			if (!cultureString) {
-				cultureString = 'en';
-			}
-			var retries = 0;
-			var initInterval = setInterval(function () {
-				if (document.getElementById(elementId)) {
-					clearInterval(initInterval);
-					WebVellaPulsar.initFlatPickrDate(elementId, dotNetHelper, cultureString);
-				}
-				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
-					clearInterval(initInterval);
-				}
-				retries++;
-			}, 10);
-		}
-		return true;
-	},
-	addFlatPickrDateTime: function (elementId, dotNetHelper, utcOffsetInSeconds, cultureString) {
-		if (!WebVellaPulsar.flatPickrs[elementId]) {
-			if (!cultureString) {
-				cultureString = 'en';
-			}
-			var retries = 0;
-			var initInterval = setInterval(function () {
-				if (document.getElementById(elementId)) {
-					clearInterval(initInterval);
-					WebVellaPulsar.initFlatPickrDateTime(elementId, dotNetHelper, utcOffsetInSeconds, cultureString);
-				}
-				if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
-					clearInterval(initInterval);
-				}
-				retries++;
-			}, 10);
-		}
-		return true;
-	},
-	addOutsideClickEventListener: function (elementSelector, dotNetHelper, listenerId, methodName) {
-		if (!WebVellaPulsar.outsideClickListeners[elementSelector]) {
-			WebVellaPulsar.outsideClickListeners[elementSelector] = {};
-		}
-		WebVellaPulsar.outsideClickListeners[elementSelector][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
-		return true;
-	},
-	appStart: function () {
-		document.getElementById("wvp-blazor-loader").remove();
-		return true;
-	},
-	updateAppStartProgress: function (progress) {
-		var progressEl = document.getElementById("wvp-blazor-loader-progress");
-		progressEl.innerHTML = progress;
-		return true;
-	},
-	blurElement: function (elementId) {
-		window.setTimeout(function () {
-			const element = document.getElementById(elementId);
-			if (element) {
-				element.blur();
-			}
-			return true;
-		}, 100);
-		return true;
-	},
-	blurElementBySelector: function (elementSelector) {
-		window.setTimeout(function () {
-			const element = document.querySelector(elementSelector);
-			if (element) {
-				element.blur();
-			}
-			return true;
-		}, 100);
-		return true;
-	},
-	changeBodyPaddingRight: function (padding) {
-		var dpi = window.devicePixelRatio;
-		if (dpi === 1 || !padding) {
-			document.body.style.paddingRight = padding;
-		}
-		return true;
-	},
-	checkIfElementVisibleAsync: function (domElement) {
-		if (domElement) {
-			return new Promise(resolve => {
-				const o = new IntersectionObserver(([entry]) => {
-					resolve(entry.intersectionRatio > 0);
-					o.disconnect();
-				});
-				o.observe(domElement);
-			});
-		}
-		return false;
-	},
-	checkIfElementIdVisible: async function (elementId) {
-		var element = document.getElementById(elementId);
-		if (element) {
-			var result = await WebVellaPulsar.checkIfElementVisibleAsync(element);
-			return result;
-		}
-		return false;
-	},
-	clearFlatPickrDate: function (elementId) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			WebVellaPulsar.flatPickrs[elementId].clear();
-			WebVellaPulsar.flatPickrs[elementId].close();
-		}
-		return true;
-	},
-	clearFlatPickrDateTime: function (elementId) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			WebVellaPulsar.flatPickrs[elementId].clear();
-			WebVellaPulsar.flatPickrs[elementId].close();
-		}
-		return true;
-	},
-	makeDraggable: function (elementId) {
-		var element = document.getElementById(elementId);
-		if (!element)
-			return;
-		var handleEl = element.querySelector(".drag-handle");
-		if (!handleEl)
-			handleEl = element.querySelector(".modal-header");
+            var retries = 0;
+            var initInterval = setInterval(function () {
+                if (document.getElementById(elementId)) {
+                    clearInterval(initInterval);
+                    WebVellaPulsar.initCKEditor(elementId, dotNetHelper, config);
+                }
+                if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
+                    clearInterval(initInterval);
+                }
+                retries++;
+            }, 10);
+        }
+        return true;
+    },
+    addDocumentEventListener: function (eventName, dotNetHelper, listenerId, methodName) {
+        if (!WebVellaPulsar.eventListeners[eventName]) {
+            WebVellaPulsar.eventListeners[eventName] = {};
+        }
+        WebVellaPulsar.eventListeners[eventName][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
+        return true;
+    },
+    addFlatPickrDate: function (elementId, dotNetHelper, cultureString) {
+        if (!WebVellaPulsar.flatPickrs[elementId]) {
+            if (!cultureString) {
+                cultureString = 'en';
+            }
+            var retries = 0;
+            var initInterval = setInterval(function () {
+                if (document.getElementById(elementId)) {
+                    clearInterval(initInterval);
+                    WebVellaPulsar.initFlatPickrDate(elementId, dotNetHelper, cultureString);
+                }
+                if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
+                    clearInterval(initInterval);
+                }
+                retries++;
+            }, 10);
+        }
+        return true;
+    },
+    addFlatPickrDateTime: function (elementId, dotNetHelper, utcOffsetInSeconds, cultureString) {
+        if (!WebVellaPulsar.flatPickrs[elementId]) {
+            if (!cultureString) {
+                cultureString = 'en';
+            }
+            var retries = 0;
+            var initInterval = setInterval(function () {
+                if (document.getElementById(elementId)) {
+                    clearInterval(initInterval);
+                    WebVellaPulsar.initFlatPickrDateTime(elementId, dotNetHelper, utcOffsetInSeconds, cultureString);
+                }
+                if (retries > WebVellaPulsar.elementCheckIntervalRetries) {
+                    clearInterval(initInterval);
+                }
+                retries++;
+            }, 10);
+        }
+        return true;
+    },
+    addOutsideClickEventListener: function (elementSelector, dotNetHelper, listenerId, methodName) {
+        if (!WebVellaPulsar.outsideClickListeners[elementSelector]) {
+            WebVellaPulsar.outsideClickListeners[elementSelector] = {};
+        }
+        WebVellaPulsar.outsideClickListeners[elementSelector][listenerId] = { dotNetHelper: dotNetHelper, methodName: methodName };
+        return true;
+    },
+    appStart: function () {
+        document.getElementById("wvp-blazor-loader").remove();
+        return true;
+    },
+    updateAppStartProgress: function (progress) {
+        var progressEl = document.getElementById("wvp-blazor-loader-progress");
+        progressEl.innerHTML = progress;
+        return true;
+    },
+    blurElement: function (elementId) {
+        window.setTimeout(function () {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.blur();
+            }
+            return true;
+        }, 100);
+        return true;
+    },
+    blurElementBySelector: function (elementSelector) {
+        window.setTimeout(function () {
+            const element = document.querySelector(elementSelector);
+            if (element) {
+                element.blur();
+            }
+            return true;
+        }, 100);
+        return true;
+    },
+    changeBodyPaddingRight: function (padding) {
+        var dpi = window.devicePixelRatio;
+        if (dpi === 1 || !padding) {
+            document.body.style.paddingRight = padding;
+        }
+        return true;
+    },
+    checkIfElementVisibleAsync: function (domElement) {
+        if (domElement) {
+            return new Promise(resolve => {
+                const o = new IntersectionObserver(([entry]) => {
+                    resolve(entry.intersectionRatio > 0);
+                    o.disconnect();
+                });
+                o.observe(domElement);
+            });
+        }
+        return false;
+    },
+    checkIfElementIdVisible: async function (elementId) {
+        var element = document.getElementById(elementId);
+        if (element) {
+            var result = await WebVellaPulsar.checkIfElementVisibleAsync(element);
+            return result;
+        }
+        return false;
+    },
+    clearFlatPickrDate: function (elementId) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            WebVellaPulsar.flatPickrs[elementId].clear();
+            WebVellaPulsar.flatPickrs[elementId].close();
+        }
+        return true;
+    },
+    clearFlatPickrDateTime: function (elementId) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            WebVellaPulsar.flatPickrs[elementId].clear();
+            WebVellaPulsar.flatPickrs[elementId].close();
+        }
+        return true;
+    },
+    makeDraggable: function (elementId) {
+        var element = document.getElementById(elementId);
+        if (!element)
+            return;
+        var handleEl = element.querySelector(".drag-handle");
+        if (!handleEl)
+            handleEl = element.querySelector(".modal-header");
 
-		if (!handleEl)
-			handleEl = element.querySelector(".modal-body");
+        if (!handleEl)
+            handleEl = element.querySelector(".modal-body");
 
-		if (!handleEl)
-			return;
+        if (!handleEl)
+            return;
 
-		var isMouseDown = false;
+        var isMouseDown = false;
 
-		// initial mouse X and Y for `mousedown`
-		var mouseX;
-		var mouseY;
+        // initial mouse X and Y for `mousedown`
+        var mouseX;
+        var mouseY;
 
-		// element X and Y before and after move
-		var elementX = 0;
-		var elementY = 0;
+        // element X and Y before and after move
+        var elementX = 0;
+        var elementY = 0;
 
-		// mouse button down over the element
-		handleEl.addEventListener('mousedown', onMouseDown);
+        // mouse button down over the element
+        handleEl.addEventListener('mousedown', onMouseDown);
 
-		/**
-		 * Listens to `mousedown` event.
-		 *
-		 * @param {Object} event - The event.
-		 */
-		function onMouseDown(event) {
-			mouseX = event.clientX;
-			mouseY = event.clientY;
-			isMouseDown = true;
-		}
+        /**
+         * Listens to `mousedown` event.
+         *
+         * @param {Object} event - The event.
+         */
+        function onMouseDown(event) {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+            isMouseDown = true;
+        }
 
-		// mouse button released
-		handleEl.addEventListener('mouseup', onMouseUp);
+        // mouse button released
+        handleEl.addEventListener('mouseup', onMouseUp);
 
-		/**
-		 * Listens to `mouseup` event.
-		 *
-		 * @param {Object} event - The event.
-		 */
-		function onMouseUp(event) {
-			isMouseDown = false;
-			elementX = parseInt(element.style.left) || 0;
-			elementY = parseInt(element.style.top) || 0;
-		}
+        /**
+         * Listens to `mouseup` event.
+         *
+         * @param {Object} event - The event.
+         */
+        function onMouseUp(event) {
+            isMouseDown = false;
+            elementX = parseInt(element.style.left) || 0;
+            elementY = parseInt(element.style.top) || 0;
+        }
 
-		// need to attach to the entire document
-		// in order to take full width and height
-		// this ensures the element keeps up with the mouse
-		document.addEventListener('mousemove', onMouseMove);
+        // need to attach to the entire document
+        // in order to take full width and height
+        // this ensures the element keeps up with the mouse
+        document.addEventListener('mousemove', onMouseMove);
 
 
-		/**
-		 * Listens to `mousemove` event.
-		 *
-		 * @param {Object} event - The event.
-		 */
-		function onMouseMove(event) {
-			if (!isMouseDown) return;
-			var deltaX = event.clientX - mouseX;
-			var deltaY = event.clientY - mouseY;
-			element.style.left = elementX + deltaX + 'px';
-			element.style.top = elementY + deltaY + 'px';
-		}
-		return true;
-	},
-	removeDraggable: function (elementId) {
-		return true;
-	},
-	executeEventCallbacks: function (eventName, e) {
-		if (WebVellaPulsar.eventListeners[eventName]) {
-			for (const prop in WebVellaPulsar.eventListeners[eventName]) {
-				const dotNetHelper = WebVellaPulsar.eventListeners[eventName][prop].dotNetHelper;
-				const methodName = WebVellaPulsar.eventListeners[eventName][prop].methodName;
-				if (dotNetHelper && methodName) {
-					if (eventName === "keydown") {
-						dotNetHelper.invokeMethodAsync(methodName, WebVellaPulsar.serializeKeyDownEvent(e))
-					}
-					else {
-						dotNetHelper.invokeMethodAsync(methodName)
-					}
-				}
-			}
-		}
-		return true;
-	},
-	executeOutsideClickEventCallbacks: function (elementSelector, context) {
-		if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
-			for (const prop in WebVellaPulsar.outsideClickListeners[elementSelector]) {
-				const dotNetHelper = WebVellaPulsar.outsideClickListeners[elementSelector][prop].dotNetHelper;
-				const methodName = WebVellaPulsar.outsideClickListeners[elementSelector][prop].methodName;
-				if (dotNetHelper && methodName) {
-					dotNetHelper.invokeMethodAsync(methodName)
-				}
-			}
-		}
-		return true;
-	},
-	focusElement: function (elementId) {
-		window.setTimeout(function () {
-			const element = document.getElementById(elementId);
-			if (element) {
-				element.focus();
-			}
-			return true;
-		}, 100);
-		return true;
-	},
-	focusElementBySelector: function (elementSelector) {
-		window.setTimeout(function () {
-			const element = document.querySelector(elementSelector);
-			if (element) {
-				element.focus();
-			}
-			return true;
-		}, 100);
-		return true;
-	},
-	getArrayBufferFromFileAsync: function (elem, fileId) {
-		var file = WebVellaPulsar.getFileById(elem, fileId);
+        /**
+         * Listens to `mousemove` event.
+         *
+         * @param {Object} event - The event.
+         */
+        function onMouseMove(event) {
+            if (!isMouseDown) return;
+            var deltaX = event.clientX - mouseX;
+            var deltaY = event.clientY - mouseY;
+            element.style.left = elementX + deltaX + 'px';
+            element.style.top = elementY + deltaY + 'px';
+        }
+        return true;
+    },
+    removeDraggable: function (elementId) {
+        return true;
+    },
+    executeEventCallbacks: function (eventName, e) {
+        if (WebVellaPulsar.eventListeners[eventName]) {
+            for (const prop in WebVellaPulsar.eventListeners[eventName]) {
+                const dotNetHelper = WebVellaPulsar.eventListeners[eventName][prop].dotNetHelper;
+                const methodName = WebVellaPulsar.eventListeners[eventName][prop].methodName;
+                if (dotNetHelper && methodName) {
+                    if (eventName === "keydown") {
+                        dotNetHelper.invokeMethodAsync(methodName, WebVellaPulsar.serializeKeyDownEvent(e))
+                    }
+                    else {
+                        dotNetHelper.invokeMethodAsync(methodName)
+                    }
+                }
+            }
+        }
+        return true;
+    },
+    executeOutsideClickEventCallbacks: function (elementSelector, context) {
+        if (WebVellaPulsar.outsideClickListeners[elementSelector]) {
+            for (const prop in WebVellaPulsar.outsideClickListeners[elementSelector]) {
+                const dotNetHelper = WebVellaPulsar.outsideClickListeners[elementSelector][prop].dotNetHelper;
+                const methodName = WebVellaPulsar.outsideClickListeners[elementSelector][prop].methodName;
+                if (dotNetHelper && methodName) {
+                    dotNetHelper.invokeMethodAsync(methodName)
+                }
+            }
+        }
+        return true;
+    },
+    focusElement: function (elementId) {
+        window.setTimeout(function () {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.focus();
+            }
+            return true;
+        }, 100);
+        return true;
+    },
+    focusElementBySelector: function (elementSelector) {
+        window.setTimeout(function () {
+            const element = document.querySelector(elementSelector);
+            if (element) {
+                element.focus();
+            }
+            return true;
+        }, 100);
+        return true;
+    },
+    getArrayBufferFromFileAsync: function (elem, fileId) {
+        var file = WebVellaPulsar.getFileById(elem, fileId);
 
-		// On the first read, convert the FileReader into a Promise<ArrayBuffer>
-		if (!file.readPromise) {
-			file.readPromise = new Promise(function (resolve, reject) {
-				var reader = new FileReader();
-				reader.onload = function () { resolve(reader.result); };
-				reader.onerror = function (err) { reject(err); };
-				reader.readAsArrayBuffer(file.blob);
-			});
-		}
+        // On the first read, convert the FileReader into a Promise<ArrayBuffer>
+        if (!file.readPromise) {
+            file.readPromise = new Promise(function (resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function () { resolve(reader.result); };
+                reader.onerror = function (err) { reject(err); };
+                reader.readAsArrayBuffer(file.blob);
+            });
+        }
 
-		return file.readPromise;
-	},
-	getFileById: function (elem, fileId) {
-		var file = elem.filesById[fileId];
-		if (!file) {
-			throw new Error('There is no file with ID ' + fileId + '. The file list may have changed');
-		}
+        return file.readPromise;
+    },
+    getFileById: function (elem, fileId) {
+        var file = elem.filesById[fileId];
+        if (!file) {
+            throw new Error('There is no file with ID ' + fileId + '. The file list may have changed');
+        }
 
-		return file;
-	},
-	getSelectedValues: function (sel) {
-		var results = [];
-		if (sel) {
-			var i;
-			for (i = 0; i < sel.options.length; i++) {
-				if (sel.options[i].selected) {
-					results[results.length] = sel.options[i].value;
-				}
-			}
-		}
-		return results;
-	},
-	getTimezoneOffset: function () {
-		return new Date().getTimezoneOffset();
-	},
-	initCKEditor: function (elementId, dotNetHelper, config) {
-		ClassicEditor
-			.create(document.getElementById(elementId), config)
-			.then(function (editor) {
-				WebVellaPulsar.cKEditors[elementId] = editor;
-				editor.ui.focusTracker.on('change:isFocused', function () {
-					var value = editor.getData();
-					document.getElementById(elementId).value = value;
-					const e = new Event("change");
-					document.getElementById(elementId).dispatchEvent(e);
-					dotNetHelper.invokeMethodAsync("NotifyChange", value).then(function () {
-					}, function (err) {
-						throw new Error(err);
-					});
-				});
+        return file;
+    },
+    getSelectedValues: function (sel) {
+        var results = [];
+        if (sel) {
+            var i;
+            for (i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].selected) {
+                    results[results.length] = sel.options[i].value;
+                }
+            }
+        }
+        return results;
+    },
+    getTimezoneOffset: function () {
+        return new Date().getTimezoneOffset();
+    },
+    initCKEditor: function (elementId, dotNetHelper, config) {
+        ClassicEditor
+            .create(document.getElementById(elementId), config)
+            .then(function (editor) {
+                WebVellaPulsar.cKEditors[elementId] = editor;
+                editor.ui.focusTracker.on('change:isFocused', function () {
+                    var value = editor.getData();
+                    document.getElementById(elementId).value = value;
+                    const e = new Event("change");
+                    document.getElementById(elementId).dispatchEvent(e);
+                    dotNetHelper.invokeMethodAsync("NotifyChange", value).then(function () {
+                    }, function (err) {
+                        throw new Error(err);
+                    });
+                });
 
-			})
-			.catch(function (error) {
-				console.error(error);
-			});
-	},
-	initFlatPickrDate: function (elementId, dotNetHelper, cultureString) {
-		var selector = "#" + elementId;
-		var flatPickrServerDateTimeFormat = "Y-m-d";
-		//From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
-		var flatPickrUiDateTimeFormat = "d M Y";
-		var BulgarianDateTimeLocale = {
-			firstDayOfWeek: 1,
-			weekdays: {
-				shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-				longhand: [
-					"Неделя",
-					"Понеделник",
-					"Вторник",
-					"Сряда",
-					"Четвъртък",
-					"Петък",
-					"Събота"
-				]
-			},
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    },
+    initFlatPickrDate: function (elementId, dotNetHelper, cultureString) {
+        var selector = "#" + elementId;
+        var flatPickrServerDateTimeFormat = "Y-m-d";
+        //From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
+        var flatPickrUiDateTimeFormat = "d M Y";
+        var BulgarianDateTimeLocale = {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                longhand: [
+                    "Неделя",
+                    "Понеделник",
+                    "Вторник",
+                    "Сряда",
+                    "Четвъртък",
+                    "Петък",
+                    "Събота"
+                ]
+            },
 
-			months: {
-				shorthand: [
-					"яну",
-					"фев",
-					"март",
-					"апр",
-					"май",
-					"юни",
-					"юли",
-					"авг",
-					"сеп",
-					"окт",
-					"ное",
-					"дек"
-				],
-				longhand: [
-					"Януари",
-					"Февруари",
-					"Март",
-					"Април",
-					"Май",
-					"Юни",
-					"Юли",
-					"Август",
-					"Септември",
-					"Октомври",
-					"Ноември",
-					"Декември"
-				]
-			}
-		};
-		var fp = document.querySelector(selector)._flatpickr;
-		if (!fp) {
-			var options = {
-				time_24hr: true,
-				dateFormat: flatPickrServerDateTimeFormat,
-				defaultDate: null,
-				locale: cultureString,
-				enableTime: false,
-				static: false,
-				minuteIncrement: 1,
-				altInput: true,
-				allowInput: true,
-				altFormat: flatPickrUiDateTimeFormat,
-				parseDate: (datestr, format) => {
+            months: {
+                shorthand: [
+                    "яну",
+                    "фев",
+                    "март",
+                    "апр",
+                    "май",
+                    "юни",
+                    "юли",
+                    "авг",
+                    "сеп",
+                    "окт",
+                    "ное",
+                    "дек"
+                ],
+                longhand: [
+                    "Януари",
+                    "Февруари",
+                    "Март",
+                    "Април",
+                    "Май",
+                    "Юни",
+                    "Юли",
+                    "Август",
+                    "Септември",
+                    "Октомври",
+                    "Ноември",
+                    "Декември"
+                ]
+            }
+        };
+        var fp = document.querySelector(selector)._flatpickr;
+        if (!fp) {
+            var options = {
+                time_24hr: true,
+                dateFormat: flatPickrServerDateTimeFormat,
+                defaultDate: null,
+                locale: cultureString,
+                enableTime: false,
+                static: false,
+                minuteIncrement: 1,
+                altInput: true,
+                allowInput: true,
+                altFormat: flatPickrUiDateTimeFormat,
+                parseDate: (datestr, format) => {
 
-					return moment(datestr).toDate();
-					//return moment(datestr, format, true).toDate();
-				},
-				onChange: function (selectedDates, dateStr, instance) {
-					//Convert to date without kind
-					var selectedDate = null;
-					if (selectedDates.length > 0 && selectedDates[0]) {
-						selectedDate = moment(selectedDates[0]).format('YYYY-MM-DD');
-					}
-					dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
-				},
-			};
-			if (cultureString && cultureString === "bg") {
-				options.locale = BulgarianDateTimeLocale;
-			}
-			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
-			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
-				if (!e.target.value) {
-					WebVellaPulsar.flatPickrs[elementId].clear();
-				}
-			});
+                    return moment(datestr).toDate();
+                    //return moment(datestr, format, true).toDate();
+                },
+                onChange: function (selectedDates, dateStr, instance) {
+                    //Convert to date without kind
+                    var selectedDate = null;
+                    if (selectedDates.length > 0 && selectedDates[0]) {
+                        selectedDate = moment(selectedDates[0]).format('YYYY-MM-DD');
+                    }
+                    dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
+                },
+            };
+            if (cultureString && cultureString === "bg") {
+                options.locale = BulgarianDateTimeLocale;
+            }
+            WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
+            WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
+                if (!e.target.value) {
+                    WebVellaPulsar.flatPickrs[elementId].clear();
+                }
+            });
 
-		}
-	},
-	initFlatPickrDateTime: function (elementId, dotNetHelper, cultureString) {
-		var selector = "#" + elementId;
-		var flatPickrServerDateTimeFormat = "Y-m-dTH:i:S";//Z
-		//From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
-		var flatPickrUiDateTimeFormat = "d M Y H:i";
-		var BulgarianDateTimeLocale = {
-			firstDayOfWeek: 1,
-			weekdays: {
-				shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-				longhand: [
-					"Неделя",
-					"Понеделник",
-					"Вторник",
-					"Сряда",
-					"Четвъртък",
-					"Петък",
-					"Събота"
-				]
-			},
+        }
+    },
+    initFlatPickrDateTime: function (elementId, dotNetHelper, cultureString) {
+        var selector = "#" + elementId;
+        var flatPickrServerDateTimeFormat = "Y-m-dTH:i:S";//Z
+        //From the server dates will be received yyyy-MM-ddTHH:mm:ss.fff
+        var flatPickrUiDateTimeFormat = "d M Y H:i";
+        var BulgarianDateTimeLocale = {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ["Нд", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                longhand: [
+                    "Неделя",
+                    "Понеделник",
+                    "Вторник",
+                    "Сряда",
+                    "Четвъртък",
+                    "Петък",
+                    "Събота"
+                ]
+            },
 
-			months: {
-				shorthand: [
-					"яну",
-					"фев",
-					"март",
-					"апр",
-					"май",
-					"юни",
-					"юли",
-					"авг",
-					"сеп",
-					"окт",
-					"ное",
-					"дек"
-				],
-				longhand: [
-					"Януари",
-					"Февруари",
-					"Март",
-					"Април",
-					"Май",
-					"Юни",
-					"Юли",
-					"Август",
-					"Септември",
-					"Октомври",
-					"Ноември",
-					"Декември"
-				]
-			}
-		};
-		var fp = document.querySelector(selector)._flatpickr;
-		if (!fp) {
-			var options = {
-				time_24hr: true,
-				dateFormat: flatPickrServerDateTimeFormat,
-				defaultDate: null,
-				locale: cultureString,
-				enableTime: true,
-				static: false,
-				minuteIncrement: 1,
-				altInput: true,
-				allowInput: true,
-				altFormat: flatPickrUiDateTimeFormat,
-				onChange: function (selectedDates, dateStr, instance) {
-					var selectedDate = null;
-					if (selectedDates.length > 0 && selectedDates[0]) {
-						selectedDate = moment(selectedDates[0]).format("YYYY-MM-DDTHH:mm:SS");
-					}
-					dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
-				},
-			};
-			if (cultureString && cultureString === "bg") {
-				options.locale = BulgarianDateTimeLocale;
-			}
-			WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
-			WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
-				if (!e.target.value) {
-					WebVellaPulsar.flatPickrs[elementId].clear();
-				}
-			});
+            months: {
+                shorthand: [
+                    "яну",
+                    "фев",
+                    "март",
+                    "апр",
+                    "май",
+                    "юни",
+                    "юли",
+                    "авг",
+                    "сеп",
+                    "окт",
+                    "ное",
+                    "дек"
+                ],
+                longhand: [
+                    "Януари",
+                    "Февруари",
+                    "Март",
+                    "Април",
+                    "Май",
+                    "Юни",
+                    "Юли",
+                    "Август",
+                    "Септември",
+                    "Октомври",
+                    "Ноември",
+                    "Декември"
+                ]
+            }
+        };
+        var fp = document.querySelector(selector)._flatpickr;
+        if (!fp) {
+            var options = {
+                time_24hr: true,
+                dateFormat: flatPickrServerDateTimeFormat,
+                defaultDate: null,
+                locale: cultureString,
+                enableTime: true,
+                static: false,
+                minuteIncrement: 1,
+                altInput: true,
+                allowInput: true,
+                altFormat: flatPickrUiDateTimeFormat,
+                onChange: function (selectedDates, dateStr, instance) {
+                    var selectedDate = null;
+                    if (selectedDates.length > 0 && selectedDates[0]) {
+                        selectedDate = moment(selectedDates[0]).format("YYYY-MM-DDTHH:mm:SS");
+                    }
+                    dotNetHelper.invokeMethodAsync("NotifyChange", selectedDate);
+                },
+            };
+            if (cultureString && cultureString === "bg") {
+                options.locale = BulgarianDateTimeLocale;
+            }
+            WebVellaPulsar.flatPickrs[elementId] = flatpickr(selector, options);
+            WebVellaPulsar.flatPickrs[elementId].altInput.addEventListener("blur", function (e) {
+                if (!e.target.value) {
+                    WebVellaPulsar.flatPickrs[elementId].clear();
+                }
+            });
 
-		}
-	},
-	initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
-		var options = {
-			root: null,
-			threshold: 0
-		};
-		if (observerViewportId) {
-			options.root = document.getElementById(observerViewportId);
-		};
-		WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
-			function (e) {
-				dotNetHelper.invokeMethodAsync("OnIntersection");
-			},
-			options
-		);
+        }
+    },
+    initInfiniteScroll: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
+        var options = {
+            root: null,
+            threshold: 0
+        };
+        if (observerViewportId) {
+            options.root = document.getElementById(observerViewportId);
+        };
+        WebVellaPulsar.infiniteScrollObservers[componentId] = new IntersectionObserver(
+            function (e) {
+                dotNetHelper.invokeMethodAsync("OnIntersection");
+            },
+            options
+        );
 
-		let element = document.getElementById(observerTargetId);
-		if (element !== null) {
-			WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
-		}
-		return true;
-	},
-	infiniteScrollDestroy: function (componentId) {
-		if (WebVellaPulsar.infiniteScrollObservers[componentId]) {
-			try {
-				WebVellaPulsar.infiniteScrollObservers[componentId].disconnect();
-				delete WebVellaPulsar.infiniteScrollObservers[componentId];
-			} catch (e) { }
-		}
-		return true;
-	},
-	initUploadFile: function (elemId, dotNetHelper) {
-		var elem = document.getElementById(elemId);
+        let element = document.getElementById(observerTargetId);
+        if (element !== null) {
+            WebVellaPulsar.infiniteScrollObservers[componentId].observe(element);
+        }
+        return true;
+    },
+    infiniteScrollDestroy: function (componentId) {
+        if (WebVellaPulsar.infiniteScrollObservers[componentId]) {
+            try {
+                WebVellaPulsar.infiniteScrollObservers[componentId].disconnect();
+                delete WebVellaPulsar.infiniteScrollObservers[componentId];
+            } catch (e) { }
+        }
+        return true;
+    },
+    initUploadFile: function (elemId, dotNetHelper) {
+        var elem = document.getElementById(elemId);
 
-		elem.addEventListener('change', function handleInputFileChange(event) {
-			elem.filesById = {};
-			var fileList = Array.prototype.map.call(elem.files, function (file) {
-				var result = {
-					id: Date.now(),
-					lastModified: new Date(file.lastModified).toISOString(),
-					name: file.name,
-					size: file.size,
-					contentType: file.type
-				};
-				elem.filesById[result.id] = result;
+        elem.addEventListener('change', function handleInputFileChange(event) {
+            elem.filesById = {};
+            var fileList = Array.prototype.map.call(elem.files, function (file) {
+                var result = {
+                    id: Date.now(),
+                    lastModified: new Date(file.lastModified).toISOString(),
+                    name: file.name,
+                    size: file.size,
+                    contentType: file.type
+                };
+                elem.filesById[result.id] = result;
 
-				// Attach the blob data itself as a non-enumerable property so it doesn't appear in the JSON
-				Object.defineProperty(result, 'blob', { value: file });
+                // Attach the blob data itself as a non-enumerable property so it doesn't appear in the JSON
+                Object.defineProperty(result, 'blob', { value: file });
 
-				return result;
-			});
+                return result;
+            });
 
-			dotNetHelper.invokeMethodAsync("NotifyChange", fileList).then(function () {
-				elem.value = '';
-			}, function (err) {
-				elem.value = '';
-				throw new Error(err);
-			});
-		});
+            dotNetHelper.invokeMethodAsync("NotifyChange", fileList).then(function () {
+                elem.value = '';
+            }, function (err) {
+                elem.value = '';
+                throw new Error(err);
+            });
+        });
 
-		return true;
-	},
-	readFileData: function (elem, fileId, startOffset, count) {
-		var readPromise = WebVellaPulsar.getArrayBufferFromFileAsync(elem, fileId);
+        return true;
+    },
+    observedItemInit: function (componentId, dotNetHelper, observerTargetId, observerViewportId) {
+        var options = {
+            root: null,
+            threshold: 0,
+            delay:0
+        };
+        if (observerViewportId) {
+            options.root = document.getElementById(observerViewportId);
+        };
+        //if (WebVellaPulsar.observedItemObservers[componentId])
+        //	return;
+        WebVellaPulsar.observedItemObservers[componentId] = new IntersectionObserver(
+            function (e, ob) {
+                if (e && e.length > 0 && e[0].isIntersecting) {
+                    dotNetHelper.invokeMethodAsync("OnIntersection");
+                }
+            },
+            options
+        );
 
-		return readPromise.then(function (arrayBuffer) {
-			var uint8Array = new Uint8Array(arrayBuffer, startOffset, count);
-			var base64 = WebVellaPulsar.uint8ToBase64(uint8Array);
-			return base64;
-		})
-	},
-	reloadPage: function () {
-		window.location.reload();
-		return true;
-	},
-	removeBackdrop: function () {
-		const bdEl = document.querySelector(".modal-backdrop");
-		if (bdEl) {
-			bdEl.remove();
-		}
-		return true;
-	},
-	removeBodyClass: function (Classname) {
-		if (Classname === "modal-open") {
-			WebVellaPulsar.changeBodyPaddingRight("");
-			WebVellaPulsar.removeBackdrop();
-		}
-		document.body.classList.remove(Classname);
-		return true;
-	},
-	getModalCount: function () {
-		var currentModalCountString = document.body.dataset.modalCount;
-		if (!currentModalCountString) {
-			currentModalCountString = "0";
-		}
-		var result = 0;
-		try {
-			result = parseInt(currentModalCountString);
-		}
-		catch {
-			return 0;
-		}
+        let element = document.getElementById(observerTargetId);
+        if (element !== null) {
+            WebVellaPulsar.observedItemObservers[componentId].observe(element);
+        }
+        return true;
+    },
+    observedItemDestroy: function (componentId) {
+        if (WebVellaPulsar.observedItemObservers[componentId]) {
+            try {
+                WebVellaPulsar.observedItemObservers[componentId].disconnect();
+                delete WebVellaPulsar.observedItemObservers[componentId];
+            } catch (e) { }
+        }
+        return true;
+    },
+    readFileData: function (elem, fileId, startOffset, count) {
+        var readPromise = WebVellaPulsar.getArrayBufferFromFileAsync(elem, fileId);
 
-		return result;
-	},
-	addModalCount: function () {
-		var currentModalCount = WebVellaPulsar.getModalCount();
-		var newModalCount = currentModalCount + 1;
-		document.body.dataset.modalCount = newModalCount;
-		return newModalCount;
-	},
-	removeModalCount: function () {
-		var currentModalCount = WebVellaPulsar.getModalCount();
-		var newModalCount = currentModalCount;
-		if (newModalCount > 0) {
-			newModalCount = newModalCount - 1;
-			document.body.dataset.modalCount = newModalCount;
-		}
-		return newModalCount;
-	},
+        return readPromise.then(function (arrayBuffer) {
+            var uint8Array = new Uint8Array(arrayBuffer, startOffset, count);
+            var base64 = WebVellaPulsar.uint8ToBase64(uint8Array);
+            return base64;
+        })
+    },
+    reloadPage: function () {
+        window.location.reload();
+        return true;
+    },
+    removeBackdrop: function () {
+        const bdEl = document.querySelector(".modal-backdrop");
+        if (bdEl) {
+            bdEl.remove();
+        }
+        return true;
+    },
+    removeBodyClass: function (Classname) {
+        if (Classname === "modal-open") {
+            WebVellaPulsar.changeBodyPaddingRight("");
+            WebVellaPulsar.removeBackdrop();
+        }
+        document.body.classList.remove(Classname);
+        return true;
+    },
+    getModalCount: function () {
+        var currentModalCountString = document.body.dataset.modalCount;
+        if (!currentModalCountString) {
+            currentModalCountString = "0";
+        }
+        var result = 0;
+        try {
+            result = parseInt(currentModalCountString);
+        }
+        catch {
+            return 0;
+        }
 
-	setModalOpen: function () {
-		var newModalCount = WebVellaPulsar.addModalCount();
-		if (newModalCount == 1)
-			WebVellaPulsar.addBodyClass("modal-open");
+        return result;
+    },
+    addModalCount: function () {
+        var currentModalCount = WebVellaPulsar.getModalCount();
+        var newModalCount = currentModalCount + 1;
+        document.body.dataset.modalCount = newModalCount;
+        return newModalCount;
+    },
+    removeModalCount: function () {
+        var currentModalCount = WebVellaPulsar.getModalCount();
+        var newModalCount = currentModalCount;
+        if (newModalCount > 0) {
+            newModalCount = newModalCount - 1;
+            document.body.dataset.modalCount = newModalCount;
+        }
+        return newModalCount;
+    },
+    setModalOpen: function () {
+        var newModalCount = WebVellaPulsar.addModalCount();
+        if (newModalCount == 1)
+            WebVellaPulsar.addBodyClass("modal-open");
 
-		return true;
-	},
-	setModalClose: function () {
-		var newModalCount = WebVellaPulsar.removeModalCount();
-		if (newModalCount == 0)
-			WebVellaPulsar.removeBodyClass("modal-open");
-		return true;
-	},
+        return true;
+    },
+    setModalClose: function () {
+        var newModalCount = WebVellaPulsar.removeModalCount();
+        if (newModalCount == 0)
+            WebVellaPulsar.removeBodyClass("modal-open");
+        return true;
+    },
+    setCKEditorData: function (elementId, data) {
+        if (WebVellaPulsar.cKEditors[elementId]) {
+            WebVellaPulsar.cKEditors[elementId].setData(data);
+        }
+        return true;
+    },
+    removeCKEditor: function (elementId) {
+        if (WebVellaPulsar.cKEditors[elementId]) {
+            WebVellaPulsar.cKEditors[elementId].destroy();
+            delete WebVellaPulsar.cKEditors[elementId];
+        }
+        return true;
+    },
+    removeDocumentEventListener: function (eventName, listenerId) {
+        if (WebVellaPulsar.eventListeners[eventName] && WebVellaPulsar.eventListeners[eventName][listenerId]) {
+            delete WebVellaPulsar.eventListeners[eventName][listenerId];
+        }
+        return true;
+    },
+    removeFlatPickrDateTime: function (elementId) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            WebVellaPulsar.flatPickrs[elementId].destroy();
+            delete WebVellaPulsar.flatPickrs[elementId];
+        }
+        return true;
+    },
+    removeFlatPickrDate: function (elementId) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            WebVellaPulsar.flatPickrs[elementId].destroy();
+            delete WebVellaPulsar.flatPickrs[elementId];
+        }
+        return true;
+    },
+    removeOutsideClickEventListener: function (elementSelector, listenerId) {
+        if (WebVellaPulsar.outsideClickListeners[elementSelector] && WebVellaPulsar.outsideClickListeners[elementSelector][listenerId]) {
+            delete WebVellaPulsar.outsideClickListeners[elementSelector][listenerId];
+        }
+        return true;
+    },
+    scrollElement: function (el, x, y) {
+        el.scroll(x, y);
+        return true;
+    },
+    setElementHtml: function (elementId, html) {
+        var el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = html;
+        }
+        return true;
+    },
+    setPageMetaTitle: function (title) {
+        document.title = title;
+        return true;
+    },
+    setFlatPickrDateChange: function (elementId, dateString) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            //Should not notify the change as it will loop
+            WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-d");
+        }
+        return true;
+    },
+    setFlatPickrDateTimeChange: function (elementId, dateString) {
+        if (WebVellaPulsar.flatPickrs[elementId]) {
+            //Should not notify the change as it will loop
+            WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-dTH:i:S");
+        }
+        return true;
+    },
+    simulateClick: function (el) {
+        el.click();
+        return true;
+    },
+    simulateClickById: function (elementId) {
+        var el = document.getElementById(elementId);
+        if (el) {
+            el.click();
+        }
+        return true;
+    },
+    showToast: function (title, message, type, duration) {
+        var options = {
+            text: "<div class='toastify__meta'><div class='toastify__meta__title'>" + title + "</div><div  class='toastify__meta__content'>" + message + "</div></div>",
+            duration: duration,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: 'center', // `left`, `center` or `right`
+            className: "toastify--" + type,
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            onClick: function () { } // Callback after click
+        }
 
-	setCKEditorData: function (elementId, data) {
-		if (WebVellaPulsar.cKEditors[elementId]) {
-			WebVellaPulsar.cKEditors[elementId].setData(data);
-		}
-		return true;
-	},
-	removeCKEditor: function (elementId) {
-		if (WebVellaPulsar.cKEditors[elementId]) {
-			WebVellaPulsar.cKEditors[elementId].destroy();
-			delete WebVellaPulsar.cKEditors[elementId];
-		}
-		return true;
-	},
-	removeDocumentEventListener: function (eventName, listenerId) {
-		if (WebVellaPulsar.eventListeners[eventName] && WebVellaPulsar.eventListeners[eventName][listenerId]) {
-			delete WebVellaPulsar.eventListeners[eventName][listenerId];
-		}
-		return true;
-	},
-	removeFlatPickrDateTime: function (elementId) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			WebVellaPulsar.flatPickrs[elementId].destroy();
-			delete WebVellaPulsar.flatPickrs[elementId];
-		}
-		return true;
-	},
-	removeFlatPickrDate: function (elementId) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			WebVellaPulsar.flatPickrs[elementId].destroy();
-			delete WebVellaPulsar.flatPickrs[elementId];
-		}
-		return true;
-	},
-	removeOutsideClickEventListener: function (elementSelector, listenerId) {
-		if (WebVellaPulsar.outsideClickListeners[elementSelector] && WebVellaPulsar.outsideClickListeners[elementSelector][listenerId]) {
-			delete WebVellaPulsar.outsideClickListeners[elementSelector][listenerId];
-		}
-		return true;
-	},
-	scrollElement: function (el, x, y) {
-		el.scroll(x, y);
-		return true;
-	},
-	setElementHtml: function (elementId, html) {
-		var el = document.getElementById(elementId);
-		if (el) {
-			el.innerHTML = html;
-		}
-		return true;
-	},
-	setPageMetaTitle: function (title) {
-		document.title = title;
-		return true;
-	},
-	setFlatPickrDateChange: function (elementId, dateString) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			//Should not notify the change as it will loop
-			WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-d");
-		}
-		return true;
-	},
-	setFlatPickrDateTimeChange: function (elementId, dateString) {
-		if (WebVellaPulsar.flatPickrs[elementId]) {
-			//Should not notify the change as it will loop
-			WebVellaPulsar.flatPickrs[elementId].setDate(dateString, false, "Y-m-dTH:i:S");
-		}
-		return true;
-	},
-	simulateClick: function (el) {
-		el.click();
-		return true;
-	},
-	simulateClickById: function (elementId) {
-		var el = document.getElementById(elementId);
-		if (el) {
-			el.click();
-		}
-		return true;
-	},
-	showToast: function (title, message, type, duration) {
-		var options = {
-			text: "<div class='toastify__meta'><div class='toastify__meta__title'>" + title + "</div><div  class='toastify__meta__content'>" + message + "</div></div>",
-			duration: duration,
-			newWindow: true,
-			close: true,
-			gravity: "top", // `top` or `bottom`
-			position: 'center', // `left`, `center` or `right`
-			className: "toastify--" + type,
-			stopOnFocus: true, // Prevents dismissing of toast on hover
-			onClick: function () { } // Callback after click
-		}
+        Toastify(options).showToast();
+        return true;
+    },
+    uint8ToBase64: (function () {
+        // Code from https://github.com/beatgammit/base64-js/
+        // License: MIT
+        var lookup = [];
 
-		Toastify(options).showToast();
-		return true;
-	},
-	uint8ToBase64: (function () {
-		// Code from https://github.com/beatgammit/base64-js/
-		// License: MIT
-		var lookup = [];
+        var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+        for (var i = 0, len = code.length; i < len; ++i) {
+            lookup[i] = code[i];
+        }
 
-		var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-		for (var i = 0, len = code.length; i < len; ++i) {
-			lookup[i] = code[i];
-		}
+        function tripletToBase64(num) {
+            return lookup[num >> 18 & 0x3F] +
+                lookup[num >> 12 & 0x3F] +
+                lookup[num >> 6 & 0x3F] +
+                lookup[num & 0x3F];
+        }
 
-		function tripletToBase64(num) {
-			return lookup[num >> 18 & 0x3F] +
-				lookup[num >> 12 & 0x3F] +
-				lookup[num >> 6 & 0x3F] +
-				lookup[num & 0x3F];
-		}
+        function encodeChunk(uint8, start, end) {
+            var tmp;
+            var output = [];
+            for (var i = start; i < end; i += 3) {
+                tmp =
+                    ((uint8[i] << 16) & 0xFF0000) +
+                    ((uint8[i + 1] << 8) & 0xFF00) +
+                    (uint8[i + 2] & 0xFF);
+                output.push(tripletToBase64(tmp));
+            }
+            return output.join('');
+        }
 
-		function encodeChunk(uint8, start, end) {
-			var tmp;
-			var output = [];
-			for (var i = start; i < end; i += 3) {
-				tmp =
-					((uint8[i] << 16) & 0xFF0000) +
-					((uint8[i + 1] << 8) & 0xFF00) +
-					(uint8[i + 2] & 0xFF);
-				output.push(tripletToBase64(tmp));
-			}
-			return output.join('');
-		}
+        return function fromByteArray(uint8) {
+            var tmp;
+            var len = uint8.length;
+            var extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
+            var parts = [];
+            var maxChunkLength = 16383; // must be multiple of 3
 
-		return function fromByteArray(uint8) {
-			var tmp;
-			var len = uint8.length;
-			var extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
-			var parts = [];
-			var maxChunkLength = 16383; // must be multiple of 3
+            // go through the array every three bytes, we'll deal with trailing stuff later
+            for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+                parts.push(encodeChunk(
+                    uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+                ));
+            }
 
-			// go through the array every three bytes, we'll deal with trailing stuff later
-			for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-				parts.push(encodeChunk(
-					uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-				));
-			}
+            // pad the end with zeros, but make sure to not forget the extra bytes
+            if (extraBytes === 1) {
+                tmp = uint8[len - 1];
+                parts.push(
+                    lookup[tmp >> 2] +
+                    lookup[(tmp << 4) & 0x3F] +
+                    '=='
+                );
+            } else if (extraBytes === 2) {
+                tmp = (uint8[len - 2] << 8) + uint8[len - 1];
+                parts.push(
+                    lookup[tmp >> 10] +
+                    lookup[(tmp >> 4) & 0x3F] +
+                    lookup[(tmp << 2) & 0x3F] +
+                    '='
+                );
+            }
 
-			// pad the end with zeros, but make sure to not forget the extra bytes
-			if (extraBytes === 1) {
-				tmp = uint8[len - 1];
-				parts.push(
-					lookup[tmp >> 2] +
-					lookup[(tmp << 4) & 0x3F] +
-					'=='
-				);
-			} else if (extraBytes === 2) {
-				tmp = (uint8[len - 2] << 8) + uint8[len - 1];
-				parts.push(
-					lookup[tmp >> 10] +
-					lookup[(tmp >> 4) & 0x3F] +
-					lookup[(tmp << 2) & 0x3F] +
-					'='
-				);
-			}
+            return parts.join('');
+        };
+    })(),
+    scrollToElement: function (elementId) {
+        var elmnt = document.getElementById(elementId);
+        if (elmnt)
+            elmnt.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
 
-			return parts.join('');
-		};
-	})(),
-	scrollToElement: function (elementId) {
-		var elmnt = document.getElementById(elementId);
-		if (elmnt)
-			elmnt.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-
-		return true;
-	},
-	serializeKeyDownEvent: function (e) {
-		if (e) {
-			var o = {
-				altKey: e.altKey,
-				ctrlKey: e.ctrlKey,
-				metaKey: e.metaKey,
-				shiftKey: e.shiftKey,
-				code: e.code
-			};
-			return o;
-		}
-	}
+        return true;
+    },
+    serializeKeyDownEvent: function (e) {
+        if (e) {
+            var o = {
+                altKey: e.altKey,
+                ctrlKey: e.ctrlKey,
+                metaKey: e.metaKey,
+                shiftKey: e.shiftKey,
+                code: e.code
+            };
+            return o;
+        }
+    }
 };
 
 //Listeners
 document.addEventListener("keydown", function (e) {
-	if (e.key === "Escape") {
-		WebVellaPulsar.executeEventCallbacks("keydown-escape", e);
-	}
-	else if (e.key === "Enter") {
-		WebVellaPulsar.executeEventCallbacks("keydown-enter", e);
-	}
+    if (e.key === "Escape") {
+        WebVellaPulsar.executeEventCallbacks("keydown-escape", e);
+    }
+    else if (e.key === "Enter") {
+        WebVellaPulsar.executeEventCallbacks("keydown-enter", e);
+    }
 
-	WebVellaPulsar.executeEventCallbacks("keydown", e);
+    WebVellaPulsar.executeEventCallbacks("keydown", e);
 });
 document.addEventListener("mousedown", function (e) {
-	//Check if not clicked on scrollbars
-	//If this is a standard scrollable body this should work
-	if (window.outerWidth <= e.clientX) {
-		return true;
-	}
-	//If one of the elements has scroll
-	if (e.target.classList.contains("scrollable-wrapper") && e.target.clientWidth <= e.clientX)
-		return true;
+    //Check if not clicked on scrollbars
+    //If this is a standard scrollable body this should work
+    if (window.outerWidth <= e.clientX) {
+        return true;
+    }
+    //If one of the elements has scroll
+    if (e.target.classList.contains("scrollable-wrapper") && e.target.clientWidth <= e.clientX)
+        return true;
 
 
-	WebVellaPulsar.executeEventCallbacks("mousedown", e);
-	if (!e.target.closest('.dropdown-menu')) {
-		WebVellaPulsar.executeEventCallbacks("mousedown-non-dropdown", e);
-	}
-	if (!e.target.closest('.modal')) {
-		WebVellaPulsar.executeEventCallbacks("mousedown-non-modal", e);
-	}
+    WebVellaPulsar.executeEventCallbacks("mousedown", e);
+    if (!e.target.closest('.dropdown-menu')) {
+        WebVellaPulsar.executeEventCallbacks("mousedown-non-dropdown", e);
+    }
+    if (!e.target.closest('.modal')) {
+        WebVellaPulsar.executeEventCallbacks("mousedown-non-modal", e);
+    }
 
-	if (WebVellaPulsar.outsideClickListeners) {
-		var hasOutSideListeners = false;
-		for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
-			if (WebVellaPulsar.outsideClickListeners.hasOwnProperty(elementSelector)) {
-				if (!e.target.closest(elementSelector) && !e.target.closest(".ck-editor")) {
-					WebVellaPulsar.executeOutsideClickEventCallbacks(elementSelector, e);
-				}
-			}
-		}
-	}
+    if (WebVellaPulsar.outsideClickListeners) {
+        var hasOutSideListeners = false;
+        for (var elementSelector in WebVellaPulsar.outsideClickListeners) {
+            if (WebVellaPulsar.outsideClickListeners.hasOwnProperty(elementSelector)) {
+                if (!e.target.closest(elementSelector) && !e.target.closest(".ck-editor")) {
+                    WebVellaPulsar.executeOutsideClickEventCallbacks(elementSelector, e);
+                }
+            }
+        }
+    }
 });
 
 
@@ -936,359 +971,359 @@ document.addEventListener("mousedown", function (e) {
  * Copyright (C) 2018 Varun A P
  */
 (function (root, factory) {
-	if (typeof module === "object" && module.exports) {
-		module.exports = factory();
-	} else {
-		root.Toastify = factory();
-	}
+    if (typeof module === "object" && module.exports) {
+        module.exports = factory();
+    } else {
+        root.Toastify = factory();
+    }
 })(this, function (global) {
-	// Object initialization
-	var Toastify = function (options) {
-		// Returning a new init object
-		return new Toastify.lib.init(options);
-	},
-		// Library version
-		version = "1.8.0";
+    // Object initialization
+    var Toastify = function (options) {
+        // Returning a new init object
+        return new Toastify.lib.init(options);
+    },
+        // Library version
+        version = "1.8.0";
 
-	// Defining the prototype of the object
-	Toastify.lib = Toastify.prototype = {
-		toastify: version,
+    // Defining the prototype of the object
+    Toastify.lib = Toastify.prototype = {
+        toastify: version,
 
-		constructor: Toastify,
+        constructor: Toastify,
 
-		// Initializing the object with required parameters
-		init: function (options) {
-			// Verifying and validating the input object
-			if (!options) {
-				options = {};
-			}
+        // Initializing the object with required parameters
+        init: function (options) {
+            // Verifying and validating the input object
+            if (!options) {
+                options = {};
+            }
 
-			// Creating the options object
-			this.options = {};
+            // Creating the options object
+            this.options = {};
 
-			this.toastElement = null;
+            this.toastElement = null;
 
-			// Validating the options
-			this.options.text = options.text || "Hi there!"; // Display message
-			this.options.node = options.node // Display content as node
-			this.options.duration = options.duration === 0 ? 0 : options.duration || 3000; // Display duration
-			this.options.selector = options.selector; // Parent selector
-			this.options.callback = options.callback || function () { }; // Callback after display
-			this.options.destination = options.destination; // On-click destination
-			this.options.newWindow = options.newWindow || false; // Open destination in new window
-			this.options.close = options.close || false; // Show toast close icon
-			this.options.gravity = options.gravity === "bottom" ? "toastify-bottom" : "toastify-top"; // toast position - top or bottom
-			this.options.positionLeft = options.positionLeft || false; // toast position - left or right
-			this.options.position = options.position || ''; // toast position - left or right
-			this.options.backgroundColor = options.backgroundColor; // toast background color
-			this.options.avatar = options.avatar || ""; // img element src - url or a path
-			this.options.className = options.className || ""; // additional class names for the toast
-			this.options.stopOnFocus = options.stopOnFocus === undefined ? true : options.stopOnFocus; // stop timeout on focus
-			this.options.onClick = options.onClick; // Callback after click
+            // Validating the options
+            this.options.text = options.text || "Hi there!"; // Display message
+            this.options.node = options.node // Display content as node
+            this.options.duration = options.duration === 0 ? 0 : options.duration || 3000; // Display duration
+            this.options.selector = options.selector; // Parent selector
+            this.options.callback = options.callback || function () { }; // Callback after display
+            this.options.destination = options.destination; // On-click destination
+            this.options.newWindow = options.newWindow || false; // Open destination in new window
+            this.options.close = options.close || false; // Show toast close icon
+            this.options.gravity = options.gravity === "bottom" ? "toastify-bottom" : "toastify-top"; // toast position - top or bottom
+            this.options.positionLeft = options.positionLeft || false; // toast position - left or right
+            this.options.position = options.position || ''; // toast position - left or right
+            this.options.backgroundColor = options.backgroundColor; // toast background color
+            this.options.avatar = options.avatar || ""; // img element src - url or a path
+            this.options.className = options.className || ""; // additional class names for the toast
+            this.options.stopOnFocus = options.stopOnFocus === undefined ? true : options.stopOnFocus; // stop timeout on focus
+            this.options.onClick = options.onClick; // Callback after click
 
-			// Returning the current object for chaining functions
-			return this;
-		},
+            // Returning the current object for chaining functions
+            return this;
+        },
 
-		// Building the DOM element
-		buildToast: function () {
-			// Validating if the options are defined
-			if (!this.options) {
-				throw "Toastify is not initialized";
-			}
+        // Building the DOM element
+        buildToast: function () {
+            // Validating if the options are defined
+            if (!this.options) {
+                throw "Toastify is not initialized";
+            }
 
-			// Creating the DOM object
-			var divElement = document.createElement("div");
-			divElement.className = "toastify on " + this.options.className;
+            // Creating the DOM object
+            var divElement = document.createElement("div");
+            divElement.className = "toastify on " + this.options.className;
 
-			// Positioning toast to left or right or center
-			if (!!this.options.position) {
-				divElement.className += " toastify-" + this.options.position;
-			} else {
-				// To be depreciated in further versions
-				if (this.options.positionLeft === true) {
-					divElement.className += " toastify-left";
-					console.warn('Property `positionLeft` will be depreciated in further versions. Please use `position` instead.')
-				} else {
-					// Default position
-					divElement.className += " toastify-right";
-				}
-			}
+            // Positioning toast to left or right or center
+            if (!!this.options.position) {
+                divElement.className += " toastify-" + this.options.position;
+            } else {
+                // To be depreciated in further versions
+                if (this.options.positionLeft === true) {
+                    divElement.className += " toastify-left";
+                    console.warn('Property `positionLeft` will be depreciated in further versions. Please use `position` instead.')
+                } else {
+                    // Default position
+                    divElement.className += " toastify-right";
+                }
+            }
 
-			// Assigning gravity of element
-			divElement.className += " " + this.options.gravity;
+            // Assigning gravity of element
+            divElement.className += " " + this.options.gravity;
 
-			if (this.options.backgroundColor) {
-				divElement.style.background = this.options.backgroundColor;
-			}
+            if (this.options.backgroundColor) {
+                divElement.style.background = this.options.backgroundColor;
+            }
 
-			// Adding the toast message/node
-			if (this.options.node && this.options.node.nodeType === Node.ELEMENT_NODE) {
-				// If we have a valid node, we insert it
-				divElement.appendChild(this.options.node)
-			} else {
-				divElement.innerHTML = this.options.text;
+            // Adding the toast message/node
+            if (this.options.node && this.options.node.nodeType === Node.ELEMENT_NODE) {
+                // If we have a valid node, we insert it
+                divElement.appendChild(this.options.node)
+            } else {
+                divElement.innerHTML = this.options.text;
 
-				if (this.options.avatar !== "") {
-					var avatarElement = document.createElement("img");
-					avatarElement.src = this.options.avatar;
+                if (this.options.avatar !== "") {
+                    var avatarElement = document.createElement("img");
+                    avatarElement.src = this.options.avatar;
 
-					avatarElement.className = "toastify-avatar";
+                    avatarElement.className = "toastify-avatar";
 
-					if (this.options.position == "left" || this.options.positionLeft === true) {
-						// Adding close icon on the left of content
-						divElement.appendChild(avatarElement);
-					} else {
-						// Adding close icon on the right of content
-						divElement.insertAdjacentElement("beforeend", avatarElement);
-					}
-				}
-			}
+                    if (this.options.position == "left" || this.options.positionLeft === true) {
+                        // Adding close icon on the left of content
+                        divElement.appendChild(avatarElement);
+                    } else {
+                        // Adding close icon on the right of content
+                        divElement.insertAdjacentElement("beforeend", avatarElement);
+                    }
+                }
+            }
 
-			// Adding a close icon to the toast
-			if (this.options.close === true) {
-				// Create a span for close element
-				var closeElement = document.createElement("span");
-				closeElement.innerHTML = "X";
+            // Adding a close icon to the toast
+            if (this.options.close === true) {
+                // Create a span for close element
+                var closeElement = document.createElement("span");
+                closeElement.innerHTML = "X";
 
-				closeElement.className = "toast-close";
+                closeElement.className = "toast-close";
 
-				// Triggering the removal of toast from DOM on close click
-				closeElement.addEventListener(
-					"click",
-					function (event) {
-						event.stopPropagation();
-						this.removeElement(this.toastElement);
-						window.clearTimeout(this.toastElement.timeOutValue);
-					}.bind(this)
-				);
+                // Triggering the removal of toast from DOM on close click
+                closeElement.addEventListener(
+                    "click",
+                    function (event) {
+                        event.stopPropagation();
+                        this.removeElement(this.toastElement);
+                        window.clearTimeout(this.toastElement.timeOutValue);
+                    }.bind(this)
+                );
 
-				//Calculating screen width
-				var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+                //Calculating screen width
+                var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
 
-				// Adding the close icon to the toast element
-				// Display on the right if screen width is less than or equal to 360px
-				if ((this.options.position == "left" || this.options.positionLeft === true) && width > 360) {
-					// Adding close icon on the left of content
-					divElement.insertAdjacentElement("afterbegin", closeElement);
-				} else {
-					// Adding close icon on the right of content
-					divElement.appendChild(closeElement);
-				}
-			}
+                // Adding the close icon to the toast element
+                // Display on the right if screen width is less than or equal to 360px
+                if ((this.options.position == "left" || this.options.positionLeft === true) && width > 360) {
+                    // Adding close icon on the left of content
+                    divElement.insertAdjacentElement("afterbegin", closeElement);
+                } else {
+                    // Adding close icon on the right of content
+                    divElement.appendChild(closeElement);
+                }
+            }
 
-			// Clear timeout while toast is focused
-			if (this.options.stopOnFocus && this.options.duration > 0) {
-				const self = this;
-				// stop countdown
-				divElement.addEventListener(
-					"mouseover",
-					function (event) {
-						window.clearTimeout(divElement.timeOutValue);
-					}
-				)
-				// add back the timeout
-				divElement.addEventListener(
-					"mouseleave",
-					function () {
-						divElement.timeOutValue = window.setTimeout(
-							function () {
-								// Remove the toast from DOM
-								self.removeElement(divElement);
-							},
-							self.options.duration
-						)
-					}
-				)
-			}
+            // Clear timeout while toast is focused
+            if (this.options.stopOnFocus && this.options.duration > 0) {
+                const self = this;
+                // stop countdown
+                divElement.addEventListener(
+                    "mouseover",
+                    function (event) {
+                        window.clearTimeout(divElement.timeOutValue);
+                    }
+                )
+                // add back the timeout
+                divElement.addEventListener(
+                    "mouseleave",
+                    function () {
+                        divElement.timeOutValue = window.setTimeout(
+                            function () {
+                                // Remove the toast from DOM
+                                self.removeElement(divElement);
+                            },
+                            self.options.duration
+                        )
+                    }
+                )
+            }
 
-			// Adding an on-click destination path
-			if (typeof this.options.destination !== "undefined") {
-				divElement.addEventListener(
-					"click",
-					function (event) {
-						event.stopPropagation();
-						if (this.options.newWindow === true) {
-							window.open(this.options.destination, "_blank");
-						} else {
-							window.location = this.options.destination;
-						}
-					}.bind(this)
-				);
-			}
+            // Adding an on-click destination path
+            if (typeof this.options.destination !== "undefined") {
+                divElement.addEventListener(
+                    "click",
+                    function (event) {
+                        event.stopPropagation();
+                        if (this.options.newWindow === true) {
+                            window.open(this.options.destination, "_blank");
+                        } else {
+                            window.location = this.options.destination;
+                        }
+                    }.bind(this)
+                );
+            }
 
-			if (typeof this.options.onClick === "function" && typeof this.options.destination === "undefined") {
-				divElement.addEventListener(
-					"click",
-					function (event) {
-						event.stopPropagation();
-						this.options.onClick();
-					}.bind(this)
-				);
-			}
+            if (typeof this.options.onClick === "function" && typeof this.options.destination === "undefined") {
+                divElement.addEventListener(
+                    "click",
+                    function (event) {
+                        event.stopPropagation();
+                        this.options.onClick();
+                    }.bind(this)
+                );
+            }
 
-			// Returning the generated element
-			return divElement;
-		},
+            // Returning the generated element
+            return divElement;
+        },
 
-		// Displaying the toast
-		showToast: function () {
-			// Creating the DOM object for the toast
-			this.toastElement = this.buildToast();
+        // Displaying the toast
+        showToast: function () {
+            // Creating the DOM object for the toast
+            this.toastElement = this.buildToast();
 
-			// Getting the root element to with the toast needs to be added
-			var rootElement;
-			if (typeof this.options.selector === "undefined") {
-				rootElement = document.body;
-			} else {
-				rootElement = document.getElementById(this.options.selector);
-			}
+            // Getting the root element to with the toast needs to be added
+            var rootElement;
+            if (typeof this.options.selector === "undefined") {
+                rootElement = document.body;
+            } else {
+                rootElement = document.getElementById(this.options.selector);
+            }
 
-			// Validating if root element is present in DOM
-			if (!rootElement) {
-				throw "Root element is not defined";
-			}
+            // Validating if root element is present in DOM
+            if (!rootElement) {
+                throw "Root element is not defined";
+            }
 
-			// Adding the DOM element
-			rootElement.insertBefore(this.toastElement, rootElement.firstChild);
+            // Adding the DOM element
+            rootElement.insertBefore(this.toastElement, rootElement.firstChild);
 
-			// Repositioning the toasts in case multiple toasts are present
-			Toastify.reposition();
+            // Repositioning the toasts in case multiple toasts are present
+            Toastify.reposition();
 
-			if (this.options.duration > 0) {
-				this.toastElement.timeOutValue = window.setTimeout(
-					function () {
-						// Remove the toast from DOM
-						this.removeElement(this.toastElement);
-					}.bind(this),
-					this.options.duration
-				); // Binding `this` for function invocation
-			}
+            if (this.options.duration > 0) {
+                this.toastElement.timeOutValue = window.setTimeout(
+                    function () {
+                        // Remove the toast from DOM
+                        this.removeElement(this.toastElement);
+                    }.bind(this),
+                    this.options.duration
+                ); // Binding `this` for function invocation
+            }
 
-			// Supporting function chaining
-			return this;
-		},
+            // Supporting function chaining
+            return this;
+        },
 
-		hideToast: function () {
-			if (this.toastElement.timeOutValue) {
-				clearTimeout(this.toastElement.timeOutValue);
-			}
-			this.removeElement(this.toastElement);
-		},
+        hideToast: function () {
+            if (this.toastElement.timeOutValue) {
+                clearTimeout(this.toastElement.timeOutValue);
+            }
+            this.removeElement(this.toastElement);
+        },
 
-		// Removing the element from the DOM
-		removeElement: function (toastElement) {
-			// Hiding the element
-			// toastElement.classList.remove("on");
-			toastElement.className = toastElement.className.replace(" on", "");
+        // Removing the element from the DOM
+        removeElement: function (toastElement) {
+            // Hiding the element
+            // toastElement.classList.remove("on");
+            toastElement.className = toastElement.className.replace(" on", "");
 
-			// Removing the element from DOM after transition end
-			window.setTimeout(
-				function () {
-					// remove options node if any
-					if (this.options.node && this.options.node.parentNode) {
-						this.options.node.parentNode.removeChild(this.options.node);
-					}
+            // Removing the element from DOM after transition end
+            window.setTimeout(
+                function () {
+                    // remove options node if any
+                    if (this.options.node && this.options.node.parentNode) {
+                        this.options.node.parentNode.removeChild(this.options.node);
+                    }
 
-					// Remove the elemenf from the DOM, only when the parent node was not removed before.
-					if (toastElement.parentNode) {
-						toastElement.parentNode.removeChild(toastElement);
-					}
+                    // Remove the elemenf from the DOM, only when the parent node was not removed before.
+                    if (toastElement.parentNode) {
+                        toastElement.parentNode.removeChild(toastElement);
+                    }
 
-					// Calling the callback function
-					this.options.callback.call(toastElement);
+                    // Calling the callback function
+                    this.options.callback.call(toastElement);
 
-					// Repositioning the toasts again
-					Toastify.reposition();
-				}.bind(this),
-				400
-			); // Binding `this` for function invocation
-		},
-	};
+                    // Repositioning the toasts again
+                    Toastify.reposition();
+                }.bind(this),
+                400
+            ); // Binding `this` for function invocation
+        },
+    };
 
-	// Positioning the toasts on the DOM
-	Toastify.reposition = function () {
-		// Top margins with gravity
-		var topLeftOffsetSize = {
-			top: 15,
-			bottom: 15,
-		};
-		var topRightOffsetSize = {
-			top: 15,
-			bottom: 15,
-		};
-		var offsetSize = {
-			top: 15,
-			bottom: 15,
-		};
+    // Positioning the toasts on the DOM
+    Toastify.reposition = function () {
+        // Top margins with gravity
+        var topLeftOffsetSize = {
+            top: 15,
+            bottom: 15,
+        };
+        var topRightOffsetSize = {
+            top: 15,
+            bottom: 15,
+        };
+        var offsetSize = {
+            top: 15,
+            bottom: 15,
+        };
 
-		// Get all toast messages on the DOM
-		var allToasts = document.getElementsByClassName("toastify");
+        // Get all toast messages on the DOM
+        var allToasts = document.getElementsByClassName("toastify");
 
-		var classUsed;
+        var classUsed;
 
-		// Modifying the position of each toast element
-		for (var i = 0; i < allToasts.length; i++) {
-			// Getting the applied gravity
-			if (containsClass(allToasts[i], "toastify-top") === true) {
-				classUsed = "toastify-top";
-			} else {
-				classUsed = "toastify-bottom";
-			}
+        // Modifying the position of each toast element
+        for (var i = 0; i < allToasts.length; i++) {
+            // Getting the applied gravity
+            if (containsClass(allToasts[i], "toastify-top") === true) {
+                classUsed = "toastify-top";
+            } else {
+                classUsed = "toastify-bottom";
+            }
 
-			var height = allToasts[i].offsetHeight;
-			classUsed = classUsed.substr(9, classUsed.length - 1)
-			// Spacing between toasts
-			var offset = 15;
+            var height = allToasts[i].offsetHeight;
+            classUsed = classUsed.substr(9, classUsed.length - 1)
+            // Spacing between toasts
+            var offset = 15;
 
-			var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+            var width = window.innerWidth > 0 ? window.innerWidth : screen.width;
 
-			// Show toast in center if screen with less than or qual to 360px
-			if (width <= 360) {
-				// Setting the position
-				allToasts[i].style[classUsed] = offsetSize[classUsed] + "px";
+            // Show toast in center if screen with less than or qual to 360px
+            if (width <= 360) {
+                // Setting the position
+                allToasts[i].style[classUsed] = offsetSize[classUsed] + "px";
 
-				offsetSize[classUsed] += height + offset;
-			} else {
-				if (containsClass(allToasts[i], "toastify-left") === true) {
-					// Setting the position
-					allToasts[i].style[classUsed] = topLeftOffsetSize[classUsed] + "px";
+                offsetSize[classUsed] += height + offset;
+            } else {
+                if (containsClass(allToasts[i], "toastify-left") === true) {
+                    // Setting the position
+                    allToasts[i].style[classUsed] = topLeftOffsetSize[classUsed] + "px";
 
-					topLeftOffsetSize[classUsed] += height + offset;
-				} else {
-					// Setting the position
-					allToasts[i].style[classUsed] = topRightOffsetSize[classUsed] + "px";
+                    topLeftOffsetSize[classUsed] += height + offset;
+                } else {
+                    // Setting the position
+                    allToasts[i].style[classUsed] = topRightOffsetSize[classUsed] + "px";
 
-					topRightOffsetSize[classUsed] += height + offset;
-				}
-			}
-		}
+                    topRightOffsetSize[classUsed] += height + offset;
+                }
+            }
+        }
 
-		// Supporting function chaining
-		return this;
-	};
+        // Supporting function chaining
+        return this;
+    };
 
-	function containsClass(elem, yourClass) {
-		if (!elem || typeof yourClass !== "string") {
-			return false;
-		} else if (
-			elem.className &&
-			elem.className
-				.trim()
-				.split(/\s+/gi)
-				.indexOf(yourClass) > -1
-		) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+    function containsClass(elem, yourClass) {
+        if (!elem || typeof yourClass !== "string") {
+            return false;
+        } else if (
+            elem.className &&
+            elem.className
+                .trim()
+                .split(/\s+/gi)
+                .indexOf(yourClass) > -1
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	// Setting up the prototype for the init object
-	Toastify.lib.init.prototype = Toastify.lib;
+    // Setting up the prototype for the init object
+    Toastify.lib.init.prototype = Toastify.lib;
 
-	// Returning the Toastify function to be assigned to the window object/module
-	return Toastify;
+    // Returning the Toastify function to be assigned to the window object/module
+    return Toastify;
 });
 
 /* flatpickr v4.6.9,, @license MIT */

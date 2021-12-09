@@ -152,6 +152,48 @@ namespace WebVella.Pulsar.Services
             return false;
         }
 
+        public async ValueTask<bool> InitializeObservedItem(Guid componentId, DotNetObjectReference<WvpObservedItem> objectRef, string observerTargetId, string observerViewportId)
+        {
+            try
+            {
+                return await JSRuntime.InvokeAsync<bool>(
+                "WebVellaPulsar.observedItemInit",
+                componentId, objectRef, observerTargetId, observerViewportId);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+            catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+            {
+                // Ignore exceptions from task cancellations.
+                // Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+                // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+                // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+            }
+            return false;
+        }
+
+        public async ValueTask<bool> DestroyObservedItem(Guid componentId)
+        {
+            try
+            {
+                return await JSRuntime.InvokeAsync<bool>(
+                     "WebVellaPulsar.observedItemDestroy",
+                     componentId);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+            catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+            {
+                // Ignore exceptions from task cancellations.
+                // Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+                // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+                // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+            }
+            return false;
+        }
+
         public async ValueTask<bool> CheckIfElementIdVisible(string elementId)
         {
             try

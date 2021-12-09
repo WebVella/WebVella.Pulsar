@@ -32,6 +32,23 @@ namespace WebVella.Pulsar.Models
 
 		[Parameter] public EventCallback<object> OnClick { get; set; }
 
+		private bool skipNextRender = false;
+
+		protected void SkipNextRender()
+		{
+			skipNextRender = true;
+		}
+
+		protected override bool ShouldRender()
+		{
+			if (skipNextRender)
+			{
+				skipNextRender = false;
+				return false;
+			}
+			return true;
+		}
+
 		private IStringLocalizer localizer = null;
 		
 		protected IStringLocalizer WVT { 
