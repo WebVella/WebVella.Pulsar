@@ -61,13 +61,13 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
-				await new JsService(JSRuntime).AddDocumentEventListener(WvpDomEventType.KeydownEscape, _objectReference, Id, "OnEscapeKey");
+				_ = await new JsService(JSRuntime).AddDocumentEventListener(WvpDomEventType.KeydownEscape, _objectReference, Id, "OnEscapeKey");
 			}
 		}
 
 		public async ValueTask DisposeAsync()
 		{
-			await new  JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
+			_ = await new  JsService(JSRuntime).RemoveDocumentEventListener(WvpDomEventType.KeydownEscape, Id);
 
 			_objectReference?.Dispose();
 		}
@@ -148,7 +148,7 @@ namespace WebVella.Pulsar.Components
 			{
 				_editEnabled = true;
 				await Task.Delay(5);
-				await new  JsService(JSRuntime).FocusElementBySelector("#" + _inputElementId);
+				_ = await new  JsService(JSRuntime).FocusElementBySelector("#" + _inputElementId);
 			}
 
 			//Hide edit

@@ -62,7 +62,7 @@ namespace WebVella.Pulsar.Components
 			if (firstRender)
 			{
 				_objectReference = DotNetObjectReference.Create(this);
-				await new JsService(JSRuntime).InitFileUpload(Id, _objectReference);
+				_ = await new JsService(JSRuntime).InitFileUpload(Id, _objectReference);
 			}
 		}
 

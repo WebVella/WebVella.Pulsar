@@ -60,7 +60,7 @@ namespace WebVella.Pulsar.Components
 
         public async ValueTask DisposeAsync()
         {
-            await new JsService(JSRuntime).DestroyObservedItem(_componentId);
+            _ = await new JsService(JSRuntime).DestroyObservedItem(_componentId);
             _objectRef?.Dispose();
         }
 
@@ -82,7 +82,7 @@ namespace WebVella.Pulsar.Components
                 //Render so Child content can be populated
                 await InvokeAsync(StateHasChanged);
                 await Task.Delay(1);
-                await new JsService(JSRuntime).InitializeObservedItem(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
+                _ = await new JsService(JSRuntime).InitializeObservedItem(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
             }
         }
         #endregion

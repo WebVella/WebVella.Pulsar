@@ -54,7 +54,7 @@ namespace WebVella.Pulsar.Components
 		#region << Lifecycle methods >>
 		public async ValueTask DisposeAsync()
 		{
-			await new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
+			_ = await new JsService(JSRuntime).DestroyInfiniteScroll(_componentId);
 			_objectRef?.Dispose();
 		}
 
@@ -67,7 +67,7 @@ namespace WebVella.Pulsar.Components
 				//Render so Child content can be populated
 				await InvokeAsync(StateHasChanged);
 				await Task.Delay(1);
-				await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
+				_ = await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}
 		#endregion

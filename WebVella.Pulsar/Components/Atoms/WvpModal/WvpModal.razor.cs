@@ -78,7 +78,7 @@ namespace WebVella.Pulsar.Components
             using (await locker.LockAsync())
             {
                 _isOpen = true;
-                await new JsService(JSRuntime).SetModalOpen();
+                _ = await new JsService(JSRuntime).SetModalOpen();
                 //await InvokeAsync(StateHasChanged);
                 if (invokeCallback)
                 {
@@ -86,7 +86,7 @@ namespace WebVella.Pulsar.Components
                 }
                 await Task.Delay(5);
                 if (IsDraggable)
-                    await new JsService(JSRuntime).MakeDraggable(Id);
+                    _ = await new JsService(JSRuntime).MakeDraggable(Id);
             }
         }
         public async Task _hide(bool invokeCallback = true, bool isBackdrop = false)
@@ -97,7 +97,7 @@ namespace WebVella.Pulsar.Components
                     return;
 
                 _isOpen = false;
-                await new JsService(JSRuntime).SetModalClose();
+                _ = await new JsService(JSRuntime).SetModalClose();
                 //await InvokeAsync(StateHasChanged);
 
                 if (invokeCallback)
@@ -106,7 +106,7 @@ namespace WebVella.Pulsar.Components
                 }
                 await Task.Delay(5);
                 if (IsDraggable)
-                    await new JsService(JSRuntime).RemoveDraggable(Id);
+                    _ = await new JsService(JSRuntime).RemoveDraggable(Id);
             }
         }
 

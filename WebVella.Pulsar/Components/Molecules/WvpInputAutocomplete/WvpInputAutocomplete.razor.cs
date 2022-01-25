@@ -158,10 +158,10 @@ namespace WebVella.Pulsar.Components
 			await Task.Delay(1);
 			//await InvokeAsync(StateHasChanged);
 			if (BlurOnSubmit)
-				await new JsService(JSRuntime).BlurElement(_inputId);
+				_ = await new JsService(JSRuntime).BlurElement(_inputId);
 			else
 			{
-				await new JsService(JSRuntime).FocusElement(_inputId);
+				_ = await new JsService(JSRuntime).FocusElement(_inputId);
 			}
 		}
 
