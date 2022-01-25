@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebVella.Pulsar": {
+      "commandName": "Project",
+      "hotReloadEnabled": false
+    }
+  }
+}

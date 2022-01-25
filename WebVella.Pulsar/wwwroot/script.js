@@ -917,6 +917,14 @@
             };
             return o;
         }
+    },
+    logError: function (message) {
+        console.error(message);
+        return true;
+    },
+    logInfo: function (message) {
+        console.info(message);
+        return true;
     }
 };
 

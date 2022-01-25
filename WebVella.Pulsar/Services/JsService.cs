@@ -948,5 +948,45 @@ namespace WebVella.Pulsar.Services
             return false;
         }
 
+        public async ValueTask<bool> LogError(string message)
+        {
+            try
+            {
+                return await JSRuntime.InvokeAsync<bool>(
+                "WebVellaPulsar.logError", message);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+            catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+            {
+                // Ignore exceptions from task cancellations.
+                // Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+                // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+                // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+            }
+            return false;
+        }
+
+        public async ValueTask<bool> LogInfo(string message)
+        {
+            try
+            {
+                return await JSRuntime.InvokeAsync<bool>(
+                "WebVellaPulsar.logInfo", message);
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+            catch (OperationCanceledException) // avoiding exception filters for AOT runtime support
+            {
+                // Ignore exceptions from task cancellations.
+                // Awaiting a canceled task may produce either an OperationCanceledException (if produced as a consequence of
+                // CancellationToken.ThrowIfCancellationRequested()) or a TaskCanceledException (produced as a consequence of awaiting Task.FromCanceled).
+                // It's much easier to check the state of the Task (i.e. Task.IsCanceled) rather than catch two distinct exceptions.
+            }
+            return false;
+        }
+
     }
 }
