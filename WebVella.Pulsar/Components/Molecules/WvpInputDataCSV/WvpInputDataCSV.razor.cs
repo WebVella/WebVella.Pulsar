@@ -73,7 +73,7 @@ namespace WebVella.Pulsar.Components
 
 		protected override async Task OnInitializedAsync()
 		{
-			await Task.Delay(1);
+			//await Task.Delay(1);
 			var enumList = Enum.GetValues(typeof(WvpDelimiterType)).Cast<WvpDelimiterType>();
 			foreach (WvpDelimiterType item in enumList)
 			{

@@ -66,7 +66,7 @@ namespace WebVella.Pulsar.Components
 				_objectRef = DotNetObjectReference.Create(this);
 				//Render so Child content can be populated
 				await InvokeAsync(StateHasChanged);
-				await Task.Delay(1);
+				//await Task.Delay(1);
 				_ = await new JsService(JSRuntime).InitializeInfiniteScroll(_componentId, _objectRef, ObserverTargetId, ObserverViewportId);
 			}
 		}

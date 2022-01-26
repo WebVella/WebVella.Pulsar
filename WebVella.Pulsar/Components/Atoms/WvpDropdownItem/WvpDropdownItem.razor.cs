@@ -63,7 +63,7 @@ namespace WebVella.Pulsar.Components
 
 		#region << Ui handlers >>
 		private async Task _onClickHandler(MouseEventArgs e){
-			//await Task.Delay(1);
+			////await Task.Delay(1);
 			//await InvokeAsync(StateHasChanged);
 			await OnClick.InvokeAsync(Value);
 		}

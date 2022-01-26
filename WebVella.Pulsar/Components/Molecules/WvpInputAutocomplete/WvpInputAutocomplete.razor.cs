@@ -155,7 +155,7 @@ namespace WebVella.Pulsar.Components
 			_easySubmit = true;
 			_value = null;
 			_activeItemIndex = -1;
-			await Task.Delay(1);
+			//await Task.Delay(1);
 			//await InvokeAsync(StateHasChanged);
 			if (BlurOnSubmit)
 				_ = await new JsService(JSRuntime).BlurElement(_inputId);
@@ -235,7 +235,7 @@ namespace WebVella.Pulsar.Components
 			{
 				_easySubmit = true;
 			}
-			//await Task.Delay(1);
+			////await Task.Delay(1);
 			//await InvokeAsync(StateHasChanged);
 		}
 
@@ -248,14 +248,14 @@ namespace WebVella.Pulsar.Components
 			}
 			if (!_isDropdownHovered && _easySubmit && _activeItemIndex == -1)
 			{
-				await Task.Delay(1);
+				//await Task.Delay(1);
 				//await InvokeAsync(StateHasChanged);
 			}
 			if (!_isDropdownHovered)
 			{
 				_isDropdownVisible = false;
 				_value = "";
-				await Task.Delay(1);
+				//await Task.Delay(1);
 				//await InvokeAsync(StateHasChanged);
 				await ValueChanged.InvokeAsync(new ChangeEventArgs { Value = _value });
 			}
@@ -273,7 +273,7 @@ namespace WebVella.Pulsar.Components
 					_isDropdownVisible = false;
 			}
 			_preventNextOnInputDropdownVisibilityCheck = false;
-			await Task.Delay(1);
+			//await Task.Delay(1);
 			//await InvokeAsync(StateHasChanged);
 			await OnInput.InvokeAsync(args);
 		}

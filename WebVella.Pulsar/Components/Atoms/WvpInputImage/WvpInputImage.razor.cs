@@ -68,7 +68,7 @@ namespace WebVella.Pulsar.Components
 
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(1);
+			//await Task.Delay(1);
 			_objectReference?.Dispose();
 		}
 

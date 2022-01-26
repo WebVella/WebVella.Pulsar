@@ -74,7 +74,7 @@ namespace WebVella.Pulsar.Components
 		#region << Lifecycle methods >>
 		public async ValueTask DisposeAsync()
 		{
-			await Task.Delay(1);
+			//await Task.Delay(1);
 			Stop();
 		}
 

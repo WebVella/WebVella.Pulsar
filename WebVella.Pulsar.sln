@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32120.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Site", "Site\Site.csproj", "{EDCC5482-7732-42FC-97A2-477A85013DF4}"
 EndProject
@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVella.Pulsar.Test", "Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebVella.Pulsar", "WebVella.Pulsar\WebVella.Pulsar.csproj", "{5A08A685-DB22-4840-8F6F-CB592473D92A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconFilesParser", "IconFilesParser\IconFilesParser.csproj", "{414F5A4C-665F-4F2B-8F19-E3FA65E6BFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IconFilesParser", "IconFilesParser\IconFilesParser.csproj", "{414F5A4C-665F-4F2B-8F19-E3FA65E6BFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSSGoClassGenerator", "SCSSGoClassGenerator\SCSSGoClassGenerator.csproj", "{A8BA3754-F57D-4503-BD19-7092ADB4BDFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCSSGoClassGenerator", "SCSSGoClassGenerator\SCSSGoClassGenerator.csproj", "{A8BA3754-F57D-4503-BD19-7092ADB4BDFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCSSToOptionsGenerator", "SCSSToOptionsGenerator\SCSSToOptionsGenerator.csproj", "{F04ED668-1BFB-4600-B150-AE223889CAEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{A8BA3754-F57D-4503-BD19-7092ADB4BDFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8BA3754-F57D-4503-BD19-7092ADB4BDFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8BA3754-F57D-4503-BD19-7092ADB4BDFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F04ED668-1BFB-4600-B150-AE223889CAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F04ED668-1BFB-4600-B150-AE223889CAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F04ED668-1BFB-4600-B150-AE223889CAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F04ED668-1BFB-4600-B150-AE223889CAEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
