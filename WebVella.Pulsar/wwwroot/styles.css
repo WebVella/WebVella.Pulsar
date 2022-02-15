@@ -2033,6 +2033,10 @@ span.flatpickr-weekday {
     height: 56px;
     font-size: 1.25rem; }
 
+.badge-light {
+  padding-left: 8px;
+  padding-right: 8px; }
+
 .wvp-badge {
   background: #9e9e9e; }
   .wvp-badge--orange {
