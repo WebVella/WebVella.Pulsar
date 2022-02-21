@@ -31,10 +31,13 @@ namespace WebVella.Pulsar.Components
 		[Parameter] public WvpDropDownDirection Mode { get; set; } = WvpDropDownDirection.DropDown;
 
 		[Parameter] public bool EndIsReached { get; set; } = false;
+	
+
 		#endregion
 
 		#region << Callbacks >>
 		[Parameter] public EventCallback FetchMoreRows { get; set; } 
+		[Parameter] public EventCallback<string> FreeInputSubmit { get; set; } 
 		#endregion
 
 		#region << Private properties >>
@@ -46,6 +49,8 @@ namespace WebVella.Pulsar.Components
 		private string _filterElementId = "wvp-filter-" + Guid.NewGuid();
 
 		private string _filter = "";
+		
+		private string _filterPlaceholder = "type and select value";
 
 		private List<TItem> _filteredOptions = new List<TItem>();
 
@@ -87,6 +92,11 @@ namespace WebVella.Pulsar.Components
 			if(!FetchMoreRows.HasDelegate)
 				EndIsReached = true;
 
+			
+			if(FreeInputSubmit.HasDelegate)
+				_filterPlaceholder = "type, select or ENTER";
+			else
+				_filterPlaceholder = "type and select value";
 			await base.OnParametersSetAsync();
 		}
 		#endregion
@@ -125,6 +135,20 @@ namespace WebVella.Pulsar.Components
 			_filter = e.Value?.ToString();
 			await OnInput.InvokeAsync(new ChangeEventArgs { Value = _filter });
 			//await InvokeAsync(StateHasChanged);
+		}
+
+		private async Task _filterSubmit()
+		{
+			if (FreeInputSubmit.HasDelegate && !String.IsNullOrWhiteSpace(_filter))
+			{
+				await FreeInputSubmit.InvokeAsync(_filter);
+				_filter = null;
+				_isDropdownVisible = false;
+				await InvokeAsync(StateHasChanged);
+				await Task.Delay(1);
+				_isDropdownVisible = null;
+				await InvokeAsync(StateHasChanged);				
+			}
 		}
 
 		private async Task _onSelectHandler(TItem item)

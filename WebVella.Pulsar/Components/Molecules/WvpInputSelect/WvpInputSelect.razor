@@ -8,7 +8,7 @@
 <WvpDropdown StatusChange="_dropdownToggleCallback" Id="@Id" IsMenuVisible="_isDropdownVisible"
              Class="@(Options == null || Options.ToList().Count == 0 ? "disabled" : "")" Mode="@Mode">
     <WvpDropdownToggle>
-        <span class="input-group @(String.Join(" ",_cssList))">
+        <span class="input-group @(String.Join(" ", _cssList))">
             @if (_value == null)
             {
                 @*if(Options == null || Options.ToList().Count == 0)
@@ -34,7 +34,9 @@
                 <span class="form-control">@Newtonsoft.Json.JsonConvert.SerializeObject(_value)</span>
             }
             <span class="input-group-append">
-                <span class="input-group-text"><WvpIcon Type="WvpIconType.BsCaretDownFill" /></span>
+                <span class="input-group-text">
+                    <WvpIcon Type="WvpIconType.BsCaretDownFill"/>
+                </span>
             </span>
         </span>
     </WvpDropdownToggle>
@@ -42,13 +44,16 @@
     <WvpDropdownMenu Class="pt-0">
         @if (IsFilterable)
         {
-            <div class="p-1 wvp-bkg-grey-100">
-                <input class="form-control form-control-sm" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
-                @*<div class="input-group input-group-sm">
+            <form @onsubmit="_filterSubmit">
+                <div class="p-1 wvp-bkg-grey-100">
+                    <input class="form-control form-control-sm" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" 
+                           autocomplete="new-password" placeholder="@_filterPlaceholder"/>
+                    @*<div class="input-group input-group-sm">
                     <div class="input-group-text"><WvpIcon Type="WvpIconType.BsSearch" Size="WvpSize.Small" Class="wvp-grey" /></div>
                     <input class="form-control" id="@_filterElementId" value="@_filter" @oninput="@_onFilterInputHandler" autocomplete="new-password" />
                     </div>*@
-            </div>
+                </div>
+            </form>
         }
         <div class="wvp-dropdown-wrapper" id="@($"wvp-infinite-scroll-{Id}")">
             @{
@@ -71,7 +76,7 @@
                 index++;
             }
             <WvpObservedItem @ref="_infiniteScrollRef" IsVisible="!EndIsReached"
-                             OnObservableTargetReached="@(()=> FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")"
+                             OnObservableTargetReached="@(() => FetchMoreRows.InvokeAsync())" ObserverTargetId="@($"wvp-loading-bar-{Id}")"
                              ObserverViewportId="@($"wvp-infinite-scroll-{Id}")">
                 <WvpDropdownItem Disabled="true">
                     <div id="@($"wvp-loading-bar-{Id}")" class="@(EndIsReached ? "d-none" : "")">
