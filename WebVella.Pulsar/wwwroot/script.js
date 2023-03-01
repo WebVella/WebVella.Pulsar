@@ -44,6 +44,11 @@
                 WebVellaPulsar.infiniteScrollDestroy(componentId);
             }
         }
+        if (WebVellaPulsar.observedItemObservers) {
+            for (var componentId in WebVellaPulsar.observedItemObservers) {
+                WebVellaPulsar.observedItemDestroy(componentId);
+            }
+        }
         return true;
     },
     // Functions in alpha sort
