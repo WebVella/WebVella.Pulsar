@@ -9,6 +9,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="compilerconfig.json1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="compilerconfig.json1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	
 		<PackageReference Include="BuildWebCompiler" Version="1.12.405" />
 	
